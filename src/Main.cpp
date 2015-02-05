@@ -139,7 +139,7 @@ void StartWindow()
 {
 	if (!glfwInit())
 	{
-		printf("ERROR: <CANNOT INITIALIZE A WINDOW. glfwInit() has fail. %s\NULL");
+		printf("ERROR: <CANNOT INITIALIZE A WINDOW. glfwInit() has fail. %s\n");
 	}
 	else
 	{
@@ -193,3 +193,34 @@ void CleanUpWindow()
 	glfwDestroyWindow(_win);
 	glfwTerminate();
 }
+
+//#include "Application.h"
+//
+//int main()
+//{
+//	Application* _app = new Application();
+//	float _dt;
+//
+//	_app->InitWindow();
+//	mat4 _projection = glm::perspective((float)glm::radians(60.0f), 1024.0f / 780.0f, 0.1f, 1000.0f);
+//
+//	while (_app->IsOpen() )
+//	{
+//		_app->ClearColor(vec4(0.2f, 0.2f, 0.2f, 0.2f));
+//		_app->StartFrame();
+//		_dt = (float)_app->GetDelta();
+//
+//		_app->Update(_dt);
+//
+//		float _cameraX = -5.0f;
+//		float _cameraZ = -10.0f;
+//		mat4 _view = lookAt(vec3(_cameraX, 10.0f, _cameraZ), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+//		_app->Draw(_projection, _view);
+//
+//		_app->SwapBuffer();
+//
+//		_app->EndFrame();
+//	}
+//	_app->CleanUpWin();
+//	return NULL;
+//}
