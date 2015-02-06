@@ -1,15 +1,16 @@
 #include "Camera.h"
 
 GLvoid Camera::BuildCamera(vec3 a_vPos,
-	vec3 a_vUp,
-	GLfloat a_fYaw,
-	GLfloat a_fPitch)
+						   vec3 a_vUp,
+						   GLfloat a_fYaw,
+						   GLfloat a_fPitch)
 {
 	this->m_vPos = a_vPos;
 	this->m_vUp = a_vUp;
 	this->m_fYaw = a_fYaw;
 	this->m_fPitch = a_fPitch;
 	this->m_vFront = vec3(0.0f, 0.0f, -1.0f);
+	this->m_vWorldUp = vec3(0.0f, 1.0f, 0.0f);
 	this->m_fCamSpeed = 5.0f;
 	this->m_fMouseSensitivity = 0.5f;
 	this->m_fZoom = 45.0f;
@@ -18,27 +19,46 @@ GLvoid Camera::BuildCamera(vec3 a_vPos,
 }
 
 GLvoid Camera::BuildCamera(GLfloat a_fPosX,
-	GLfloat a_fPosY,
-	GLfloat a_fPosZ,
-	GLfloat a_fUpX,
-	GLfloat a_fUpY,
-	GLfloat a_fUpZ,
-	GLfloat a_fYaw,
-	GLfloat a_fPitch)
+						   GLfloat a_fPosY,
+						   GLfloat a_fPosZ,
+						   GLfloat a_fUpX,
+						   GLfloat a_fUpY,
+						   GLfloat a_fUpZ,
+						   GLfloat a_fYaw,
+						   GLfloat a_fPitch)
 {
 	this->m_vPos = vec3(a_fPosX, a_fPosY, a_fPosZ);
 	this->m_vUp = vec3(a_fUpX, a_fUpY, a_fUpZ);
-	this->m_vFront = vec3(0.0f, 0.0f, -1.0f);
+	this->m_vFront = vec3(0.0f, 0.0f, 0.0f);
 	this->m_fCamSpeed = 5.0f;
 	this->m_fMouseSensitivity = 0.5f;
 	this->m_fZoom = 45.0f;
 	this->UpdateCameraVectors();
 }
 
-mat4 Camera::GetViewMatrix() const
+mat4 Camera::GetWorldTransform() const
 {
-	return lookAt(this->m_vPos, this->m_vPos + this->m_vFront, this->m_vWorldUp);
+	return glm::inverse(GetViewTransform());
 }
+
+mat4 Camera::GetViewTransform() const
+{
+	return lookAt(m_vPos, m_vPos + m_vFront, m_vWorldUp);
+}
+
+mat4 Camera::GetProjectionTransform(glm::vec2 a_vScreenSize, float a_fNearPlane, float a_fFarPlane) const
+{
+	float _As = a_vScreenSize.x / a_vScreenSize.y;
+	return glm::perspective(m_fZoom, _As, a_fNearPlane, a_fFarPlane);
+}
+
+mat4 Camera::GetProjViewTransform(glm::vec2 a_vScreenSize) const
+{
+	mat4 _result = GetProjectionTransform(a_vScreenSize);
+	_result *= GetViewTransform();
+	return _result;
+}
+
 void Camera::KeyboardInput(CameraMovement a_eDir, GLfloat a_fDeltaTime)
 {
 	GLfloat _speed = this->m_fCamSpeed * a_fDeltaTime;
@@ -60,6 +80,7 @@ void Camera::KeyboardInput(CameraMovement a_eDir, GLfloat a_fDeltaTime)
 	default:
 		break;
 	}
+	this->UpdateCameraVectors();
 }
 
 void Camera::MouseInput(GLfloat a_fOffsetX, GLfloat a_fOffsetY, GLboolean a_bConstrainPitch)
@@ -114,4 +135,19 @@ void Camera::UpdateCameraVectors()
 	//and by normaling the cross product of the new RIGHT and the new front vectors.
 	this->m_vRight = normalize(cross(this->m_vFront, this->m_vWorldUp));
 	this->m_vUp = normalize(cross(this->m_vRight, this->m_vFront));
+}
+
+GLfloat Camera::GetZoom() const
+{
+	return m_fZoom;
+}
+
+GLfloat Camera::GetYaw() const
+{
+	return m_fYaw;
+}
+
+GLfloat Camera::GetPitch() const
+{
+	return m_fPitch;
 }
