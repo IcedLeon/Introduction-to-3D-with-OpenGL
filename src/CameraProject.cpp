@@ -1,5 +1,4 @@
 #include "CameraProject.h"
-#include "gl_core_4_4.h"
 #include <GLFW\glfw3.h>
 #include "Gizmos.h"
 
@@ -84,7 +83,7 @@ void CameraProject::Update(GLdouble a_fDeltaTime)
 
 	mat4 _transMatChild2 = _transMatChild * translate(vec3(1, 0, 0)) * rotate(m_fTimer * 4.0f, vec3(0, 1, 0));
 
-	mat4 _minecraftPlanet = _rotMat * translate(vec3(9, 2, 0)) * rotate(m_fTimer * 0.7f, vec3(1, 0, 1));
+	mat4 _minecraftPlanet = _rotMat * translate(vec3(9, 2, 0)) * rotate(m_fTimer * 0.7f, vec3(1, 1, 0));
 
 	mat4 _haloMatrix = _minecraftPlanet * translate(vec3(0, 0, 0)) * rotate(m_fTimer * 0.3f, vec3(0, 1, 0));
 

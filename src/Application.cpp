@@ -52,7 +52,7 @@ void Application::InitWindow(vec3 a_vScreenSize, const char* a_pccWinName, bool 
 		{
 			GLint _majorVer = ogl_GetMajorVersion();
 			GLint _minorVer = ogl_GetMinorVersion();
-			printf("Successfully loaded this version of OpenGL %d %d \n", _majorVer, _minorVer);
+			printf("Successfully loaded this version of OpenGL %d.%d \n", _majorVer, _minorVer);
 
 			const GLubyte* _renderer = glGetString(GL_RENDERER); // get renderer string
 			const GLubyte* _version = glGetString(GL_VERSION); // version as a string
