@@ -59,6 +59,7 @@ void Application::InitWindow(vec3 a_vScreenSize, const char* a_pccWinName, bool 
 			printf("Renderer: %s\n", _renderer);
 			printf("OpenGL version supported %s\n", _version);
 			glEnable(GL_DEPTH_TEST);
+			glViewport(0, 0, (GLsizei)a_vScreenSize.x, (GLsizei)a_vScreenSize.y);
 		}
 	}
 }
