@@ -26,8 +26,8 @@ CameraProject::~CameraProject()
 
 void CameraProject::InitWindow(vec3 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)
 {
-	Application::InitWindow(a_vScreenSize, a_pccWinName, a_bFullScreen); 
-	glViewport(0, 0, (GLsizei)a_vScreenSize.x, (GLsizei)a_vScreenSize.y);
+	Application::InitWindow(a_vScreenSize, a_pccWinName, a_bFullScreen);
+
 	glfwSetKeyCallback(m_oWin, key_callback);
 	glfwSetCursorPosCallback(m_oWin, mouse_callback);
 	glfwSetCursorPos(m_oWin, (double)m_vScreenSize.x / 2, (double)m_vScreenSize.y / 2);

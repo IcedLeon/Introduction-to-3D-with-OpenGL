@@ -16,8 +16,6 @@ int main()
 
 		_app.Update(_dt);
 
-		_app.GenerateGrid(50, 50);
-
 		_app.Draw();
 
 		_app.SwapBuffer();

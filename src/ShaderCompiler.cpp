@@ -45,7 +45,7 @@ GLuint ShaderCompiler::CreateShader(GLenum a_eShaderID, const GLchar* a_strShade
 	{
 		glGetShaderInfoLog(_currShader, SHD_ERR_LGH, NULL, _infoLog);
 		printf("ERROR: <SHADER COMPILATION HAS FAILED> %s\n", _infoLog);
-		delete[] & _infoLog;
+		delete[] &_infoLog;
 	}
 	return _currShader;
 }
@@ -93,20 +93,18 @@ GLuint ShaderCompiler::GetShaderProgram() const
 
 void ShaderCompiler::EnableArrays()
 {
-	glBindFragDataLocation(this->m_uiShaderProgram, 0, "outColor");
-	GLuint _posAttrib = glGetAttribLocation(this->m_uiShaderProgram, "position");
-	glEnableVertexAttribArray(_posAttrib);
-	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), 0);
+	//glBindFragDataLocation(this->m_uiShaderProgram, 0, "outColor");
+	//GLuint _posAttrib = glGetAttribLocation(this->m_uiShaderProgram, "position");
+	//glEnableVertexAttribArray(_posAttrib);
+	//glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), 0);
 
-	GLuint _colAttrib = glGetAttribLocation(this->m_uiShaderProgram, "color");
-	glEnableVertexAttribArray(_colAttrib);
-	glVertexAttribPointer(_colAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	//GLuint _colAttrib = glGetAttribLocation(this->m_uiShaderProgram, "color");
+	//glEnableVertexAttribArray(_colAttrib);
+	//glVertexAttribPointer(_colAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 
-	//m_uiUniformCol = glGetUniformLocation(m_uiShaderProgram, "triangleColor");
-
-	GLint _texAttrib = glGetAttribLocation(this->m_uiShaderProgram, "texcoord");
-	glEnableVertexAttribArray(_texAttrib);
-	glVertexAttribPointer(_texAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
+	//GLint _texAttrib = glGetAttribLocation(this->m_uiShaderProgram, "texcoord");
+	//glEnableVertexAttribArray(_texAttrib);
+	//glVertexAttribPointer(_texAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
 }
 
 void ShaderCompiler::Use()

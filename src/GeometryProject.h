@@ -13,29 +13,43 @@ private:
 	static Camera m_oCamera;
 	mat4 m_oProjection;
 	mat4 m_oView;
+	mat4 m_oWorld;
 	GLfloat m_fTimer;
+	GLfloat m_fSinAug;
+	GLfloat m_fTimeAug;
 	GLuint m_uiShaderProgram;
 	GLuint m_uiVAO;
 	GLuint m_uiVBO;
 	GLuint m_uiIBO;
+	GLuint m_uiVAOc;
+	GLuint m_uiVBOc;
+	GLuint m_uiIBOc;
 	GLuint m_uiIndexCount;
 	static bool	m_bKeys[1024];
-
+	float _dt;
 public:
+	GeometryProject();
+	~GeometryProject();
+
 	virtual void InitWindow(vec3 a_vScreenSize = vec3(1024.0f, 780.0f, 0.0f), const char* a_pccWinName = WIN_NAME_PREFIX, bool a_bFullScreen = false);	
 	virtual void Update(GLdouble a_dDeltaTime);
 	virtual void CleanUpWin();
 	virtual void Draw();
 	virtual mat4 BuildOrbitMatrix(float a_fLocalRot, float a_fRad, float a_fOrbitRot);
 
-	void MoveCamera(float a_fDeltaTime);
+	virtual void MoveCamera(float a_fDeltaTime);
 
 	static void key_callback(GLFWwindow* a_oWindow, int a_iKey, int a_iKeyCode, int a_iAction, int a_iMode);
 	static void scroll_callback(GLFWwindow* a_oWindow, double a_fOffsetX, double a_fOffsetY);
 	static void mouse_callback(GLFWwindow* a_oWindow, double a_iMouseX, double a_iMouseY);
 
-	void GenerateGrid(unsigned int a_uiRows, unsigned int a_uiCols);
 	void CreateShaderProgram();
 	void Use();
+
+	void GenerateGrid(unsigned int a_uiRows, unsigned int a_uiCols);
+	void GenerateCube();
+	void IncreaseValue();
+	float Hash(vec3 _p);
+
 };
 #endif //!_GEOMETRYPROJECT_H_
