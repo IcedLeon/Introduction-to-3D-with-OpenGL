@@ -11,9 +11,9 @@ GLvoid Camera::BuildCamera(vec3 a_vPos,
 	this->m_fPitch = a_fPitch;
 	this->m_vFront = vec3(0.0f, 0.0f, -1.0f);
 	this->m_vWorldUp = vec3(0.0f, 1.0f, 0.0f);
-	this->m_fCamSpeed = 5.0f;
+	this->m_fCamSpeed = 15.0f;
 	this->m_fMouseSensitivity = 0.5f;
-	this->m_fZoom = 45.0f;
+	this->m_fZoom = 90.0f;
 	//Re-just the camera vectors.
 	this->UpdateCameraVectors();
 }
@@ -32,7 +32,7 @@ GLvoid Camera::BuildCamera(GLfloat a_fPosX,
 	this->m_vFront = vec3(0.0f, 0.0f, 0.0f);
 	this->m_fCamSpeed = 5.0f;
 	this->m_fMouseSensitivity = 0.5f;
-	this->m_fZoom = 45.0f;
+	this->m_fZoom = 90.0f;
 	this->UpdateCameraVectors();
 }
 
@@ -108,18 +108,23 @@ void Camera::MouseInput(GLfloat a_fOffsetX, GLfloat a_fOffsetY, GLboolean a_bCon
 
 void Camera::MouseScrollZoom(GLfloat a_fOffsetY)
 {
-	if (this->m_fZoom >= 1.0f && this->m_fZoom <= 45.0f)
+	if (this->m_fZoom >= 1.0f && this->m_fZoom <= 90.0f)
 	{
 		this->m_fZoom -= a_fOffsetY;
+	}
+	if (this->m_fZoom <= 1.0f && this->m_fZoom >= 90.0f)
+	{
+		this->m_fZoom += a_fOffsetY;
 	}
 	if (this->m_fZoom <= 1.0f)
 	{
 		this->m_fZoom = 1.0f;
 	}
-	if (this->m_fZoom >= 45.0f)
+	if (this->m_fZoom >= 90.0f)
 	{
-		this->m_fZoom = 45.0f;
+		this->m_fZoom = 90.0f;
 	}
+	this->UpdateCameraVectors();
 }
 
 void Camera::UpdateCameraVectors()

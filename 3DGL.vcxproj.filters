@@ -46,6 +46,13 @@
     <Filter Include="Source Files\Base_Class">
       <UniqueIdentifier>{bbf6c0b0-0d33-4a0f-acdd-439eab71abb6}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
+    <Filter Include="Header Files\Lighting">
+      <UniqueIdentifier>{7919f2e6-c549-49ff-8008-301b085d28b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lighting">
+      <UniqueIdentifier>{8b9fe736-553a-4da2-96f1-6560de6c00b0}</UniqueIdentifier>
+=======
     <Filter Include="Header Files\Audio">
       <UniqueIdentifier>{dde3ffbb-f698-4e67-be44-12d3c25f3206}</UniqueIdentifier>
     </Filter>
@@ -57,6 +64,7 @@
     </Filter>
     <Filter Include="Source Files\Model">
       <UniqueIdentifier>{d7c74e2c-218a-4528-9a88-d0f7ab6ae6a8}</UniqueIdentifier>
+>>>>>>> b0de37035b8f090fcba540b38743e07d0d990061
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,8 +95,13 @@
     <ClCompile Include="src\Application.cpp">
       <Filter>Source Files\Base_Class</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="src\LightingProject.cpp">
+      <Filter>Source Files\Lighting</Filter>
+=======
     <ClCompile Include="src\Mesh.cpp">
       <Filter>Source Files\Model</Filter>
+>>>>>>> b0de37035b8f090fcba540b38743e07d0d990061
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -122,11 +135,28 @@
     <ClInclude Include="src\Application.h">
       <Filter>Header Files\Base_Class</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="src\stb_image.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightingProject.h">
+      <Filter>Header Files\Lighting</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data\shaders\LightingVertex.glsl">
+      <Filter>Header Files\Lighting</Filter>
+    </None>
+    <None Include="data\shaders\LightingFragment.glsl">
+      <Filter>Header Files\Lighting</Filter>
+    </None>
+=======
     <ClInclude Include="src\Mesh.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="src\Model.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
+>>>>>>> b0de37035b8f090fcba540b38743e07d0d990061
   </ItemGroup>
 </Project>

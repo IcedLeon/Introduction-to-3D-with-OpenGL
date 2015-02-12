@@ -1,33 +1,8 @@
 #include "GeometryProject.h"
 #include <GLFW\glfw3.h>
 #include "Camera.h"
-
-//Temporary shader source code, pretty basic function to determine pos, col and some uniform.
-const char* _vertexSrc =
-"#version 330 core \n"
-"layout(location = 0) in vec4 position; \n"
-"layout(location = 1) in vec4 colour; \n"
-"out vec4 Colour; \n"
-"uniform mat4 ProjectionView; \n"
-"uniform float time; \n"
-"uniform float heightScale; \n"
-"uniform float noise; \n"
-"void main() \n"
-"{ \n"
-"Colour = colour; \n"
-"vec4 P = position; \n"
-//"P.y = sin(time + position.x) + sin(time + position.z) * (heightScale / noise); \n"
-"gl_Position = ProjectionView * P; \n"
-"}";
-
-const char* _fragSrc =
-"#version 330 core \n"
-"in vec4 Colour; \n"
-"out vec4 OutColor; \n"
-"void main() \n"
-"{ \n"
-"OutColor = Colour * vec4(0.2f, 0.3f, 0.8f, 1.0f); \n"
-"}";
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 static vec4 m_vWhite = vec4(1.0f);
 static vec4 m_vBlack = vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -44,12 +19,11 @@ static GLdouble m_fPrevY;
 GeometryProject::GeometryProject() : m_fTimer(NULL),
 									 m_fSinAug(NULL),
 									 m_fTimeAug(NULL),
-									 m_uiShaderProgram(NULL),
 									 m_uiVAO(NULL),
 									 m_uiVBO(NULL),
 									 m_uiIBO(NULL),
 									 m_uiIndexCount(NULL),
-									 _dt(NULL)
+									 m_fModRGB(1)
 {
 
 }
@@ -72,17 +46,20 @@ void GeometryProject::InitWindow(vec3 a_vScreenSize, const char* a_pccWinName, b
 
 	m_oProjection = m_oCamera.GetProjectionTransform(glm::vec2(a_vScreenSize.x, a_vScreenSize.y));
 
-	CreateShaderProgram();
+	m_oShader.CreateShaderProgram(VERTEX_FILE_ID, FRAGMENT_FILE_ID);
 
-	GenerateGrid(50, 50);
+	LoadTexture("./textures/crate.png");
 
-	GenerateCube();
+	//GenerateGrid(10, 25);
 
-	//glEnable(GL_CULL_FACE);
+	//GenerateCube();
+
+	GenerateQuad(5.0f);
 }
 
 void GeometryProject::CleanUpWin()
 {
+	m_oShader.CleanUpProgram();
 	Application::CleanUpWin();
 }
 
@@ -95,7 +72,7 @@ void GeometryProject::Update(GLdouble a_fDeltaTime)
 
 	IncreaseValue();
 
-	m_fTimer += (float)GetDelta();
+	m_fTimer += (float)GetDelta() * m_fTimeAug;
 }
 
 void GeometryProject::Draw()
@@ -160,59 +137,20 @@ void GeometryProject::scroll_callback(GLFWwindow* a_oWindow, double a_fOffsetX, 
 	m_oCamera.MouseScrollZoom((float)a_fOffsetY);
 }
 
-void GeometryProject::CreateShaderProgram()
-{
-	GLint _succes;
-
-	GLuint _vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	GLuint _fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-	glShaderSource(_vertexShader, 1, &_vertexSrc, NULL);
-	glCompileShader(_vertexShader);
-
-	glShaderSource(_fragShader, 1, &_fragSrc, NULL);
-	glCompileShader(_fragShader);
-
-	m_uiShaderProgram = glCreateProgram();
-	glAttachShader(m_uiShaderProgram, _vertexShader);
-	glAttachShader(m_uiShaderProgram, _fragShader);
-
-	glLinkProgram(m_uiShaderProgram);
-
-	glGetProgramiv(m_uiShaderProgram, GL_LINK_STATUS, &_succes);
-
-	if (!_succes)
-	{
-		GLint _linkInfoLgh = 0;
-
-		glGetProgramiv(m_uiShaderProgram, GL_INFO_LOG_LENGTH, &_linkInfoLgh);
-
-		GLchar* _infoLog = new GLchar[_linkInfoLgh];
-
-		glGetProgramInfoLog(m_uiShaderProgram, _linkInfoLgh, NULL, _infoLog);
-
-		printf("Error: <Failed to link shader source code to the shader program.> %s\n", _infoLog);
-		delete[] _infoLog;
-	}
-
-	glDeleteShader(_fragShader);
-	glDeleteShader(_vertexShader);
-}
-
 void GeometryProject::Use()
 {
-	glUseProgram(m_uiShaderProgram);
+	m_oShader.Use();
 
-	GLuint _projViewUni = glGetUniformLocation(m_uiShaderProgram, "ProjectionView");
-	mat4 _projview = m_oProjection * m_oView;
-	glUniformMatrix4fv(_projViewUni, 1, GL_FALSE, glm::value_ptr(_projview));
+	GLuint _projUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "Projection");
+	glUniformMatrix4fv(_projUni, 1, GL_FALSE, glm::value_ptr(m_oProjection));
 
-	GLint _timeUni = glGetUniformLocation(m_uiShaderProgram, "time");
+	GLuint _viewUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "View");
+	glUniformMatrix4fv(_viewUni, 1, GL_FALSE, glm::value_ptr(m_oView));
 
-	_dt += ((float)GetDelta() * m_fTimeAug);
-	glUniform1f(_timeUni, _dt);
+	GLint _timeUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "time");
+	glUniform1f(_timeUni, m_fTimer);
 
-	GLuint _perturbanceHeight = glGetUniformLocation(m_uiShaderProgram, "heightScale");
+	GLuint _perturbanceHeight = glGetUniformLocation(m_oShader.GetShaderProgram(), "heightScale");
 	glUniform1f(_perturbanceHeight, m_fSinAug);
 
 	vec3 _p = vec3(152.0f, 152.0f, 0.0f);
@@ -220,20 +158,33 @@ void GeometryProject::Use()
 	vec3 _i = floor(_p);
 	vec3 _f = glm::fract(_p);
 	vec3 _u = _f * _f * (3.0f - 2.0f * _f);
-
 	float _resultNoise = -1.0f + 2.0f * glm::mix(glm::mix(Hash(_i + vec3(0, 0, 0)), Hash(_i + vec3(1.0f, 0.0f, 0.0f)), _u.x),
 		glm::mix(Hash(_i + vec3(0.0f, 1.0f, 0.0f)), Hash(_i + vec3(1.0f, 1.0f, 0.0f)), _u.x), _u.y);
-
-	GLuint _noise = glGetUniformLocation(m_uiShaderProgram, "noise");
+	GLuint _noise = glGetUniformLocation(m_oShader.GetShaderProgram(), "noise");
 	glUniform1f(_noise, _resultNoise);
 
+	//texture
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_uiTexture);
+
+	GLuint _textUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "diffuse");
+	glUniform1i(_textUni, 0);
+
+	GLuint _modRGBUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "modColor");
+	glUniform1f(_modRGBUni, m_fModRGB);
+
 	glBindVertexArray(m_uiVAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+
+	//glDrawElements(GL_TRIANGLES, m_uiIndexCount, GL_UNSIGNED_INT, NULL);
+	//glBindVertexArray(m_uiVAOc);
+	//glDrawElements(GL_TRIANGLES, m_uiCubeIndex * 4, GL_UNSIGNED_INT, NULL);
+
 	if (m_bKeys[GLFW_KEY_TAB])
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	if (m_bKeys[GLFW_KEY_LEFT_SHIFT])
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	glDrawElements(GL_TRIANGLES, m_uiIndexCount, GL_UNSIGNED_INT, NULL);
 }
 
 void GeometryProject::GenerateGrid(unsigned int a_uiRows, unsigned int a_uiCols)
@@ -304,11 +255,55 @@ void GeometryProject::GenerateGrid(unsigned int a_uiRows, unsigned int a_uiCols)
 	delete[] _auiIndices;
 }
 
+void GeometryProject::GenerateQuad(float a_fSize)
+{
+	Vertex _vertexData[4];
+	int _index = 0;
+
+	_vertexData[_index++].m_vPos = vec4(-a_fSize, 0.0f, -a_fSize, 1);
+	_vertexData[_index++].m_vPos = vec4(-a_fSize, 0.0f, a_fSize, 1);
+	_vertexData[_index++].m_vPos = vec4(a_fSize, 0.0f, a_fSize, 1);
+	_vertexData[_index++].m_vPos = vec4(a_fSize, 0.0f, -a_fSize, 1);
+	_index = 0;
+	_vertexData[_index++].m_vUV = vec2(0, 0);
+	_vertexData[_index++].m_vUV = vec2(0, 1);
+	_vertexData[_index++].m_vUV = vec2(1, 1);
+	_vertexData[_index++].m_vUV = vec2(1, 0);
+
+	GLuint _quadIndex[6] = { 0, 1, 2, 0, 2, 3 };
+
+	//Generate both the vertex buffer and the index buffer object
+	glGenBuffers(1, &m_uiVBO);
+	glGenBuffers(1, &m_uiIBO);
+	//Now it's time to generate the vertex array buffer
+	glGenVertexArrays(1, &m_uiVAO);
+	//The new buffer need to be binded
+	glBindVertexArray(m_uiVAO);
+	//Now we bind the other two buffers 
+	glBindBuffer(GL_ARRAY_BUFFER, m_uiVBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_uiIBO);
+	//VBO data buffering
+	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex), _vertexData, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(vec4)*2));
+	//IBO data buffering
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(_quadIndex), _quadIndex, GL_STATIC_DRAW);
+	//And we wrap de-binding the buffers.
+	glBindVertexArray(NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	//Let's clean the vertices create a moment ago to avoid memory leaking.
+	//delete[] _vertexData;
+}
+
 void GeometryProject::GenerateCube()
 {
-	Vertex* _cubeVertex = new Vertex[8];
+	m_uiCubeIndex = 10;
+	Vertex* _cubeVertex = new Vertex[m_uiCubeIndex];
 
-	for (unsigned int i = 0; i < 8; ++i)
+	for (unsigned int i = 0; i < m_uiCubeIndex; ++i)
 	{
 		switch (i)
 		{
@@ -316,35 +311,43 @@ void GeometryProject::GenerateCube()
 		case 0:
 			_cubeVertex[i].m_vPos = vec4(-1.0f, -1.0f, 1.0f, 1.0f);
 			_cubeVertex[i].m_vCol = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			_cubeVertex[i].m_vUV  = vec2(0.0f, 0.0f);
 			break;
 		case 1:
 			_cubeVertex[i].m_vPos = vec4(1.0f, -1.0f, 1.0f, 1.0f);
 			_cubeVertex[i].m_vCol = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			_cubeVertex[i].m_vUV = vec2(1.0f, 0.0f);
 			break;
 		case 2:
 			_cubeVertex[i].m_vPos = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 			_cubeVertex[i].m_vCol = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			_cubeVertex[i].m_vUV = vec2(1.0f, 1.0f);
 			break;
 		case 3:
 			_cubeVertex[i].m_vPos = vec4(-1.0f, 1.0f, 1.0f, 1.0f);
 			_cubeVertex[i].m_vCol = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			_cubeVertex[i].m_vUV = vec2(0.0f, 1.0f);
 			break;
 			//Back
 		case 4:
 			_cubeVertex[i].m_vPos = vec4(-1.0f, -1.0f, -1.0f, 1.0f);
 			_cubeVertex[i].m_vCol = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			_cubeVertex[i].m_vUV = vec2(0.0f, 1.0f);
 			break;
 		case 5:
 			_cubeVertex[i].m_vPos = vec4(1.0f, -1.0f, -1.0f, 1.0f);
 			_cubeVertex[i].m_vCol = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			_cubeVertex[i].m_vUV = vec2(1.0f, 0.0f);
 			break;
 		case 6:
 			_cubeVertex[i].m_vPos = vec4(1.0f, 1.0f, -1.0f, 1.0f);
 			_cubeVertex[i].m_vCol = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			_cubeVertex[i].m_vUV = vec2(1.0f, 1.0f);
 			break;
 		case 7:
 			_cubeVertex[i].m_vPos = vec4(-1.0f, 1.0f, -1.0f, 1.0f);
 			_cubeVertex[i].m_vCol = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			_cubeVertex[i].m_vUV = vec2(0.0f, 1.0f);
 			break;
 		default:
 			break;
@@ -372,21 +375,23 @@ void GeometryProject::GenerateCube()
 		6, 2, 1
 	};
 	//Generate both the vertex buffer and the index buffer object
-	glGenBuffers(1, &m_uiVBO);
-	glGenBuffers(1, &m_uiIBO);
+	glGenBuffers(1, &m_uiVBOc);
+	glGenBuffers(1, &m_uiIBOc);
 	//Now it's time to generate the vertex array buffer
-	glGenVertexArrays(1, &m_uiVAO);
+	glGenVertexArrays(1, &m_uiVAOc);
 	//The new buffer need to be binded
-	glBindVertexArray(m_uiVAO);
+	glBindVertexArray(m_uiVAOc);
 	//Now we bind the other two buffers 
-	glBindBuffer(GL_ARRAY_BUFFER, m_uiVBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_uiIBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_uiVBOc);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_uiIBOc);
 	//VBO data buffering
 	glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(Vertex), _cubeVertex, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(vec4)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(vec4)* 2));
 	//IBO data buffering
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(_cubeIndex), _cubeIndex, GL_STATIC_DRAW);
 	//And we wrap de-binding the buffers.
@@ -408,6 +413,23 @@ void GeometryProject::IncreaseValue()
 		m_fTimeAug++;
 	if (m_bKeys[GLFW_KEY_END])
 		m_fTimeAug--;
+	if (m_bKeys[GLFW_KEY_C])
+		glEnable(GL_CULL_FACE);
+	if (m_bKeys[GLFW_KEY_V])
+		glDisable(GL_CULL_FACE);
+
+	if (m_bKeys[GLFW_KEY_P])
+		m_fModRGB -= 0.01f;
+	if (m_bKeys[GLFW_KEY_O])
+		m_fModRGB += 0.01f;
+	if (m_fModRGB >= 1.0f)
+	{
+		m_fModRGB = 1.0f;
+	}
+	if (m_fModRGB <= 0.0f)
+	{
+		m_fModRGB = 0.0f;
+	}
 }
 
 float GeometryProject::Hash(vec3 _p)
@@ -415,4 +437,26 @@ float GeometryProject::Hash(vec3 _p)
 	float _h = glm::dot(_p, vec3(127.1, 311.7, 0.0f));
 
 	return glm::fract(sin(_h) * 43758.5453123f);
+}
+
+void GeometryProject::LoadTexture(const char* a_pccFileName)
+{
+	GLint _width,
+		_height,
+		_channels;
+
+	unsigned char* _data = stbi_load(a_pccFileName, &_width, &_height, &_channels, STBI_default);
+
+	glGenTextures(1, &m_uiTexture);
+	glBindTexture(GL_TEXTURE_2D, m_uiTexture);
+
+	glTexImage2D(GL_TEXTURE_2D, NULL, GL_RGB, _width, _height, NULL, GL_RGB, GL_UNSIGNED_BYTE, _data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	stbi_image_free(_data);
 }

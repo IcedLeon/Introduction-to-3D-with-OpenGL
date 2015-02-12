@@ -1,8 +1,8 @@
-#include "GeometryProject.h"
+#include "LightingProject.h"
 
 int main()
 {
-	GeometryProject _app;
+	Lighting _app;
 
 	float _dt;
 

@@ -50,15 +50,15 @@ GLuint ShaderCompiler::CreateShader(GLenum a_eShaderID, const GLchar* a_strShade
 	return _currShader;
 }
 
-void ShaderCompiler::CreateShaderProgram()
+void ShaderCompiler::CreateShaderProgram(const char* a_pccVertexID, const char* a_pccFragID)
 {
 	//Create a container for the shader
 	std::vector<GLuint> _shaderPool;
 	//start pushing the shader into the vector
 	//First the Vertex shader
-	_shaderPool.push_back(CreateShader(GL_VERTEX_SHADER, VERTEX_FILE_ID));
+	_shaderPool.push_back(CreateShader(GL_VERTEX_SHADER, a_pccVertexID));
 	//and now the frag shader
-	_shaderPool.push_back(CreateShader(GL_FRAGMENT_SHADER, FRAGMENT_FILE_ID));
+	_shaderPool.push_back(CreateShader(GL_FRAGMENT_SHADER, a_pccFragID));
 	//Create the shader program
 	this->m_uiShaderProgram = glCreateProgram();
 	//attach the shader to the program
@@ -91,26 +91,9 @@ GLuint ShaderCompiler::GetShaderProgram() const
 	return m_uiShaderProgram;
 }
 
-void ShaderCompiler::EnableArrays()
-{
-	//glBindFragDataLocation(this->m_uiShaderProgram, 0, "outColor");
-	//GLuint _posAttrib = glGetAttribLocation(this->m_uiShaderProgram, "position");
-	//glEnableVertexAttribArray(_posAttrib);
-	//glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), 0);
-
-	//GLuint _colAttrib = glGetAttribLocation(this->m_uiShaderProgram, "color");
-	//glEnableVertexAttribArray(_colAttrib);
-	//glVertexAttribPointer(_colAttrib, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-
-	//GLint _texAttrib = glGetAttribLocation(this->m_uiShaderProgram, "texcoord");
-	//glEnableVertexAttribArray(_texAttrib);
-	//glVertexAttribPointer(_texAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
-}
-
 void ShaderCompiler::Use()
 {
 	glUseProgram(this->m_uiShaderProgram);
-	EnableArrays();
 }
 
 void ShaderCompiler::CleanUpProgram()
