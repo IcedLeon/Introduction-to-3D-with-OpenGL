@@ -46,6 +46,12 @@
     <Filter Include="Source Files\Base_Class">
       <UniqueIdentifier>{bbf6c0b0-0d33-4a0f-acdd-439eab71abb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Audio">
+      <UniqueIdentifier>{dde3ffbb-f698-4e67-be44-12d3c25f3206}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Audio">
+      <UniqueIdentifier>{fba87bfa-b0c3-45a8-a29c-e1a57b4aede9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
