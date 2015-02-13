@@ -1,8 +1,8 @@
-#include "LightingProject.h"
+#include "AdvanceTexture.h"
 
 int main()
 {
-	Lighting _app;
+	AdvanceTexture _app;
 
 	float _dt;
 

@@ -4,13 +4,22 @@
 #include "Application.h"
 #include "Vertex.h"
 #include "ShaderCompiler.h"
+#include "tiny_obj_loader.h"
+#include <vector>
 
 
 #define VERTEX_FILE_ID1	 "./shaders/LightingVertex.glsl"
 #define FRAGMENT_FILE_ID1 "./shaders/LightingFragment.glsl"
 
 class Camera;
-class FBXFile;
+
+struct OpenGLInfo
+{
+	GLuint m_uiVAO;
+	GLuint m_uiVBO;
+	GLuint m_uiIBO;
+	GLuint m_uiIndexCount;
+};
 
 class Lighting : public Application
 {
@@ -22,21 +31,25 @@ private:
 	mat4 m_oView;
 	mat4 m_oWorld;
 
-	FBXFile* m_fbxFileID;
+	vec3 light_colour;
+	vec3 light_dir;
+	vec3 ambient_light;
+	vec3 material_colour;
+	float specular_pwr;
 
+
+	//
 	GLfloat m_fTimer;
 	GLfloat m_fSinAug;
 	GLfloat m_fTimeAug;
 	float _dt;
 	float _modRGB;
 
-	GLuint m_uiVAO;
-	GLuint m_uiVBO;
-	GLuint m_uiIBO;
+	std::vector<OpenGLInfo> m_gl_info;
 
-	GLuint m_uiIndexCount;
+	GLuint m_uiTexture,
+		m_uiNormalMap;
 
-	GLuint m_uiTexture;
 
 	static bool	m_bKeys[1024];
 

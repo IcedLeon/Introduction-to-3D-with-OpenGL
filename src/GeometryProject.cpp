@@ -1,7 +1,7 @@
 #include "GeometryProject.h"
 #include <GLFW\glfw3.h>
 #include "Camera.h"
-#define STB_IMAGE_IMPLEMENTATION
+//#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 static vec4 m_vWhite = vec4(1.0f);

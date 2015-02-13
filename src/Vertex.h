@@ -21,4 +21,12 @@ public:
 
 	~Vertex() { }
 };
+
+struct VertexNormal
+{
+	vec4 position;
+	vec4 normal;
+	vec4 tangent;
+	vec2 text_coord;
+};
 #endif //!_VERTEX_H_
