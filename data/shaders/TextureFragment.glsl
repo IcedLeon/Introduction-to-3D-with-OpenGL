@@ -6,7 +6,7 @@ in vec3 frag_tangent;
 in vec3 frag_bitangent;
 in vec2 frag_texcoord;
 
-out vec4 frag_color;
+out vec4 frag_colour;
 	
 uniform vec3 ambient_light;
 
@@ -32,7 +32,7 @@ void main()
 	
 	vec3 N = normalize(TBN * adjusted_normal);
 	
-	vec3 material_colour = texture(diffuse_texture, frag_texcoord).xyz;
+	vec3 material_colour = texture(diffuse_tex, frag_texcoord).xyz;
 	
 	vec3 L = normalize(light_direction);
 	
@@ -42,7 +42,7 @@ void main()
 	
 	vec3 diffuse = vec3(d) * light_colour * material_colour;
 		
-	vec3 E = normalize(eye_pos - frag_position.xyz);
+	vec3 E = normalize(eye_pos - frag_position);
 	vec3 R = reflect(L, N);
 	
 	float s = dot(R, E);
@@ -52,5 +52,5 @@ void main()
 	
 	vec3 specular = vec3(s) * light_colour * material_specular;	
 	
-	frag_color = vec4(ambient + diffuse + specular, 1);
+	frag_colour = vec4(ambient + diffuse + specular, 1);
 }

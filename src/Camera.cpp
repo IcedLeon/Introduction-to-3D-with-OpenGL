@@ -1,19 +1,19 @@
 #include "Camera.h"
 
-GLvoid Camera::BuildCamera(vec3 a_vPos,
-						   vec3 a_vUp,
-						   GLfloat a_fYaw,
-						   GLfloat a_fPitch)
+GLvoid Camera::BuildCamera(vec3		a_vPos,
+						   vec3		a_vUp,
+						   GLfloat	a_fYaw,
+						   GLfloat	a_fPitch)
 {
-	this->m_vPos = a_vPos;
-	this->m_vUp = a_vUp;
-	this->m_fYaw = a_fYaw;
-	this->m_fPitch = a_fPitch;
-	this->m_vFront = vec3(0.0f, 0.0f, -1.0f);
-	this->m_vWorldUp = vec3(0.0f, 1.0f, 0.0f);
-	this->m_fCamSpeed = 15.0f;
-	this->m_fMouseSensitivity = 0.5f;
-	this->m_fZoom = 90.0f;
+	this->m_vPos				= a_vPos;
+	this->m_vUp					= a_vUp;
+	this->m_fYaw				= a_fYaw;
+	this->m_fPitch				= a_fPitch;
+	this->m_vFront				= vec3(0.0f, 0.0f, -1.0f);
+	this->m_vWorldUp			= m_vUp;
+	this->m_fCamSpeed			= 25.0f;
+	this->m_fMouseSensitivity	= 0.3f;
+	this->m_fFOV				= 45.0f;
 	//Re-just the camera vectors.
 	this->UpdateCameraVectors();
 }
@@ -27,12 +27,14 @@ GLvoid Camera::BuildCamera(GLfloat a_fPosX,
 						   GLfloat a_fYaw,
 						   GLfloat a_fPitch)
 {
-	this->m_vPos = vec3(a_fPosX, a_fPosY, a_fPosZ);
-	this->m_vUp = vec3(a_fUpX, a_fUpY, a_fUpZ);
-	this->m_vFront = vec3(0.0f, 0.0f, 0.0f);
-	this->m_fCamSpeed = 5.0f;
-	this->m_fMouseSensitivity = 0.5f;
-	this->m_fZoom = 90.0f;
+	this->m_vPos				= vec3(a_fPosX, a_fPosY, a_fPosZ);
+	this->m_vUp					= vec3(a_fUpX, a_fUpY, a_fUpZ);
+	this->m_vFront				= vec3(0.0f, 0.0f, -1.0f);
+	this->m_vWorldUp			= m_vUp;
+	this->m_fCamSpeed			= 15.0f;
+	this->m_fMouseSensitivity	= 0.5f;
+	this->m_fFOV				= 45.0f;
+	//Re-just the camera vectors.
 	this->UpdateCameraVectors();
 }
 
@@ -48,8 +50,8 @@ mat4 Camera::GetViewTransform() const
 
 mat4 Camera::GetProjectionTransform(glm::vec2 a_vScreenSize, float a_fNearPlane, float a_fFarPlane) const
 {
-	float _As = a_vScreenSize.x / a_vScreenSize.y;
-	return glm::perspective(m_fZoom, _As, a_fNearPlane, a_fFarPlane);
+	float _AsRatio = a_vScreenSize.x / a_vScreenSize.y;
+	return glm::perspective(m_fFOV, _AsRatio, a_fNearPlane, a_fFarPlane);
 }
 
 mat4 Camera::GetProjViewTransform(glm::vec2 a_vScreenSize) const
@@ -90,8 +92,7 @@ void Camera::MouseInput(GLfloat a_fOffsetX, GLfloat a_fOffsetY, GLboolean a_bCon
 
 	this->m_fYaw += a_fOffsetX;
 	this->m_fPitch += a_fOffsetY;
-	//Unless I want to free the camera from the contrain and have it behave like a spectator camera,
-	//this section should constrain the pitch between bounds so the screen do not get flipped freely.
+
 	if (a_bConstrainPitch)
 	{
 		if (this->m_fPitch > 89.0f)
@@ -102,27 +103,27 @@ void Camera::MouseInput(GLfloat a_fOffsetX, GLfloat a_fOffsetY, GLboolean a_bCon
 		{
 			this->m_fPitch = -89.0f;
 		}
-		this->UpdateCameraVectors();
 	}
+	this->UpdateCameraVectors();
 }
 
 void Camera::MouseScrollZoom(GLfloat a_fOffsetY)
 {
-	if (this->m_fZoom >= 1.0f && this->m_fZoom <= 90.0f)
+	if (this->m_fFOV >= 1.0f && this->m_fFOV <= 90.0f)
 	{
-		this->m_fZoom -= a_fOffsetY;
+		this->m_fFOV -= a_fOffsetY;
 	}
-	if (this->m_fZoom <= 1.0f && this->m_fZoom >= 90.0f)
+	if (this->m_fFOV <= 1.0f && this->m_fFOV >= 90.0f)
 	{
-		this->m_fZoom += a_fOffsetY;
+		this->m_fFOV += a_fOffsetY;
 	}
-	if (this->m_fZoom <= 1.0f)
+	if (this->m_fFOV <= 1.0f)
 	{
-		this->m_fZoom = 1.0f;
+		this->m_fFOV = 1.0f;
 	}
-	if (this->m_fZoom >= 90.0f)
+	if (this->m_fFOV >= 90.0f)
 	{
-		this->m_fZoom = 90.0f;
+		this->m_fFOV = 90.0f;
 	}
 	this->UpdateCameraVectors();
 }
@@ -135,16 +136,16 @@ void Camera::UpdateCameraVectors()
 	_front.y = sin(radians(this->m_fPitch));
 	_front.z = sin(radians(this->m_fYaw)) * cos(radians(this->m_fPitch));
 	//Now we simply make them equal to our old front vector by normaling those new value.
-	this->m_vFront = normalize(_front);
+	this->m_vFront	= normalize(_front);
 	//and we also re-adjust right and up vector by normalize the cross product of the front vector and the worldup vector for the RIGHT
 	//and by normaling the cross product of the new RIGHT and the new front vectors.
-	this->m_vRight = normalize(cross(this->m_vFront, this->m_vWorldUp));
-	this->m_vUp = normalize(cross(this->m_vRight, this->m_vFront));
+	this->m_vRight	= normalize(cross(this->m_vFront, this->m_vWorldUp));
+	this->m_vUp		= normalize(cross(this->m_vRight, this->m_vFront));
 }
 
 GLfloat Camera::GetZoom() const
 {
-	return m_fZoom;
+	return m_fFOV;
 }
 
 GLfloat Camera::GetYaw() const

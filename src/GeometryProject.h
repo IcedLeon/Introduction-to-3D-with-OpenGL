@@ -2,20 +2,12 @@
 #define _GEOMETRYPROJECT_H_
 //Lib
 #include "Application.h"
-#include "Vertex.h"
 #include "ShaderCompiler.h"
-
-class Camera;
 
 class GeometryProject : public Application
 {
 private:
-	static Camera m_oCamera;
 	ShaderCompiler m_oShader;
-
-	mat4 m_oProjection;
-	mat4 m_oView;
-	mat4 m_oWorld;
 
 	GLfloat m_fTimer;
 	GLfloat m_fSinAug;
@@ -35,26 +27,18 @@ private:
 
 	GLuint m_uiTexture;
 
-	static bool	m_bKeys[1024];
-
 public:
 	GeometryProject();
 	~GeometryProject();
 
-	virtual void InitWindow(vec3 a_vScreenSize = vec3(1024.0f, 780.0f, 0.0f), const char* a_pccWinName = WIN_NAME_PREFIX, bool a_bFullScreen = false);	
+	virtual void InitWindow(vec3 a_vCamPos = vec3(0.0f, 0.0f, 4.0f), vec3 a_vScreenSize = vec3(1024.0f, 780.0f, 0.0f), const char* a_pccWinName = WIN_NAME_PREFIX, bool a_bFullScreen = false);
 	virtual void Update(GLdouble a_dDeltaTime);
 	virtual void CleanUpWin();
 	virtual void Draw();
-	virtual mat4 BuildOrbitMatrix(float a_fLocalRot, float a_fRad, float a_fOrbitRot);
-
 	virtual void MoveCamera(float a_fDeltaTime);
+	virtual void Use();
 
-	static void key_callback(GLFWwindow* a_oWindow, int a_iKey, int a_iKeyCode, int a_iAction, int a_iMode);
-	static void scroll_callback(GLFWwindow* a_oWindow, double a_fOffsetX, double a_fOffsetY);
-	static void mouse_callback(GLFWwindow* a_oWindow, double a_iMouseX, double a_iMouseY);
-
-	void Use();
-
+	mat4 BuildOrbitMatrix(float a_fLocalRot, float a_fRad, float a_fOrbitRot);
 	void GenerateGrid(unsigned int a_uiRows, unsigned int a_uiCols);
 	void GenerateCube();
 	void GenerateQuad(float a_fSize);

@@ -2,7 +2,6 @@
 #include <GLFW\glfw3.h>
 #include "Camera.h"
 
-#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 static vec4 m_vWhite = vec4(1.0f);
@@ -11,17 +10,11 @@ static vec4 m_vRed = vec4(1.0f, 0.0f, 0.0f, 1.0f);
 static vec4 m_vGreen = vec4(0.0f, 1.0f, 0.0f, 1.0f);
 static vec4 m_vBlue = vec4(0.0f, 0.0f, 1.0f, 1.0f);
 
-Camera AdvanceTexture::m_oCamera = Camera();
-bool AdvanceTexture::m_bKeys[1024];
-static bool m_bMouse;
-static GLdouble m_fPrevX;
-static GLdouble m_fPrevY;
-
-AdvanceTexture::AdvanceTexture() : m_fTimer(NULL),
-m_fSinAug(NULL),
-m_fTimeAug(NULL),
-m_uiIndexCount(NULL),
-m_fModRGB(1)
+AdvanceTexture::AdvanceTexture() :	m_fTimer(NULL),
+									m_fSinAug(NULL),
+									m_fTimeAug(NULL),
+									m_uiIndexCount(NULL),
+									m_fModRGB(1)
 {
 
 }
@@ -31,25 +24,18 @@ AdvanceTexture::~AdvanceTexture()
 
 }
 
-void AdvanceTexture::InitWindow(vec3 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)
+void AdvanceTexture::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)
 {
-	Application::InitWindow(a_vScreenSize, a_pccWinName, a_bFullScreen);
-
-	glfwSetKeyCallback(m_oWin, key_callback);
-	glfwSetCursorPosCallback(m_oWin, mouse_callback);
-	glfwSetCursorPos(m_oWin, (double)m_vScreenSize.x / 2, (double)m_vScreenSize.y / 2);
-	glfwSetScrollCallback(m_oWin, scroll_callback);
-
-	m_oCamera.BuildCamera(vec3(0.0f, 20.0f, 3.0f));
+	Application::InitWindow(a_vCamPos, a_vScreenSize, a_pccWinName, a_bFullScreen);
 
 	m_oProjection = m_oCamera.GetProjectionTransform(glm::vec2(a_vScreenSize.x, a_vScreenSize.y));
 
-	m_oShader.CreateShaderProgram(VERTEX_SHD_CODE, FRAGMENT_SHD_CODE);
+	m_oShader.CreateShaderProgram(TEXTURE_VERTEX_GLSL, TEXTURE_FRAGMENT_GLSL);
 
-	ambient_light = vec3(0.2f);
+	ambient_light	= vec3(0.2f);
 	light_direction = vec3(0, 1, 0);
-	light_colour = vec3(0.7f);
-	specular_power = 15.0f;
+	light_colour	= vec3(0.7f);
+	specular_power	= 15.0f;
 
 	LoadTexture();
 
@@ -81,18 +67,6 @@ void AdvanceTexture::Draw()
 	Use();
 }
 
-void AdvanceTexture::key_callback(GLFWwindow* a_oWindow, int a_iKey, int a_iKeyCode, int a_iAction, int a_iMode)
-{
-	printf("Pressed Key is: %c\n", a_iKey);
-	if (a_iKey == GLFW_KEY_ESCAPE && a_iAction == GLFW_PRESS)
-		glfwSetWindowShouldClose(a_oWindow, GL_TRUE);
-
-	if (a_iAction == GLFW_PRESS)
-		m_bKeys[a_iKey] = true;
-	else if (a_iAction == GLFW_RELEASE)
-		m_bKeys[a_iKey] = false;
-}
-
 void AdvanceTexture::MoveCamera(float a_fDeltaTime)
 {
 	// Camera controls
@@ -104,29 +78,6 @@ void AdvanceTexture::MoveCamera(float a_fDeltaTime)
 		m_oCamera.KeyboardInput(LEFT, a_fDeltaTime);
 	if (m_bKeys[GLFW_KEY_D])
 		m_oCamera.KeyboardInput(RIGHT, a_fDeltaTime);
-}
-
-void AdvanceTexture::mouse_callback(GLFWwindow* a_oWindow, double a_iMouseX, double a_iMouseY)
-{
-	if (m_bMouse)
-	{
-		m_fPrevX = (float)a_iMouseX;
-		m_fPrevY = (float)a_iMouseY;
-		m_bMouse = false;
-	}
-
-	GLfloat xoffset = (float)(a_iMouseX - m_fPrevX);
-	GLfloat yoffset = (float)(m_fPrevY - a_iMouseY);  // Reversed since y-coordinates go from bottom to left
-
-	m_fPrevX = (float)a_iMouseX;
-	m_fPrevY = (float)a_iMouseY;
-
-	m_oCamera.MouseInput(xoffset, yoffset);
-}
-
-void AdvanceTexture::scroll_callback(GLFWwindow* a_oWindow, double a_fOffsetX, double a_fOffsetY)
-{
-	m_oCamera.MouseScrollZoom((float)a_fOffsetY);
 }
 
 void AdvanceTexture::Use()
@@ -149,12 +100,10 @@ void AdvanceTexture::Use()
 	glUniform3fv(_lightColUni, 1, (float*)&light_colour);
 
 	GLuint _eyeUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "eye_pos");
-	glUniform3fv(_eyeUni, 1, (float*)&m_oCamera.GetWorldTransform()[2].xyz);
+	glUniform3fv(_eyeUni, 1, (float*)&m_oCamera.GetWorldTransform()[3].xyz);
 
 	GLuint _powerUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "specular_power");
 	glUniform1f(_powerUni, specular_power);
-
-
 
 	////texture
 	glActiveTexture(GL_TEXTURE0);
@@ -170,8 +119,6 @@ void AdvanceTexture::Use()
 	glUniform1i(_textNormalUni, 1);
 	GLuint _textSpecUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "specular_tex");
 	glUniform1i(_textSpecUni, 2);
-
-
 
 	//GLuint _modRGBUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "modColor");
 	//glUniform1f(_modRGBUni, m_fModRGB);
@@ -292,10 +239,10 @@ void AdvanceTexture::LoadTexture()
 			_channels;
 
 	unsigned char* _data = stbi_load("./textures/rock_diffuse.tga",
-		&_width, 
-		&_height, 
-		&_channels, 
-		STBI_default);
+									 &_width, 
+									 &_height, 
+									 &_channels, 
+									 STBI_default);
 
 	glGenTextures(1, &m_uiDiffuseTexture);
 	glBindTexture(GL_TEXTURE_2D, m_uiDiffuseTexture);

@@ -1,40 +1,150 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\Camera.cpp" />
-    <ClCompile Include="src\CameraProject.cpp" />
-    <ClCompile Include="src\GeometryProject.cpp" />
-    <ClCompile Include="src\Gizmos.cpp" />
-    <ClCompile Include="src\gl_core_4_4.c" />
-    <ClCompile Include="src\LightingProject.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\Mesh.cpp" />
-    <ClCompile Include="src\ProjectOpenGL1.cpp" />
-    <ClCompile Include="src\ShaderCompiler.cpp" />
-    <ClCompile Include="src\tiny_obj_loader.cc" />
-    <ClCompile Include="src\AdvanceTexture.cpp" />
+    <ClCompile Include="src\CameraProject.cpp">
+      <Filter>CameraProject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GeometryProject.cpp">
+      <Filter>GeometryProject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightingProject.cpp">
+      <Filter>LighitingProject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AdvanceTexture.cpp">
+      <Filter>AdvanceTexturing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProjectOpenGL1.cpp">
+      <Filter>BasicProject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application.cpp">
+      <Filter>BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
+      <Filter>LighitingProject\ModelLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>Utility\Visual</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gizmos.cpp">
+      <Filter>Utility\Visual</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextRender.cpp">
+      <Filter>Utility\Visual</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gl_core_4_4.c">
+      <Filter>Utility\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShaderCompiler.cpp">
+      <Filter>Utility\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tiny_obj_loader.cc">
+      <Filter>Utility\ModelLoader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Application.h" />
-    <ClInclude Include="src\Camera.h" />
-    <ClInclude Include="src\CameraProject.h" />
-    <ClInclude Include="src\GeometryProject.h" />
-    <ClInclude Include="src\Gizmos.h" />
-    <ClInclude Include="src\gl_core_4_4.h" />
-    <ClInclude Include="src\LightingProject.h" />
-    <ClInclude Include="src\Mesh.h" />
-    <ClInclude Include="src\Model.h" />
-    <ClInclude Include="src\Oldsrc.h" />
-    <ClInclude Include="src\ProjectOpenGL1.h" />
-    <ClInclude Include="src\ShaderCompiler.h" />
-    <ClInclude Include="src\stb_image.h" />
-    <ClInclude Include="src\Vertex.h" />
-    <ClInclude Include="src\tiny_obj_loader.h" />
-    <ClInclude Include="src\AdvanceTexture.h" />
+    <ClInclude Include="src\CameraProject.h">
+      <Filter>CameraProject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GeometryProject.h">
+      <Filter>GeometryProject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightingProject.h">
+      <Filter>LighitingProject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AdvanceTexture.h">
+      <Filter>AdvanceTexturing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ProjectOpenGL1.h">
+      <Filter>BasicProject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application.h">
+      <Filter>BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mesh.h">
+      <Filter>LighitingProject\ModelLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model.h">
+      <Filter>LighitingProject\ModelLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera.h">
+      <Filter>Utility\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gizmos.h">
+      <Filter>Utility\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextRender.h">
+      <Filter>Utility\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gl_core_4_4.h">
+      <Filter>Utility\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShaderCompiler.h">
+      <Filter>Utility\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stb_image.h">
+      <Filter>Utility\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tiny_obj_loader.h">
+      <Filter>Utility\ModelLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vertex.h">
+      <Filter>Utility\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Oldsrc.h">
+      <Filter>BasicProject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Constant.h">
+      <Filter>Utility\Constant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\shaders\LightingFragment.glsl" />
-    <None Include="data\shaders\LightingVertex.glsl" />
+    <None Include="data\shaders\LightingFragment.glsl">
+      <Filter>LighitingProject</Filter>
+    </None>
+    <None Include="data\shaders\LightingVertex.glsl">
+      <Filter>LighitingProject</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{265fd039-ed58-4593-a516-b36bd23c8d69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CameraProject">
+      <UniqueIdentifier>{09418119-44de-4337-a852-30e9a4c8fe79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeometryProject">
+      <UniqueIdentifier>{a53294b3-c847-4ec9-98ca-b223ee834ec0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LighitingProject">
+      <UniqueIdentifier>{75eea11a-f8c7-4f5e-b0f6-8135ad151d1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AdvanceTexturing">
+      <UniqueIdentifier>{025fcafb-06e4-45a1-9e44-d3ad0c362283}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BasicProject">
+      <UniqueIdentifier>{0e68c0c3-96c3-4f63-9547-1eac1efc88ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BaseClass">
+      <UniqueIdentifier>{c5e60906-25b0-4127-86a6-c3273bc1fbfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LighitingProject\ModelLoader">
+      <UniqueIdentifier>{7c03bce7-7533-45ef-b425-f86e7a617e7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Visual">
+      <UniqueIdentifier>{adc5cc74-98be-44d6-b3df-33531fc8c7d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\OpenGL">
+      <UniqueIdentifier>{06c74b87-d981-4b3f-baee-f4f0318c2080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Texture">
+      <UniqueIdentifier>{fd6f7483-9233-43ba-a02c-24c2224c9739}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\ModelLoader">
+      <UniqueIdentifier>{d02f85b2-4590-4455-87bf-b5202becc5da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Constant">
+      <UniqueIdentifier>{8c142eaf-9a04-446f-8ebe-d58f90c87c7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

@@ -20,10 +20,12 @@ Project1::~Project1()
 
 }
 
-void Project1::InitWindow(vec3 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)
+void Project1::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)
 {
-	Application::InitWindow(a_vScreenSize, a_pccWinName, a_bFullScreen);
+	Application::InitWindow(a_vCamPos, a_vScreenSize, a_pccWinName, a_bFullScreen);
+
 	Gizmos::create();
+
 	m_oProjection = perspective((float)radians(60.0f), (float)a_vScreenSize.x / a_vScreenSize.y, 0.1f, 1000.0f);
 }
 
@@ -36,6 +38,7 @@ void Project1::CleanUpWin()
 void Project1::Update(GLdouble a_fDeltaTime)
 {
 	Gizmos::clear();
+
 	Gizmos::addTransform(glm::mat4(1));
 
 	m_oView = lookAt(vec3(m_fCameraX, 20.0f, m_fCameraZ), vec3(4.0f, 2.0f, -3.0f), vec3(0.0f, 1.0f, 0.0f));
@@ -98,12 +101,3 @@ mat4 Project1::BuildOrbitMatrix(float a_fLocalRot, float a_fRad, float a_fOrbitR
 
 	return _result;
 }
-
-//mat4 Project1::BuildOrbitMatrix(mat4 a_oParent, float a_fRad, float a_fOrbitRot)
-//{
-//	mat4 _result = rotate(a_fOrbitRot, glm::vec3(0, 1, 0)) *
-//		translate(vec3(a_fRad, 0, 0)) *
-//		rotate(a_fLocalRot, vec3(0, 1, 0));
-//
-//	return _result;
-//}

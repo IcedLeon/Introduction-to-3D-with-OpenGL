@@ -37,7 +37,7 @@ private:
 			//Camera option
 			m_fCamSpeed,
 			m_fMouseSensitivity,
-			m_fZoom;
+			m_fFOV;
 	//Recalculate the front vector from the camera Euclidian angles.
 	void UpdateCameraVectors();
 
@@ -51,13 +51,13 @@ public:
 				m_fPitch(0.0f),
 				m_fCamSpeed(0.0f),
 				m_fMouseSensitivity(0.0f),
-				m_fZoom(0.0f)
+				m_fFOV(0.0f)
 	{ }
 	~Camera() { }
 	//Camera builder with vectors
-	void BuildCamera(vec3 a_vPos,
-					 vec3 a_vUp = vec3(0.0f, 1.0f, 0.0f),
-					 GLfloat a_fYaw = -90.0f,
+	void BuildCamera(vec3	 a_vPos,
+					 vec3	 a_vUp	  = vec3(0.0f, 1.0f, 0.0f),
+					 GLfloat a_fYaw	  = -90.0f,
 					 GLfloat a_fPitch = 0.0f);
 	//Camera builder with scalar values
 	void BuildCamera(GLfloat a_fPosX,

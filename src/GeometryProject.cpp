@@ -1,7 +1,8 @@
 #include "GeometryProject.h"
 #include <GLFW\glfw3.h>
+#include "Vertex.h"
 #include "Camera.h"
-//#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 static vec4 m_vWhite = vec4(1.0f);
@@ -9,12 +10,6 @@ static vec4 m_vBlack = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 static vec4 m_vRed = vec4(1.0f, 0.0f, 0.0f, 1.0f);
 static vec4 m_vGreen = vec4(0.0f, 1.0f, 0.0f, 1.0f);
 static vec4 m_vBlue = vec4(0.0f, 0.0f, 1.0f, 1.0f);
-
-Camera GeometryProject::m_oCamera = Camera();
-bool GeometryProject::m_bKeys[1024];
-static bool m_bMouse;
-static GLdouble m_fPrevX;
-static GLdouble m_fPrevY;
 
 GeometryProject::GeometryProject() : m_fTimer(NULL),
 									 m_fSinAug(NULL),
@@ -33,20 +28,13 @@ GeometryProject::~GeometryProject()
 
 }
 
-void GeometryProject::InitWindow(vec3 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)
+void GeometryProject::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)
 {
-	Application::InitWindow(a_vScreenSize, a_pccWinName, a_bFullScreen);
-
-	glfwSetKeyCallback(m_oWin, key_callback);
-	glfwSetCursorPosCallback(m_oWin, mouse_callback);
-	glfwSetCursorPos(m_oWin, (double)m_vScreenSize.x / 2, (double)m_vScreenSize.y / 2);
-	glfwSetScrollCallback(m_oWin, scroll_callback);
-
-	m_oCamera.BuildCamera(vec3(0.0f, 20.0f, 3.0f));
+	Application::InitWindow(a_vCamPos, a_vScreenSize, a_pccWinName, a_bFullScreen);
 
 	m_oProjection = m_oCamera.GetProjectionTransform(glm::vec2(a_vScreenSize.x, a_vScreenSize.y));
 
-	m_oShader.CreateShaderProgram(VERTEX_FILE_ID, FRAGMENT_FILE_ID);
+	m_oShader.CreateShaderProgram(GEOMETRY_VERTEX_GLSL, GEOMETRY_FRAGMENT_GLSL);
 
 	LoadTexture("./textures/crate.png");
 
@@ -89,18 +77,6 @@ mat4 GeometryProject::BuildOrbitMatrix(float a_fLocalRot, float a_fRad, float a_
 	return _result;
 }
 
-void GeometryProject::key_callback(GLFWwindow* a_oWindow, int a_iKey, int a_iKeyCode, int a_iAction, int a_iMode)
-{
-	printf("Pressed Key is: %c\n", a_iKey);
-	if (a_iKey == GLFW_KEY_ESCAPE && a_iAction == GLFW_PRESS)
-		glfwSetWindowShouldClose(a_oWindow, GL_TRUE);
-
-	if (a_iAction == GLFW_PRESS)
-		m_bKeys[a_iKey] = true;
-	else if (a_iAction == GLFW_RELEASE)
-		m_bKeys[a_iKey] = false;
-}
-
 void GeometryProject::MoveCamera(float a_fDeltaTime)
 {
 	// Camera controls
@@ -112,29 +88,6 @@ void GeometryProject::MoveCamera(float a_fDeltaTime)
 		m_oCamera.KeyboardInput(LEFT, a_fDeltaTime);
 	if (m_bKeys[GLFW_KEY_D])
 		m_oCamera.KeyboardInput(RIGHT, a_fDeltaTime);
-}
-
-void GeometryProject::mouse_callback(GLFWwindow* a_oWindow, double a_iMouseX, double a_iMouseY)
-{
-	if (m_bMouse)
-	{
-		m_fPrevX = (float)a_iMouseX;
-		m_fPrevY = (float)a_iMouseY;
-		m_bMouse = false;
-	}
-
-	GLfloat xoffset = (float)(a_iMouseX - m_fPrevX);
-	GLfloat yoffset = (float)(m_fPrevY - a_iMouseY);  // Reversed since y-coordinates go from bottom to left
-
-	m_fPrevX = (float)a_iMouseX;
-	m_fPrevY = (float)a_iMouseY;
-
-	m_oCamera.MouseInput(xoffset, yoffset);
-}
-
-void GeometryProject::scroll_callback(GLFWwindow* a_oWindow, double a_fOffsetX, double a_fOffsetY)
-{
-	m_oCamera.MouseScrollZoom((float)a_fOffsetY);
 }
 
 void GeometryProject::Use()

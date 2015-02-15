@@ -7,9 +7,7 @@
 #include "tiny_obj_loader.h"
 #include <vector>
 
-
-#define VERTEX_FILE_ID1	 "./shaders/LightingVertex.glsl"
-#define FRAGMENT_FILE_ID1 "./shaders/LightingFragment.glsl"
+using std::vector;
 
 class Camera;
 
@@ -24,59 +22,61 @@ struct OpenGLInfo
 class Lighting : public Application
 {
 private:
-	static Camera m_oCamera;
 	ShaderCompiler m_oShader;
 
-	mat4 m_oProjection;
-	mat4 m_oView;
-	mat4 m_oWorld;
+	vector<OpenGLInfo>			m_gl_info;
+	vector<tinyobj::shape_t>	m_oShapes;
+	vector<tinyobj::material_t> m_oMaterials;
 
-	vec3 light_colour;
-	vec3 light_dir;
-	vec3 ambient_light;
-	vec3 material_colour;
-	float specular_pwr;
-
-
+	vec3 m_vLightColour;
 	//
-	GLfloat m_fTimer;
-	GLfloat m_fSinAug;
-	GLfloat m_fTimeAug;
-	float _dt;
-	float _modRGB;
+	vec3 m_vLightDir;
+	//
+	vec3 m_vAmbientLight;
+	//
+	vec3 m_vMaterialColour;
+	//Light colour modifier
+	GLfloat	m_fLighColourX,
+			m_fLighColourY,
+			m_fLighColourZ;
+	//Ligh dir modifier.
+	GLfloat	m_fDirX,
+			m_fDirY,
+			m_fDirZ;
+	//Ambient augment
+	GLfloat m_fAmbientMod;
+	//Material colour modifier
+	GLfloat m_fMaterialX,
+			m_fMaterialY,
+			m_fMaterialZ;
+	//Specular power
+	GLfloat m_fSpecularPwr;
+	//Timers
+	GLfloat m_fDirDT;
+	GLfloat m_fColDT;
 
-	std::vector<OpenGLInfo> m_gl_info;
-
-	GLuint m_uiTexture,
-		m_uiNormalMap;
-
-
-	static bool	m_bKeys[1024];
+	//static bool	m_bKeys[1024];
+	bool m_bRandLight;
+	bool m_bRandLightColour;
+	bool m_bRandMaterial;
 
 public:
 	Lighting();
 	~Lighting();
 
-	virtual void InitWindow(vec3 a_vScreenSize = vec3(1024.0f, 780.0f, 0.0f), const char* a_pccWinName = WIN_NAME_PREFIX, bool a_bFullScreen = false);
+	virtual void InitWindow(vec3 a_vCamPos = vec3(0.0f, 0.0f, 4.0f), vec3 a_vScreenSize = vec3(1024.0f, 780.0f, 0.0f), const char* a_pccWinName = WIN_NAME_PREFIX, bool a_bFullScreen = false);
 	virtual void Update(GLdouble a_dDeltaTime);
 	virtual void CleanUpWin();
 	virtual void Draw();
+	virtual void Use();
 
-	virtual void MoveCamera(float a_fDeltaTime);
-
-	static void key_callback(GLFWwindow* a_oWindow, int a_iKey, int a_iKeyCode, int a_iAction, int a_iMode);
-	static void scroll_callback(GLFWwindow* a_oWindow, double a_fOffsetX, double a_fOffsetY);
-	static void mouse_callback(GLFWwindow* a_oWindow, double a_iMouseX, double a_iMouseY);
-	
-	void GenerateGrid(unsigned int a_uiRows, unsigned int a_uiCols);
-	void Use();
-
-	void CreateOpenGLBuffers(std::vector<tinyobj::shape_t>& shapes);
-	void CleanupOpenGLBuffers();
-	
-	void SwitchShader();
-
-	void IncreaseValue();
-	void LoadTexture(const char* a_pccFileName);
+	void MoveCamera(float a_fDeltaTime);	
+	void GrabUniformLoc();
+	void LoadModel(const char* a_pccFileName);
+	void CreateOpenGLBuffers(vector<tinyobj::shape_t>& shapes);
+	void CleanupOpenGLBuffers();	
+	void ReloadShader();
+	void OpenGLOptionSwitch();
+	void UpdateLightingInput();
 };
 #endif //!_LIGHTINGPROJECT_H_
