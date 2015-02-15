@@ -11,10 +11,10 @@ static vec4 m_vGreen = vec4(0.0f, 1.0f, 0.0f, 1.0f);
 static vec4 m_vBlue = vec4(0.0f, 0.0f, 1.0f, 1.0f);
 
 AdvanceTexture::AdvanceTexture() :	m_fTimer(NULL),
-									m_fSinAug(NULL),
-									m_fTimeAug(NULL),
-									m_uiIndexCount(NULL),
-									m_fModRGB(1)
+									specular_power(NULL),
+									m_uiDiffuseTexture(NULL),
+									m_uiNormalTexture(NULL),
+									m_uiSpecularTexture(NULL)
 {
 
 }
@@ -33,13 +33,13 @@ void AdvanceTexture::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* 
 	m_oShader.CreateShaderProgram(TEXTURE_VERTEX_GLSL, TEXTURE_FRAGMENT_GLSL);
 
 	ambient_light	= vec3(0.2f);
-	light_direction = vec3(0, 1, 0);
-	light_colour	= vec3(0.7f);
+	light_direction = vec3(0, -1, 0);
+	light_colour	= vec3(1);
 	specular_power	= 15.0f;
 
 	LoadTexture();
 
-	GenerateQuad(5.0f);
+	GenerateQuad(10.0f);
 }
 
 void AdvanceTexture::CleanUpWin()
@@ -54,12 +54,10 @@ void AdvanceTexture::Update(GLdouble a_fDeltaTime)
 	m_oWorld = m_oCamera.GetWorldTransform();
 
 	MoveCamera((float)a_fDeltaTime);
-
-	light_direction = (glm::rotate((float)a_fDeltaTime, vec3(0, 1, 0) ) * vec4(light_direction, 0)).xyz;
+	m_fTimer += (float)a_fDeltaTime;
+	light_direction = (glm::rotate(m_fTimer, vec3(0, 1, 0)) * vec4(light_direction, 0)).xyz;
 
 	IncreaseValue();
-
-	m_fTimer += (float)GetDelta() * m_fTimeAug;
 }
 
 void AdvanceTexture::Draw()
@@ -94,13 +92,13 @@ void AdvanceTexture::Use()
 	glUniform3fv(_ambientUni, 1, (float*)&ambient_light);
 
 	GLuint _lightDirUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "light_direction");
-	glUniform3fv(_lightDirUni, 1, (float*)&light_direction);
+	glUniform3fv(_lightDirUni, 1, (float*)&m_oWorld[2].xyz);
 
 	GLuint _lightColUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "light_colour");
 	glUniform3fv(_lightColUni, 1, (float*)&light_colour);
 
 	GLuint _eyeUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "eye_pos");
-	glUniform3fv(_eyeUni, 1, (float*)&m_oCamera.GetWorldTransform()[3].xyz);
+	glUniform3fv(_eyeUni, 1, (float*)&m_oWorld[3].xyz);
 
 	GLuint _powerUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "specular_power");
 	glUniform1f(_powerUni, specular_power);
@@ -205,31 +203,10 @@ void AdvanceTexture::GenerateQuad(float a_fSize)
 
 void AdvanceTexture::IncreaseValue()
 {
-	if (m_bKeys[GLFW_KEY_PAGE_UP])
-		m_fSinAug += 0.1f;
-	if (m_bKeys[GLFW_KEY_PAGE_DOWN])
-		m_fSinAug -= 0.1f;
-	if (m_bKeys[GLFW_KEY_HOME])
-		m_fTimeAug++;
-	if (m_bKeys[GLFW_KEY_END])
-		m_fTimeAug--;
 	if (m_bKeys[GLFW_KEY_C])
 		glEnable(GL_CULL_FACE);
 	if (m_bKeys[GLFW_KEY_V])
 		glDisable(GL_CULL_FACE);
-
-	if (m_bKeys[GLFW_KEY_P])
-		m_fModRGB -= 0.01f;
-	if (m_bKeys[GLFW_KEY_O])
-		m_fModRGB += 0.01f;
-	if (m_fModRGB >= 1.0f)
-	{
-		m_fModRGB = 1.0f;
-	}
-	if (m_fModRGB <= 0.0f)
-	{
-		m_fModRGB = 0.0f;
-	}
 }
 
 void AdvanceTexture::LoadTexture()

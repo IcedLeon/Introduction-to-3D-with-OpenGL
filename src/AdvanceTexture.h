@@ -17,23 +17,19 @@ class AdvanceTexture : public Application
 {
 	ShaderCompiler m_oShader;
 
-	GLfloat m_fTimer;
-	GLfloat m_fSinAug;
-	GLfloat m_fTimeAug;
-	GLfloat m_fModRGB;
-
 	OpenGLInfo m_oQuad;
-
-	GLuint m_uiIndexCount;
-
-	GLuint m_uiDiffuseTexture;
-	GLuint m_uiNormalTexture;
-	GLuint m_uiSpecularTexture;
 
 	vec3	ambient_light;
 	vec3	light_direction;
 	vec3	light_colour;
-	float	specular_power;
+
+	GLfloat	specular_power;
+
+	GLfloat m_fTimer;
+
+	GLuint m_uiDiffuseTexture;
+	GLuint m_uiNormalTexture;
+	GLuint m_uiSpecularTexture;
 
 public:
 	AdvanceTexture();
