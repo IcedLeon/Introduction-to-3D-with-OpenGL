@@ -1,8 +1,8 @@
-#include "AdvanceTexture.h"
+#include "AnimationProject.h"
 
 int main()
 {
-	AdvanceTexture _app;
+	Animation _app;
 
 	float _dt;
 

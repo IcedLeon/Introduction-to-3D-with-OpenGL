@@ -234,6 +234,18 @@ void Lighting::OpenGLOptionSwitch()
 	{
 		LoadModel("./models/stanford/bunny.obj");
 	}
+	if (m_bKeys[GLFW_KEY_4])
+	{
+		LoadModel("./models/stanford/Batman.obj");
+	}
+	if (m_bKeys[GLFW_KEY_5])
+	{
+		LoadModel("./models/stanford/BatmanArmoured.obj");
+	}
+	if (m_bKeys[GLFW_KEY_6])
+	{
+		LoadModel("./models/stanford/bigdragon.obj");
+	}
 }
 
 void Lighting::UpdateLightingInput()
@@ -244,7 +256,7 @@ void Lighting::UpdateLightingInput()
 	if (m_bKeys[GLFW_KEY_R])
 	{
 		ReloadShader();
-		printf("SHADER RELOADED SUCCESFULLY.");
+		printf("SHADER RELOADED SUCCESFULLY. \n");
 	}
 	//Increase the value of the specular power.
 	if (m_bKeys[GLFW_KEY_PAGE_UP])
@@ -351,34 +363,34 @@ void Lighting::UpdateLightingInput()
 	if (m_bKeys[GLFW_KEY_G])
 	{
 		m_bRandLight = true;
-		printf("RAND LIGHT ON.");
+		printf("RAND LIGHT ON. \n");
 	}
 	if (m_bKeys[GLFW_KEY_H])
 	{
 		m_bRandLight = false;
-		printf("RAND LIGHT OFF.");
+		printf("RAND LIGHT OFF. \n");
 	}
 	//Rand colour
 	if (m_bKeys[GLFW_KEY_T])
 	{
 		m_bRandLightColour = true;
-		printf("RAND LIGHT COLOUR ON.");
+		printf("RAND LIGHT COLOUR ON. \n");
 	}
 	if (m_bKeys[GLFW_KEY_Y])
 	{
 		m_bRandLightColour = false;
-		printf("RAND LIGHT COLOUR OFF.");
+		printf("RAND LIGHT COLOUR OFF. \n");
 	}
 	//Rand material
 	if (m_bKeys[GLFW_KEY_U])
 	{
 		m_bRandMaterial = true;
-		printf("RAND MATERIAL COLOUR ON.");
+		printf("RAND MATERIAL COLOUR ON. \n");
 	}
 	if (m_bKeys[GLFW_KEY_I])
 	{
 		m_bRandMaterial = false;
-		printf("RAND MATERIAL COLOUR OFF.");
+		printf("RAND MATERIAL COLOUR OFF. \n");
 	}
 	//
 	if (m_bRandLight)

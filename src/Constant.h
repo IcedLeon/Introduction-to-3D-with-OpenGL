@@ -7,6 +7,9 @@
 #define GLM_SWIZZLE
 #include "glm/glm.hpp"
 #include "glm/ext.hpp"
+//Others
+#include <thread>
+//Using shortcut.
 using glm::vec2;
 using glm::vec3;
 using glm::vec4;
@@ -16,8 +19,7 @@ using glm::radians;
 using glm::rotation;
 using glm::transpose;
 using glm::perspective;
-//Others
-#include <thread>
+//Macro list
 //Windows name
 #define WIN_NAME_PREFIX "OPENGL TEST"
 //Shader info lenght

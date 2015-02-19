@@ -1,6 +1,7 @@
 #ifndef _APPLICATION_H_
 #define _APPLICATION_H_
 #include "Constant.h"
+#include <AntTweakBar.h>
 //Forward declaration
 struct GLFWwindow;
 class Camera;
@@ -58,6 +59,8 @@ public:
 	void StartFrame();
 	//End frame simply set the last frame to be equal to this frame to mine the delta on top.
 	void EndFrame();
+	//AntTweakBar initialise funcs
+	virtual void InitTweekBar();
 	//Update, here we put all the function that need to be constantly keeping changing(or not) during 
 	//the application is running.
 	virtual void Update(GLdouble a_dDeltaTime) = NULL;

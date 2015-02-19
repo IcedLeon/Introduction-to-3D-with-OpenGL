@@ -16,5 +16,4 @@ void main()
 	frag_normal = normal;
 	mat4 MVP = Projection * View; //* Model;
 	gl_Position = MVP * position; //* vec4(vertex.x, vertex.y, 0.0, 1.0);
-	tex_coord = vertex.zw;
 }

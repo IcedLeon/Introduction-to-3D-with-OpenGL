@@ -32,11 +32,13 @@ void Application::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_p
 		if (!a_bFullScreen)
 		{
 			m_oWin = glfwCreateWindow((int)a_vScreenSize.x, (int)a_vScreenSize.y, a_pccWinName, nullptr, nullptr);
+			m_vScreenSize = a_vScreenSize;
 			printf("WINDOW CREATED SUCCESSFULLY. \n");
 		}
 		else
 		{
 			m_oWin = glfwCreateWindow((int)a_vScreenSize.x, (int)a_vScreenSize.y, a_pccWinName, glfwGetPrimaryMonitor(), nullptr);
+			m_vScreenSize = a_vScreenSize;
 			printf("WINDOW CREATED SUCCESSFULLY. \n");
 		}
 	}
@@ -90,6 +92,8 @@ void Application::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_p
 
 void Application::CleanUpWin()
 {
+	TwDeleteAllBars();
+	TwTerminate();
 	glfwDestroyWindow(m_oWin);
 	glfwTerminate();
 }
@@ -135,6 +139,11 @@ void Application::EndFrame()
 	m_dPrevTime = m_dCurrTime;
 }
 
+void Application::InitTweekBar()
+{
+
+}
+
 void Application::key_callback(GLFWwindow* a_oWindow, int a_iKey, int a_iKeyCode, int a_iAction, int a_iMode)
 {
 	printf("Pressed Key is: %c\n", a_iKey);
@@ -169,5 +178,6 @@ void Application::scroll_callback(GLFWwindow* a_oWindow, double a_fOffsetX, doub
 void Application::framebuffer_size_callback(GLFWwindow* a_oWindow, int a_iWidth, int a_iHeight)
 {
 	glfwGetFramebufferSize(a_oWindow, &a_iWidth, &a_iHeight);
+	TwWindowSize(a_iWidth, a_iHeight);
 	glViewport(0, 0, a_iWidth, a_iHeight);
 }

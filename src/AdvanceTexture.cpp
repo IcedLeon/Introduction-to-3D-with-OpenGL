@@ -129,7 +129,6 @@ void AdvanceTexture::Use()
 
 	glBindVertexArray(m_oQuad.m_uiVAO);
 	glDrawElements(GL_TRIANGLES, m_oQuad.m_uiIndexCount, GL_UNSIGNED_INT, 0);
-
 }
 
 void AdvanceTexture::GenerateQuad(float a_fSize)
@@ -137,24 +136,24 @@ void AdvanceTexture::GenerateQuad(float a_fSize)
 	VertexNormal _vertexData[4];
 	int _index = 0;
 
-	_vertexData[_index++].position = vec4(-a_fSize, 0.0f, -a_fSize, 1);
-	_vertexData[_index++].position = vec4(-a_fSize, 0.0f, a_fSize, 1);
-	_vertexData[_index++].position = vec4(a_fSize, 0.0f, a_fSize, 1);
-	_vertexData[_index++].position = vec4(a_fSize, 0.0f, -a_fSize, 1); 
+	_vertexData[_index++].position = vec4(-a_fSize, 1.0f, -a_fSize, 1);
+	_vertexData[_index++].position = vec4(-a_fSize, 1.0f, a_fSize, 1);
+	_vertexData[_index++].position = vec4(a_fSize,	1.0f, a_fSize, 1);
+	_vertexData[_index++].position = vec4(a_fSize,	1.0f, -a_fSize, 1); 
 	
 	_index = 0;
 
-	_vertexData[_index++].normal = vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	_vertexData[_index++].normal = vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	_vertexData[_index++].normal = vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	_vertexData[_index++].normal = vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	_vertexData[_index++].normal = vec4(0.0f, 1.0f, 0.0f, 0.0f);
+	_vertexData[_index++].normal = vec4(0.0f, 1.0f, 0.0f, 0.0f);
+	_vertexData[_index++].normal = vec4(0.0f, 1.0f, 0.0f, 0.0f);
+	_vertexData[_index++].normal = vec4(0.0f, 1.0f, 0.0f, 0.0f);
 
 	_index = 0;
 
-	_vertexData[_index++].tangent = vec4(1.0f, 0.0f, 0.0f, 1.0f);
-	_vertexData[_index++].tangent = vec4(1.0f, 0.0f, 0.0f, 1.0f);
-	_vertexData[_index++].tangent = vec4(1.0f, 0.0f, 0.0f, 1.0f);
-	_vertexData[_index++].tangent = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	_vertexData[_index++].tangent = vec4(1.0f, 0.0f, 0.0f, 0.0f);
+	_vertexData[_index++].tangent = vec4(1.0f, 0.0f, 0.0f, 0.0f);
+	_vertexData[_index++].tangent = vec4(1.0f, 0.0f, 0.0f, 0.0f);
+	_vertexData[_index++].tangent = vec4(1.0f, 0.0f, 0.0f, 0.0f);
 
 	_index = 0;
 
@@ -163,14 +162,14 @@ void AdvanceTexture::GenerateQuad(float a_fSize)
 	_vertexData[_index++].text_coord = vec2(1, 1);
 	_vertexData[_index++].text_coord = vec2(1, 0);
 
-	GLuint _quadIndex[6] = { 0, 1, 2, 0, 2, 3 };
+	GLuint _quadIndex[6] = { 0, 2, 1, 0, 3, 2 };
 	m_oQuad.m_uiIndexCount = 6;
 
+	//Now it's time to generate the vertex array buffer
+	glGenVertexArrays(1, &m_oQuad.m_uiVAO);
 	//Generate both the vertex buffer and the index buffer object
 	glGenBuffers(1, &m_oQuad.m_uiVBO);
 	glGenBuffers(1, &m_oQuad.m_uiIBO);
-	//Now it's time to generate the vertex array buffer
-	glGenVertexArrays(1, &m_oQuad.m_uiVAO);
 	//The new buffer need to be binded
 	glBindVertexArray(m_oQuad.m_uiVAO);
 	//Now we bind the other two buffers 
@@ -226,8 +225,8 @@ void AdvanceTexture::LoadTexture()
 
 	glTexImage2D(GL_TEXTURE_2D, NULL, GL_RGB, _width, _height, NULL, GL_RGB, GL_UNSIGNED_BYTE, _data);
 
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -245,8 +244,8 @@ void AdvanceTexture::LoadTexture()
 
 	glTexImage2D(GL_TEXTURE_2D, NULL, GL_RGB, _width, _height, NULL, GL_RGB, GL_UNSIGNED_BYTE, _data);
 
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -264,8 +263,8 @@ void AdvanceTexture::LoadTexture()
 
 	glTexImage2D(GL_TEXTURE_2D, NULL, GL_RGB, _width, _height, NULL, GL_RGB, GL_UNSIGNED_BYTE, _data);
 
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

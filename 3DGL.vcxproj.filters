@@ -41,6 +41,9 @@
     <ClCompile Include="src\tiny_obj_loader.cc">
       <Filter>Utility\ModelLoader</Filter>
     </ClCompile>
+    <ClCompile Include="src\AnimationProject.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CameraProject.h">
@@ -97,6 +100,12 @@
     <ClInclude Include="src\Constant.h">
       <Filter>Utility\Constant</Filter>
     </ClInclude>
+    <ClInclude Include="src\AnimationProject.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\KeyFrame.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\LightingFragment.glsl">
@@ -145,6 +154,9 @@
     </Filter>
     <Filter Include="Utility\Constant">
       <UniqueIdentifier>{8c142eaf-9a04-446f-8ebe-d58f90c87c7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Animation">
+      <UniqueIdentifier>{054c58ba-cc58-4556-b99c-c5f7b5575520}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
