@@ -9,7 +9,11 @@
 #include "glm/ext.hpp"
 //Others
 #include <thread>
+#include <map>
+#include <string>
 //Using shortcut.
+using std::map;
+using std::string;
 using glm::vec2;
 using glm::vec3;
 using glm::vec4;
@@ -36,6 +40,9 @@ using glm::perspective;
 //Advance texture shaders
 #define TEXTURE_VERTEX_GLSL		"./shaders/TextureVertex.glsl"
 #define TEXTURE_FRAGMENT_GLSL	"./shaders/TextureFragment.glsl"
+//Skinned Shader
+#define SKINNED_VERTEX_GLSL		"./shaders/SkinnedVertex.glsl"
+#define SKINNED_FRAGMENT_GLSL	"./shaders/SkinnedFragment.glsl"
 //Basic colour output.
 //static vec4 m_vWhite	= vec4(1.0f);
 //static vec4 m_vBlack	= vec4(0.0f, 0.0f, 0.0f, 1.0f);

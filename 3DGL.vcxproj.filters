@@ -44,6 +44,9 @@
     <ClCompile Include="src\AnimationProject.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
+    <ClCompile Include="src\FBXAnimationProject.cpp">
+      <Filter>FBXAnimation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CameraProject.h">
@@ -106,6 +109,9 @@
     <ClInclude Include="src\KeyFrame.h">
       <Filter>Animation</Filter>
     </ClInclude>
+    <ClInclude Include="src\FBXAnimationProject.h">
+      <Filter>FBXAnimation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\LightingFragment.glsl">
@@ -113,6 +119,12 @@
     </None>
     <None Include="data\shaders\LightingVertex.glsl">
       <Filter>LighitingProject</Filter>
+    </None>
+    <None Include="data\shaders\SkinnedVertex.glsl">
+      <Filter>FBXAnimation</Filter>
+    </None>
+    <None Include="data\shaders\SkinnedFragment.glsl">
+      <Filter>FBXAnimation</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +169,9 @@
     </Filter>
     <Filter Include="Animation">
       <UniqueIdentifier>{054c58ba-cc58-4556-b99c-c5f7b5575520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBXAnimation">
+      <UniqueIdentifier>{47857266-c639-4f22-bf03-e5e42f7d0652}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -39,8 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>./deps/glfw/include;./deps/glm;./deps/freetype/include;./deps/AntTweakBar/include;$(IncludePath)</IncludePath>
-    <LibraryPath>./deps/glfw/lib-vc2013;./deps/freetype/lib;./deps/AntTweakBar/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>./deps/glfw/include;./deps/glm;./deps/freetype/include;./deps/AntTweakBar/include;./deps/FBXLoader;$(IncludePath)</IncludePath>
+    <LibraryPath>./deps/glfw/lib-vc2013;./deps/freetype/lib;./deps/AntTweakBar/lib;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>./deps/glfw/include;./deps/glm;./deps/FBXLoader;$(IncludePath)</IncludePath>
@@ -61,7 +61,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>AntTweakBar.lib;opengl32.lib;glfw3.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AntTweakBar.lib;opengl32.lib;glfw3.lib;freetype.lib;FBXLoader_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -87,6 +87,7 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\CameraProject.cpp" />
+    <ClCompile Include="src\FBXAnimationProject.cpp" />
     <ClCompile Include="src\GeometryProject.cpp" />
     <ClCompile Include="src\Gizmos.cpp" />
     <ClCompile Include="src\gl_core_4_4.c" />
@@ -105,6 +106,7 @@
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\CameraProject.h" />
     <ClInclude Include="src\Constant.h" />
+    <ClInclude Include="src\FBXAnimationProject.h" />
     <ClInclude Include="src\GeometryProject.h" />
     <ClInclude Include="src\Gizmos.h" />
     <ClInclude Include="src\gl_core_4_4.h" />
@@ -123,6 +125,8 @@
   <ItemGroup>
     <None Include="data\shaders\LightingFragment.glsl" />
     <None Include="data\shaders\LightingVertex.glsl" />
+    <None Include="data\shaders\SkinnedFragment.glsl" />
+    <None Include="data\shaders\SkinnedVertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -86,6 +86,9 @@ void Application::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_p
 			//
 			m_oCamera.BuildCamera(a_vCamPos);
 			printf("CAMERA BUILT SUCCESSFULLY. \n");
+			TwInit(TW_OPENGL_CORE, nullptr);
+			printf("ANTTWEEKBAR INIT SUCCESSFULLY. \n");
+
 		}
 	}
 }
@@ -139,9 +142,14 @@ void Application::EndFrame()
 	m_dPrevTime = m_dCurrTime;
 }
 
-void Application::InitTweekBar()
+void Application::CreateBar(string a_sNewBarName)
 {
 
+}
+
+TwBar* Application::GetMappedBar(string a_sBarName)
+{
+	return NULL;
 }
 
 void Application::key_callback(GLFWwindow* a_oWindow, int a_iKey, int a_iKeyCode, int a_iAction, int a_iMode)

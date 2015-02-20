@@ -11,6 +11,8 @@ class Application
 protected:
 	//A pointer to the glfw window.
 	GLFWwindow*		m_oWin;
+	//Map of the tweek bars
+	map<string, TwBar*> m_mpBarMapping;
 	//The static camera object, it provvide func to move around the 3D space.
 	static Camera	m_oCamera;
 	//The projection matrix.
@@ -60,7 +62,9 @@ public:
 	//End frame simply set the last frame to be equal to this frame to mine the delta on top.
 	void EndFrame();
 	//AntTweakBar initialise funcs
-	virtual void InitTweekBar();
+	void CreateBar(string a_sNewBarName);
+	TwBar* GetMappedBar(string a_sBarName);
+	//virtual void InitTweekBar();
 	//Update, here we put all the function that need to be constantly keeping changing(or not) during 
 	//the application is running.
 	virtual void Update(GLdouble a_dDeltaTime) = NULL;

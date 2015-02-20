@@ -1,8 +1,8 @@
-#include "AnimationProject.h"
+#include "FBXAnimationProject.h"
 
 int main()
 {
-	Animation _app;
+	FBXAnimationP _app;
 
 	float _dt;
 
