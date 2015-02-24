@@ -47,6 +47,30 @@
     <ClCompile Include="src\FBXAnimationProject.cpp">
       <Filter>FBXAnimation</Filter>
     </ClCompile>
+    <ClCompile Include="src\ParticleData.cpp">
+      <Filter>ParticleProject\BaseParticles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleEmitter.cpp">
+      <Filter>ParticleProject\BaseParticles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleSystem.cpp">
+      <Filter>ParticleProject\BaseParticles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticlesUpdaters.cpp">
+      <Filter>ParticleProject\ParticlesUpdaters</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticlesGenerators.cpp">
+      <Filter>ParticleProject\ParticleGenerators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticlesRenderer.cpp">
+      <Filter>ParticleProject\ParticlesRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\glParticleRenderer.cpp">
+      <Filter>ParticleProject\ParticlesRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TunnelEffect.cpp">
+      <Filter>ParticleProject\ParticleEffect\TunnelEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CameraProject.h">
@@ -112,6 +136,42 @@
     <ClInclude Include="src\FBXAnimationProject.h">
       <Filter>FBXAnimation</Filter>
     </ClInclude>
+    <ClInclude Include="src\Particle.h">
+      <Filter>ParticleProject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleData.h">
+      <Filter>ParticleProject\BaseParticles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleEmitter.h">
+      <Filter>ParticleProject\BaseParticles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleGenerator.h">
+      <Filter>ParticleProject\BaseParticles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleSystem.h">
+      <Filter>ParticleProject\BaseParticles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleUpdater.h">
+      <Filter>ParticleProject\BaseParticles</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticlesUpdaters.h">
+      <Filter>ParticleProject\ParticlesUpdaters</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticlesGenerators.h">
+      <Filter>ParticleProject\ParticleGenerators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticlesRenderer.h">
+      <Filter>ParticleProject\ParticlesRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glParticleRenderer.h">
+      <Filter>ParticleProject\ParticlesRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleEffect.h">
+      <Filter>ParticleProject\ParticleEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TunnelEffect.h">
+      <Filter>ParticleProject\ParticleEffect\TunnelEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\LightingFragment.glsl">
@@ -172,6 +232,27 @@
     </Filter>
     <Filter Include="FBXAnimation">
       <UniqueIdentifier>{47857266-c639-4f22-bf03-e5e42f7d0652}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticleProject">
+      <UniqueIdentifier>{33db099b-be1c-4b4a-ba27-0d2b5a91f322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticleProject\BaseParticles">
+      <UniqueIdentifier>{7b051396-372b-45ad-a341-0d84813f46b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticleProject\ParticlesUpdaters">
+      <UniqueIdentifier>{9b1ef30b-3585-48f7-bf74-7b38ba8d0381}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticleProject\ParticleGenerators">
+      <UniqueIdentifier>{b4a9465a-e0de-4a0c-af0a-d70afc1cb967}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticleProject\ParticlesRenderer">
+      <UniqueIdentifier>{addca3ec-c24a-4396-9e41-255b46279080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticleProject\ParticleEffect">
+      <UniqueIdentifier>{b3080899-e330-49f2-92c0-98891c7f4b96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticleProject\ParticleEffect\TunnelEffect">
+      <UniqueIdentifier>{4ed82290-12c0-47f6-a6f3-f140aa2949a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

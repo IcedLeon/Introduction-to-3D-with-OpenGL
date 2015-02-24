@@ -40,17 +40,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>./deps/glfw/include;./deps/glm;./deps/freetype/include;./deps/AntTweakBar/include;./deps/FBXLoader;$(IncludePath)</IncludePath>
-    <LibraryPath>./deps/glfw/lib-vc2013;./deps/freetype/lib;./deps/AntTweakBar/lib;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
+    <LibraryPath>./deps/glfw/lib-vc2013;./deps/freetype/lib;./deps/AntTweakBar/lib;./deps/FBXLoader;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>./deps/glfw/include;./deps/glm;./deps/FBXLoader;$(IncludePath)</IncludePath>
-    <LibraryPath>./deps/glfw/lib-vc2013;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
-    <IncludePath>./deps/glfw/include;./deps/glm;./deps/fmod/include;./deps/assimp/include;$(IncludePath)</IncludePath>
-    <LibraryPath>./deps/glfw/lib-vc2013;./deps/fmod/lib;./deps/assimp/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>./deps/glfw/include;./deps/glm;./deps/fmod/include;./deps/assimp/include;./deps/FBXLoader;$(IncludePath)</IncludePath>
+    <LibraryPath>./deps/glfw/lib-vc2013;./deps/fmod/lib;./deps/assimp/lib;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>./deps/glfw/include;./deps/glm;./deps/freetype/include;./deps/AntTweakBar/include;./deps/fmod/include;./deps/assimp/include;$(IncludePath)</IncludePath>
-    <LibraryPath>./deps/glfw/lib-vc2013;./deps/freetype/lib;./deps/AntTweakBar/lib;./deps/fmod/lib;./deps/assimp/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>./deps/glfw/include;./deps/glm;./deps/freetype/include;./deps/AntTweakBar/include;./deps/FBXLoader;./deps/fmod/include;./deps/assimp/include;$(IncludePath)</IncludePath>
+    <LibraryPath>./deps/glfw/lib-vc2013;./deps/freetype/lib;./deps/AntTweakBar/lib;./deps/FBXLoader;./deps/fmod/lib;./deps/assimp/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -77,8 +75,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;FBXLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalDependencies>AntTweakBar.lib;opengl32.lib;glfw3.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AntTweakBar.lib;opengl32.lib;glfw3.lib;freetype.lib;FBXLoader_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -90,14 +87,22 @@
     <ClCompile Include="src\FBXAnimationProject.cpp" />
     <ClCompile Include="src\GeometryProject.cpp" />
     <ClCompile Include="src\Gizmos.cpp" />
+    <ClCompile Include="src\glParticleRenderer.cpp" />
     <ClCompile Include="src\gl_core_4_4.c" />
     <ClCompile Include="src\LightingProject.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
+    <ClCompile Include="src\ParticleData.cpp" />
+    <ClCompile Include="src\ParticleEmitter.cpp" />
+    <ClCompile Include="src\ParticlesGenerators.cpp" />
+    <ClCompile Include="src\ParticlesRenderer.cpp" />
+    <ClCompile Include="src\ParticlesUpdaters.cpp" />
+    <ClCompile Include="src\ParticleSystem.cpp" />
     <ClCompile Include="src\ProjectOpenGL1.cpp" />
     <ClCompile Include="src\ShaderCompiler.cpp" />
     <ClCompile Include="src\TextRender.cpp" />
     <ClCompile Include="src\tiny_obj_loader.cc" />
+    <ClCompile Include="src\TunnelEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AdvanceTexture.h" />
@@ -109,17 +114,29 @@
     <ClInclude Include="src\FBXAnimationProject.h" />
     <ClInclude Include="src\GeometryProject.h" />
     <ClInclude Include="src\Gizmos.h" />
+    <ClInclude Include="src\glParticleRenderer.h" />
     <ClInclude Include="src\gl_core_4_4.h" />
+    <ClInclude Include="src\ParticleEffect.h" />
+    <ClInclude Include="src\ParticlesGenerators.h" />
     <ClInclude Include="src\KeyFrame.h" />
     <ClInclude Include="src\LightingProject.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Oldsrc.h" />
+    <ClInclude Include="src\Particle.h" />
+    <ClInclude Include="src\ParticleData.h" />
+    <ClInclude Include="src\ParticleEmitter.h" />
+    <ClInclude Include="src\ParticleGenerator.h" />
+    <ClInclude Include="src\ParticlesRenderer.h" />
+    <ClInclude Include="src\ParticlesUpdaters.h" />
+    <ClInclude Include="src\ParticleSystem.h" />
+    <ClInclude Include="src\ParticleUpdater.h" />
     <ClInclude Include="src\ProjectOpenGL1.h" />
     <ClInclude Include="src\ShaderCompiler.h" />
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\TextRender.h" />
     <ClInclude Include="src\tiny_obj_loader.h" />
+    <ClInclude Include="src\TunnelEffect.h" />
     <ClInclude Include="src\Vertex.h" />
   </ItemGroup>
   <ItemGroup>

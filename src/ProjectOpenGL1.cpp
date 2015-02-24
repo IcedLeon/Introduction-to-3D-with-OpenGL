@@ -31,8 +31,8 @@ void Project1::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccW
 
 void Project1::CleanUpWin()
 {
-	Application::CleanUpWin();
 	Gizmos::destroy();
+	Application::CleanUpWin();
 }
 
 void Project1::Update(GLdouble a_fDeltaTime)

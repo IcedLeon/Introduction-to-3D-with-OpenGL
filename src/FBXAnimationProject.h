@@ -23,12 +23,15 @@ private:
 	FBXFile*		m_oFile;
 
 	GLfloat			m_fTimer;
+	float			m_fAugmenter;
 
 	vector<OpenGLInfo> m_oMeshes;
 
 public:
 	FBXAnimationP();
 	~FBXAnimationP();
+
+	float m_fTestVar;
 
 	virtual void InitWindow(vec3 a_vCamPos = vec3(0.0f, 0.0f, 4.0f), vec3 a_vScreenSize = vec3(1024.0f, 780.0f, 0.0f), const char* a_pccWinName = WIN_NAME_PREFIX, bool a_bFullScreen = false);
 	virtual void Update(GLdouble a_fDeltaTime);

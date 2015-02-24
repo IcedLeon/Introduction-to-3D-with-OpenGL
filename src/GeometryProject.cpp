@@ -129,9 +129,9 @@ void GeometryProject::Use()
 	glBindVertexArray(m_uiVAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 
-	//glDrawElements(GL_TRIANGLES, m_uiIndexCount, GL_UNSIGNED_INT, NULL);
-	//glBindVertexArray(m_uiVAOc);
-	//glDrawElements(GL_TRIANGLES, m_uiCubeIndex * 4, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, m_uiIndexCount, GL_UNSIGNED_INT, NULL);
+	glBindVertexArray(m_uiVAOc);
+	glDrawElements(GL_TRIANGLES, m_uiCubeIndex * 4, GL_UNSIGNED_INT, NULL);
 
 	if (m_bKeys[GLFW_KEY_TAB])
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

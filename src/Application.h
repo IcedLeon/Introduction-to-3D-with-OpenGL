@@ -6,15 +6,55 @@
 struct GLFWwindow;
 class Camera;
 
+class TweekBar
+{
+private:
+	//Map of the tweek bars
+	map<const char*, TwBar*> m_mpTweekBar;
+	template <typename T> 
+	struct TypeToTW
+	{
+		static const TwType value{ TW_TYPE_UNDEF };
+	};
+
+	template <>	struct TypeToTW<int> { static const TwType value{ TW_TYPE_INT32 }; };
+	template <>	struct TypeToTW<bool> { static const TwType value{ TW_TYPE_BOOLCPP }; };
+	template <>	struct TypeToTW<float> { static const TwType value{ TW_TYPE_FLOAT }; };
+	template <>	struct TypeToTW<double> { static const TwType value{ TW_TYPE_DOUBLE }; };
+
+public:
+	TweekBar() {}
+	~TweekBar() {}
+
+	//AntTweakBar initialise funcs
+	void InitTweek();
+
+	void CreateBar(const char* a_sNewBarName);
+	TwBar* GetMappedBar(const char* a_sBarName);
+
+	void DrawTweek();
+	void CleanUpTweek();
+	void ScaleTweek(int a_iWidth, int a_iHeight);
+
+	template<typename T>
+	void AddR_WTweak(const char* a_pccDivisor, const char* a_pccName, T a_Var, const char* a_pccDefinition);
+	template<typename T>
+	void AddR_OVar(const char* a_pccDivisor, const char* a_pccName, T a_Var, const char* a_pccDefinition);
+
+	void AddTweakColor3f(const char* a_pccDivisor, const char* a_pccName, vec3 a_vCol, const char* a_pccDefinition);
+	void AddTweakColor4f(const char* a_pccDivisor, const char* a_pccName, vec4 a_vCol, const char* a_pccDefinition);
+
+	void AddTweakDir3f(const char* a_pccDivisor, const char* a_pccName, vec3 a_vDir, const char* a_pccDefinition);
+};
+
 class Application
 {
 protected:
 	//A pointer to the glfw window.
 	GLFWwindow*		m_oWin;
-	//Map of the tweek bars
-	map<string, TwBar*> m_mpBarMapping;
 	//The static camera object, it provvide func to move around the 3D space.
 	static Camera	m_oCamera;
+	static TweekBar	m_oTweek;
 	//The projection matrix.
 	mat4			m_oProjection;
 	//The view matrix.
@@ -36,10 +76,14 @@ protected:
 	static void key_callback(GLFWwindow* a_oWindow, int a_iKey, int a_iKeyCode, int a_iAction, int a_iMode);
 	//The mouse callback. Essentially the same as the keycall but for the mouse input.
 	static void mouse_callback(GLFWwindow* a_oWindow, double a_iMouseX, double a_iMouseY);
+	//
+	static void mouse_button_callback(GLFWwindow* a_oWindow, int a_iButton, int a_iAction, int a_iMode);
 	//Same for the scroll.
 	static void scroll_callback(GLFWwindow* a_oWindow, double a_fOffsetX, double a_fOffsetY);
 	//Dinamically resize the window.
 	static void framebuffer_size_callback(GLFWwindow* a_oWindow, int a_iWidth, int a_iHeight);
+	//
+	static void on_char_callback(GLFWwindow* a_oWindow, unsigned int a_uiCodepoint, int a_iMode);
 
 public:
 	//Ctor & d-Ctor.
@@ -61,9 +105,6 @@ public:
 	void StartFrame();
 	//End frame simply set the last frame to be equal to this frame to mine the delta on top.
 	void EndFrame();
-	//AntTweakBar initialise funcs
-	void CreateBar(string a_sNewBarName);
-	TwBar* GetMappedBar(string a_sBarName);
 	//virtual void InitTweekBar();
 	//Update, here we put all the function that need to be constantly keeping changing(or not) during 
 	//the application is running.

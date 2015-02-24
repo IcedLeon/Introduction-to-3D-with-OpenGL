@@ -3,7 +3,9 @@
 #include "Camera.h"
 #include "Gizmos.h"
 
-FBXAnimationP::FBXAnimationP() : m_fTimer(NULL)
+FBXAnimationP::FBXAnimationP() : m_oFile(nullptr),
+								 m_fTimer(NULL),
+								 m_fAugmenter(NULL)
 {
 
 }
@@ -21,9 +23,12 @@ void FBXAnimationP::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a
 
 	Gizmos::create();
 
+	m_oTweek.CreateBar("Time");
+	m_fAugmenter = 1.0f;
+	TwAddVarRW(m_oTweek.GetMappedBar("Time"), "Time agumenter", TW_TYPE_FLOAT, &m_fAugmenter, "min=0.1 max=100 step=0.5");
 
 	m_oFile = new FBXFile();
-	m_oFile->load("./models/rigged/Enemytank/EnemyTank.fbx");
+	m_oFile->load("./models/rigged/Pyro/pyro.fbx");
 	m_oFile->initialiseOpenGLTextures();
 
 	m_oShader.CreateShaderProgram(SKINNED_VERTEX_GLSL, SKINNED_FRAGMENT_GLSL);
@@ -45,7 +50,7 @@ void FBXAnimationP::Update(GLdouble a_fDeltaTime)
 
 	Gizmos::clear();
 
-	Gizmos::addTransform(m_oWorld);
+	Gizmos::addTransform(mat4(1));
 
 	vec4 _white(1);
 	vec4 _black(0, 0, 0, 1);
@@ -61,7 +66,7 @@ void FBXAnimationP::Update(GLdouble a_fDeltaTime)
 			i == 10 ? _red : _black);
 	}
 
-	m_fTimer += (float)a_fDeltaTime;
+	m_fTimer += (float)a_fDeltaTime * m_fAugmenter;
 
 	float _sinFreq = sinf(m_fTimer) * 0.5f + 0.5f;
 
@@ -93,6 +98,7 @@ void FBXAnimationP::Update(GLdouble a_fDeltaTime)
 void FBXAnimationP::Draw()
 {
 	Use();
+	m_oTweek.DrawTweek();
 	mat4 _projView = m_oProjection * m_oView;
 	Gizmos::draw(_projView);
 
@@ -172,11 +178,11 @@ void FBXAnimationP::CreateGLMeshes(FBXFile* a_oFile)
 		glBindVertexArray(m_oMeshes[meshIndx].m_uiVAO);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_oMeshes[meshIndx].m_uiVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(FBXVertex)* _currMesh->m_vertices.size(),
+		glBufferData(GL_ARRAY_BUFFER, sizeof(FBXVertex) * _currMesh->m_vertices.size(),
 			_currMesh->m_vertices.data(), GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_oMeshes[meshIndx].m_uiIBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)* _currMesh->m_indices.size(),
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * _currMesh->m_indices.size(),
 			_currMesh->m_indices.data(), GL_STATIC_DRAW);
 
 		glEnableVertexAttribArray(0); //pos

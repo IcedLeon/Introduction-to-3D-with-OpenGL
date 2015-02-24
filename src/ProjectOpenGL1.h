@@ -8,7 +8,6 @@ const int PLANET_COUNT = 5;
 class Project1 : public Application
 {
 private:
-
 	GLfloat m_fTimer;
 	GLfloat m_fCameraX;
 	GLfloat m_fCameraZ;
@@ -20,6 +19,7 @@ public:
 	virtual void Update(GLdouble a_dDeltaTime);
 	virtual void Draw();
 	virtual void CleanUpWin();
+	virtual void Use() {}
 
 	mat4 BuildOrbitMatrix(float a_fLocalRot, float a_fRad, float a_fOrbitRot);
 };

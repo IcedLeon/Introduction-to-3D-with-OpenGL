@@ -4,7 +4,7 @@ layout (location = 0) in vec4 position;
 layout (location = 1) in vec2 tex_coord;
 layout (location = 2) in vec4 bone_indices;
 layout (location = 3) in vec4 bone_weights;
-layout (location = 4) in vec4 normal;
+//layout (location = 4) in vec4 normal;
 
 out vec4 frag_position;
 out vec4 frag_normal;
