@@ -1,8 +1,8 @@
-#include "FBXAnimationProject.h"
+#include "Particle.h"
 
 int main()
 {
-	FBXAnimationP _app;
+	Particle _app;
 
 	float _dt;
 

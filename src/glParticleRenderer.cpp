@@ -18,7 +18,7 @@ void GLParticleRenderer::Generate(ParticleSystem* a_oSys, bool a_bUseQuads)
 	glBindBuffer(GL_ARRAY_BUFFER, m_uiBufPos);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * count, nullptr, GL_STREAM_DRAW);
 	glEnableVertexAttribArray(0);
-
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, (4)*sizeof(float), (void *)((0)*sizeof(float)));
 	//if (ogl_ext_ARB_vertex_attrib_binding)
 	//{
 	//	glBindVertexBuffer(0, m_uiBufPos, 0, sizeof(float) * 4);
@@ -26,14 +26,14 @@ void GLParticleRenderer::Generate(ParticleSystem* a_oSys, bool a_bUseQuads)
 	//	glVertexAttribBinding(0, 0);
 	//}
 	//else
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, (4)*sizeof(float), (void *)((0)*sizeof(float)));
+		
 
 
 	glGenBuffers(1, &m_uiBufCol);
 	glBindBuffer(GL_ARRAY_BUFFER, m_uiBufCol);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * count, nullptr, GL_STREAM_DRAW);
 	glEnableVertexAttribArray(1);
-
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, (4)*sizeof(float), (void *)((0)*sizeof(float)));
 	//if (ogl_ext_ARB_vertex_attrib_binding)
 	//{
 	//	glBindVertexBuffer(1, m_uiBufCol, 0, sizeof(float) * 4);
@@ -41,7 +41,7 @@ void GLParticleRenderer::Generate(ParticleSystem* a_oSys, bool a_bUseQuads)
 	//	glVertexAttribBinding(1, 1);
 	//}
 	//else
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, (4)*sizeof(float), (void *)((0)*sizeof(float)));
+		
 
 
 	//glBindVertexBuffer(0, positionBufferHandle, 0, sizeof(GLfloat)* 3);
@@ -55,7 +55,6 @@ void GLParticleRenderer::Generate(ParticleSystem* a_oSys, bool a_bUseQuads)
 	glBindVertexArray(0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 }
 
 void GLParticleRenderer::Destroy()

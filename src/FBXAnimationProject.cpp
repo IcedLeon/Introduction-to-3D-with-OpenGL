@@ -23,9 +23,9 @@ void FBXAnimationP::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a
 
 	Gizmos::create();
 
-	m_oTweek.CreateBar("Time");
+	//m_oTweek.CreateBar("Time");
 	m_fAugmenter = 1.0f;
-	TwAddVarRW(m_oTweek.GetMappedBar("Time"), "Time agumenter", TW_TYPE_FLOAT, &m_fAugmenter, "min=0.1 max=100 step=0.5");
+	//TwAddVarRW(m_oTweek.GetMappedBar("Time"), "Time agumenter", TW_TYPE_FLOAT, &m_fAugmenter, "min=0.1 max=100 step=0.5");
 
 	m_oFile = new FBXFile();
 	m_oFile->load("./models/rigged/Pyro/pyro.fbx");

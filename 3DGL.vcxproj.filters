@@ -71,6 +71,18 @@
     <ClCompile Include="src\TunnelEffect.cpp">
       <Filter>ParticleProject\ParticleEffect\TunnelEffect</Filter>
     </ClCompile>
+    <ClCompile Include="src\EmitterSh.cpp">
+      <Filter>ParticleSchool</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleSh.cpp">
+      <Filter>ParticleSchool</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleEffect.cpp">
+      <Filter>ParticleProject\ParticleEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle.cpp">
+      <Filter>ParticleProject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CameraProject.h">
@@ -172,6 +184,12 @@
     <ClInclude Include="src\TunnelEffect.h">
       <Filter>ParticleProject\ParticleEffect\TunnelEffect</Filter>
     </ClInclude>
+    <ClInclude Include="src\EmitterSh.h">
+      <Filter>ParticleSchool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleSh.h">
+      <Filter>ParticleSchool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\LightingFragment.glsl">
@@ -185,6 +203,24 @@
     </None>
     <None Include="data\shaders\SkinnedFragment.glsl">
       <Filter>FBXAnimation</Filter>
+    </None>
+    <None Include="data\shaders\TextureFragment.glsl">
+      <Filter>AdvanceTexturing</Filter>
+    </None>
+    <None Include="data\shaders\TextureVertex.glsl">
+      <Filter>AdvanceTexturing</Filter>
+    </None>
+    <None Include="data\shaders\ParticleVertex.glsl">
+      <Filter>ParticleSchool</Filter>
+    </None>
+    <None Include="data\shaders\ParticleFragment.glsl">
+      <Filter>ParticleSchool</Filter>
+    </None>
+    <None Include="data\shaders\ParticleEffectVertex.glsl">
+      <Filter>ParticleProject</Filter>
+    </None>
+    <None Include="data\shaders\ParticleEffectFragment.glsl">
+      <Filter>ParticleProject</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -253,6 +289,9 @@
     </Filter>
     <Filter Include="ParticleProject\ParticleEffect\TunnelEffect">
       <UniqueIdentifier>{4ed82290-12c0-47f6-a6f3-f140aa2949a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticleSchool">
+      <UniqueIdentifier>{724b2c63-17c1-47cd-b7f5-994d84ce11a2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
