@@ -46,6 +46,5 @@ public:
 
 	static void CopyOnlyAlive(const ParticleData* a_pcoSource, ParticleData* a_poDestination);
 	static size_t ComputeMemoryUsage(const ParticleData& a_roParticle);
-
 };
 #endif //!_PARTICLEDATA_H_

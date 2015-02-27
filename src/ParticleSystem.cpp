@@ -20,7 +20,7 @@ void ParticleSystem::Update(double a_dDeltaTime)
 	{
 		em->Emit(a_dDeltaTime, &m_oParticles);
 	}
-	for (size_t i = NULL; i < m_Count; ++i)
+	for (size_t i = 0; i < m_Count; ++i)
 	{
 		m_oParticles.m_pvAcceleration[i] = vec4(0.0f);
 	}

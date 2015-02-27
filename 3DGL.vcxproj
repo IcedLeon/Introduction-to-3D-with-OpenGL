@@ -90,6 +90,8 @@
     <ClCompile Include="src\Gizmos.cpp" />
     <ClCompile Include="src\glParticleRenderer.cpp" />
     <ClCompile Include="src\gl_core_4_4.c" />
+    <ClCompile Include="src\GPUEmitter.cpp" />
+    <ClCompile Include="src\GPUParticleProject.cpp" />
     <ClCompile Include="src\LightingProject.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
@@ -121,6 +123,8 @@
     <ClInclude Include="src\Gizmos.h" />
     <ClInclude Include="src\glParticleRenderer.h" />
     <ClInclude Include="src\gl_core_4_4.h" />
+    <ClInclude Include="src\GPUEmitter.h" />
+    <ClInclude Include="src\GPUParticleProject.h" />
     <ClInclude Include="src\ParticleEffect.h" />
     <ClInclude Include="src\ParticlesGenerators.h" />
     <ClInclude Include="src\KeyFrame.h" />
@@ -146,12 +150,16 @@
     <ClInclude Include="src\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="data\shaders\GPUParticleFragment.glsl" />
+    <None Include="data\shaders\GPUParticleGeometry.glsl" />
+    <None Include="data\shaders\GPUParticleVertex.glsl" />
     <None Include="data\shaders\LightingFragment.glsl" />
     <None Include="data\shaders\LightingVertex.glsl" />
     <None Include="data\shaders\ParticleEffectFragment.glsl" />
     <None Include="data\shaders\ParticleEffectVertex.glsl" />
     <None Include="data\shaders\ParticleFragment.glsl" />
     <None Include="data\shaders\ParticleVertex.glsl" />
+    <None Include="data\shaders\particle_update_vert.glsl" />
     <None Include="data\shaders\SkinnedFragment.glsl" />
     <None Include="data\shaders\SkinnedVertex.glsl" />
     <None Include="data\shaders\TextureFragment.glsl" />

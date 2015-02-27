@@ -26,11 +26,12 @@ using glm::perspective;
 //Macro list
 //Windows name
 #define WIN_NAME_PREFIX "OPENGL TEST"
-//Shader info lenght
-#define SHD_ERR_LGH 512
+  //////////////////////
+ // Shader list path //
 //////////////////////
-// Shader list path //
-//////////////////////
+//Basic
+#define VERTEX_FILE_ID	 "./shaders/VertexShader.glsl"
+#define FRAGMENT_FILE_ID "./shaders/FragmentShader.glsl"
 //Geometry
 #define GEOMETRY_VERTEX_GLSL	"./shaders/VertexShader.glsl"
 #define GEOMETRY_FRAGMENT_GLSL	"./shaders/FragmentShader.glsl"
@@ -43,6 +44,10 @@ using glm::perspective;
 //Skinned Shader
 #define SKINNED_VERTEX_GLSL		"./shaders/SkinnedVertex.glsl"
 #define SKINNED_FRAGMENT_GLSL	"./shaders/SkinnedFragment.glsl"
+//GPU particles
+#define GPU_PARTICLE_VERTEX_GLSL "./shaders/GPUParticleVertex.glsl"
+#define GPU_PARTICLE_GEOMETRY_GLSL "./shaders/GPUParticleGeometry.glsl"
+#define GPU_PARTICLE_FRAGMENT_GLSL "./shaders/GPUParticleFragment.glsl"
 //Basic colour output.
 //static vec4 m_vWhite	= vec4(1.0f);
 //static vec4 m_vBlack	= vec4(0.0f, 0.0f, 0.0f, 1.0f);

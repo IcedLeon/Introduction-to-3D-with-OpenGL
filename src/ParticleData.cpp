@@ -17,18 +17,22 @@ void ParticleData::Generate(size_t a_MaxCount)
 
 void ParticleData::Destroy(size_t a_ID)
 {
-	//if (m_bAliveCount > 0)
-	m_pbAlive[a_ID] = false;
-	SwapData(a_ID, m_AliveCounter - 1);
-	m_AliveCounter--;
+	if (m_AliveCounter > 0)
+	{
+		m_pbAlive[a_ID] = false;
+		SwapData(a_ID, m_AliveCounter - 1);
+		m_AliveCounter--;
+	}
 }
 
 void ParticleData::Awake(size_t a_ID)
 {
-	//if (m_AliveCounter < m_Counter)
+	if (m_AliveCounter < m_Counter)
+	{
 		m_pbAlive[a_ID] = true;
 		//SwapData(a_ID, m_AliveCounter);
 		m_AliveCounter++;
+	}
 }
 
 void ParticleData::SwapData(size_t a_First, size_t a_Second)

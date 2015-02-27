@@ -1,8 +1,8 @@
-#include "Particle.h"
+#include "GPUParticleProject.h"
 
 int main()
 {
-	Particle _app;
+	GPUParticle _app;
 
 	float _dt;
 

@@ -83,6 +83,12 @@
     <ClCompile Include="src\Particle.cpp">
       <Filter>ParticleProject</Filter>
     </ClCompile>
+    <ClCompile Include="src\GPUEmitter.cpp">
+      <Filter>GPUParticleProject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPUParticleProject.cpp">
+      <Filter>GPUParticleProject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CameraProject.h">
@@ -190,6 +196,12 @@
     <ClInclude Include="src\ParticleSh.h">
       <Filter>ParticleSchool</Filter>
     </ClInclude>
+    <ClInclude Include="src\GPUEmitter.h">
+      <Filter>GPUParticleProject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GPUParticleProject.h">
+      <Filter>GPUParticleProject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\LightingFragment.glsl">
@@ -221,6 +233,18 @@
     </None>
     <None Include="data\shaders\ParticleEffectFragment.glsl">
       <Filter>ParticleProject</Filter>
+    </None>
+    <None Include="data\shaders\GPUParticleVertex.glsl">
+      <Filter>GPUParticleProject</Filter>
+    </None>
+    <None Include="data\shaders\GPUParticleFragment.glsl">
+      <Filter>GPUParticleProject</Filter>
+    </None>
+    <None Include="data\shaders\GPUParticleGeometry.glsl">
+      <Filter>GPUParticleProject</Filter>
+    </None>
+    <None Include="data\shaders\particle_update_vert.glsl">
+      <Filter>GPUParticleProject</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -292,6 +316,9 @@
     </Filter>
     <Filter Include="ParticleSchool">
       <UniqueIdentifier>{724b2c63-17c1-47cd-b7f5-994d84ce11a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GPUParticleProject">
+      <UniqueIdentifier>{3db97d5e-30bd-46f5-98d2-a35850775677}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

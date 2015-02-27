@@ -10,10 +10,8 @@
 #define _SHADERCOMPILER_H_
 //Library
 #include "gl_core_4_4.h"
-
+//Shader info lenght
 #define SHD_ERR_LGH 512
-#define VERTEX_FILE_ID	 "./shaders/VertexShader.glsl"
-#define FRAGMENT_FILE_ID "./shaders/FragmentShader.glsl"
 
 class ShaderCompiler
 {
@@ -22,6 +20,7 @@ private:
 	GLuint m_uiShaderProgram;
 	//Compile shader, it will compile the apporopriate shader file.
 	//The first one simply catch the two compatible and standard shader file available.
+public:
 	GLuint CreateShader(GLenum a_eShaderID, const char* a_strShaderFileID) const;
 
 public:
@@ -31,6 +30,7 @@ public:
 	//Init, it's self-sxplanetory. It will run the shader ruotine and compile the necessary
 	//Shader compiler, it will run and compile the specific shader passed throught.
 	void CreateShaderProgram(const char* a_pccVertexID, const char* a_pccFragID);
+	void CreateShaderProgram(const char* a_pccVertexID, const char* a_pccGeometryID, const char* a_pccFragID);
 	//Get the shader program, once the shader class has been compiled all the shader are going to be linked with
 	//the current program so there will be no need to having extra variable for the both compiled shaders.
 	GLuint GetShaderProgram() const;
