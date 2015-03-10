@@ -41,6 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>./deps/glfw/include;./deps/glm;./deps/freetype/include;./deps/AntTweakBar/include;./deps/FBXLoader;$(IncludePath)</IncludePath>
     <LibraryPath>./deps/glfw/lib-vc2013;./deps/freetype/lib;./deps/AntTweakBar/lib;./deps/FBXLoader;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(VC_SourcePath);</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>./deps/glfw/include;./deps/glm;./deps/fmod/include;./deps/assimp/include;./deps/FBXLoader;$(IncludePath)</IncludePath>

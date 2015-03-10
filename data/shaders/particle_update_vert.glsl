@@ -5,16 +5,19 @@ layout (location = 1) in vec3 velocity;
 layout (location = 2) in float spawntime;
 layout (location = 3) in float lifespan;
 
-out vec3 Position;
-out vec3 Velocity;
-out float SpawnTime;
-out float LifeSpan;
+out vec3  Updated_Position;
+out vec3  Updated_Velocity;
+out float Updated_SpawnTime;
+out float Updated_LifeSpan;
 
 uniform vec3 emitterPos;
-uniform float velocityMax;
-uniform float velocityMin;
+
 uniform float time;
 uniform float deltaTime;
+
+uniform float velocityMin;
+uniform float velocityMax;
+
 uniform float lifeMin;
 uniform float lifeMax;
 
@@ -33,29 +36,29 @@ float rand(uint seed, float range)
 
 void main()
 {
-	Position = position + velocity * deltaTime;
-	Velocity = velocity;
-	SpawnTime = SpawnTime + deltaTime;
-	LifeSpan = lifespan;
+	Updated_Position  = position + velocity * deltaTime;
+	Updated_Velocity  = velocity;
+	Updated_SpawnTime = spawntime + deltaTime;
+	Updated_LifeSpan  = lifespan;
 
-	if (SpawnTime > LifeSpan)
+	if (Updated_SpawnTime > Updated_LifeSpan)
 	{
-		Position = emitterPos;
+		Updated_Position   = emitterPos;
 		
-		uint _seed = uint(gl_VertexID + (time * 1000));
+		uint _seed		   = uint(gl_VertexID + (time * 1000.0f));
 
-		float _velRange = velocityMax - velocityMin;
-		float _speed = rand(_seed++, _velRange) + velocityMin;
+		float _velRange	   = velocityMax - velocityMin;
+		float _speed	   = rand(_seed++, _velRange) + velocityMin;
 
-		Velocity.x = rand(_seed++, 2) - 1;
-		Velocity.y = rand(_seed++, 2) - 1;
-		Velocity.z = rand(_seed++, 2) - 1;
+		Updated_Velocity.x = rand(_seed++, 2) - 1;
+		Updated_Velocity.y = rand(_seed++, 2) - 1;
+		Updated_Velocity.z = rand(_seed++, 2) - 1;
 
-		Velocity = normalize(Velocity) * _velRange;
+		Updated_Velocity   = normalize(Updated_Velocity) * _velRange;
 
-		SpawnTime = 0;
+		Updated_SpawnTime  = 0;
 
-		float _lifeRange = lifeMax - lifeMin;
-		LifeSpan = rand(_seed++, _lifeRange) + lifeMin;		 
+		float _lifeRange   = lifeMax - lifeMin;
+		Updated_LifeSpan   = rand(_seed++, _lifeRange) + lifeMin;		 
 	}
 }

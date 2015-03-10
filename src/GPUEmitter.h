@@ -23,11 +23,11 @@ struct GPUParticleData
 {
 	vec3	s_position;
 	vec3	s_velocity;
-	GLfloat s_spawntime;
-	GLfloat s_lifespan;
+	float   s_spawntime;
+	float   s_lifespan;
 
-	GPUParticleData() : s_spawntime(1),
-						s_lifespan(NULL) { }
+	GPUParticleData() : s_spawntime(0),
+						s_lifespan(1) { }
 };
 
 class GPUEmitter
@@ -76,7 +76,7 @@ public:
 		float a_fStartSize, float a_fEndSize,
 		vec4 a_vStartCol, vec4 a_vEndCol);
 
-	void Render(float a_fDeltaTime, mat4 a_oCameraTrans, mat4 a_oProjView);
+	void Render(float a_fDeltaTime, mat4 a_oCameraTrans, mat4 a_oProj, mat4 a_oView);
 
 	void CreateBuffers();
 	void CreateUpdateShader();

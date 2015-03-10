@@ -4,7 +4,7 @@
 
 Camera	Application::m_oCamera = Camera();
 TweekBar Application::m_oTweek = TweekBar();
-bool	Application::m_bKeys[1024];
+bool	Application::m_bKeys[1024] = { 0 };
 static	GLdouble	 m_fPrevX;
 static	GLdouble	 m_fPrevY;
 

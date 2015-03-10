@@ -18,7 +18,8 @@ m_uiCurrBuffer(NULL),
 m_uiUpdateShader(NULL),
 m_uiMaxParticles(NULL)
 {
-
+	m_uiVAO[2] = { 0 };
+	m_uiVBO[2] = { 0 };
 }
 GPUEmitter::~GPUEmitter()
 {
@@ -26,8 +27,8 @@ GPUEmitter::~GPUEmitter()
 	glDeleteVertexArrays(2, m_uiVAO);
 	glDeleteBuffers(2, m_uiVBO);
 
-	glDeleteShader(m_uiUpdateShader);
-	glDeleteShader(m_uiDrawShader);
+	glDeleteProgram(m_uiUpdateShader);
+	glDeleteProgram(m_uiDrawShader);
 }
 
 void GPUEmitter::Init(unsigned int a_uiMaxParticle,
@@ -50,7 +51,7 @@ void GPUEmitter::Init(unsigned int a_uiMaxParticle,
 	m_vStartCol = a_vStartCol;
 	m_vEndCol = a_vEndCol;
 	
-	m_oParticle = new GPUParticleData[m_uiMaxParticles];
+	m_oParticle = new GPUParticleData[m_uiMaxParticles]();
 
 	m_uiCurrBuffer = 0;
 
@@ -59,7 +60,7 @@ void GPUEmitter::Init(unsigned int a_uiMaxParticle,
 	CreateDrawShader();
 }
 
-void GPUEmitter::Render(float a_fDeltaTime, mat4 a_oCameraTrans, mat4 a_oProjView)
+void GPUEmitter::Render(float a_fDeltaTime, mat4 a_oCameraTrans, mat4 a_oProj, mat4 a_oView)
 {
 	glUseProgram(m_uiUpdateShader);
 
@@ -70,7 +71,6 @@ void GPUEmitter::Render(float a_fDeltaTime, mat4 a_oCameraTrans, mat4 a_oProjVie
 	glUniform1f(_timeUni, a_fDeltaTime);
 
 	float _t = a_fDeltaTime - m_fLastDrawTime;
-	m_fLastDrawTime = a_fDeltaTime;
 	GLint _deltaUni = glGetUniformLocation(m_uiUpdateShader, "deltaTime");
 	glUniform1f(_deltaUni, _t);
 
@@ -79,6 +79,12 @@ void GPUEmitter::Render(float a_fDeltaTime, mat4 a_oCameraTrans, mat4 a_oProjVie
 
 	GLint _minVelUni = glGetUniformLocation(m_uiUpdateShader, "velocityMin");
 	glUniform1f(_minVelUni, m_fSpeedMin);
+
+	GLuint _maxLifeUni = glGetUniformLocation(m_uiUpdateShader, "lifeMax");
+	glUniform1f(_maxLifeUni, m_fLifeSpanMax);
+
+	GLuint _mimLifeUni = glGetUniformLocation(m_uiUpdateShader, "lifeMin");
+	glUniform1f(_mimLifeUni, m_fLifeSpanMin);
 
 	glEnable(GL_RASTERIZER_DISCARD);
 
@@ -96,23 +102,36 @@ void GPUEmitter::Render(float a_fDeltaTime, mat4 a_oCameraTrans, mat4 a_oProjVie
 	glDisable(GL_RASTERIZER_DISCARD);
 	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, NULL, NULL);
 
-	//glUseProgram(m_uiDrawShader);
-	//GLuint _projUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "Projection");
-	//glUniformMatrix4fv(_projUni, 1, GL_FALSE, glm::value_ptr(a_oProjView));
-	//GLuint _viewUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "View");
-	//glUniformMatrix4fv(_viewUni, 1, GL_FALSE, glm::value_ptr(m_oView));
-	////GLuint _modelUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "Model");
-	////glUniformMatrix4fv(_modelUni, 1, GL_FALSE, glm::value_ptr(m_oWorld));
-	//GLuint _cameraUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "CameraTransform");
-	//glUniformMatrix4fv(_cameraUni, 1, GL_FALSE, glm::value_ptr(m_oWorld));
-	//GLint _sizeUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "sizeStart");
-	//glUniform1f(_sizeUni, m_fStartSize);
-	//_sizeUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "sizeEnd");
-	//glUniform1f(_sizeUni, m_fEndSize);
-	//GLint _colourUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "colourStart");
-	//glUniform4fv(_colourUni, 1, &m_vStartCol[0]);
-	//_colourUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "colourEnd");
-	//glUniform4fv(_colourUni, 1, &m_vEndCol[0]);
+	m_oShader.Use();
+
+	glBindVertexArray(m_uiVAO[_otherBuff]);
+
+	GLuint _projUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "Projection");
+	glUniformMatrix4fv(_projUni, 1, GL_FALSE, glm::value_ptr(a_oProj));
+
+	GLuint _viewUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "View");
+	glUniformMatrix4fv(_viewUni, 1, GL_FALSE, glm::value_ptr(a_oView));
+
+	GLuint _cameraUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "CameraTransform");
+	glUniformMatrix4fv(_cameraUni, 1, GL_FALSE, glm::value_ptr(a_oCameraTrans));
+
+	GLint _sizeUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "sizeStart");
+	glUniform1f(_sizeUni, m_fStartSize);
+
+	_sizeUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "sizeEnd");
+	glUniform1f(_sizeUni, m_fEndSize);
+
+	GLint _colourUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "colourStart");
+	glUniform4fv(_colourUni, 1, (float*)&m_vStartCol[0]);
+
+	_colourUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "colourEnd");
+	glUniform4fv(_colourUni, 1, (float*)&m_vEndCol[0]);
+
+	glDrawArrays(GL_POINTS, 0, m_uiMaxParticles);
+	glBindVertexArray(0);
+
+	m_uiCurrBuffer = _otherBuff;
+	m_fLastDrawTime = a_fDeltaTime;
 }
 
 void GPUEmitter::CreateBuffers()
@@ -150,19 +169,13 @@ void GPUEmitter::CreateUpdateShader()
 	m_uiUpdateShader = glCreateProgram();
 	glAttachShader(m_uiUpdateShader, _vertexShader);
 
-	const GLchar* _outputs[] = { "Position", "Velocity", "SpawnTime", "LifeSpan" };
+	const char* _outputs[] = { "Updated_Position", "Updated_Velocity", "Updated_SpawnTime", "Updated_LifeSpan" };
 
-	glTransformFeedbackVaryings(m_uiUpdateShader, 4, _outputs, GL_INTERLEAVED_ATTRIBS);
+	glTransformFeedbackVaryings(m_uiUpdateShader, 4, _outputs, GL_SEPARATE_ATTRIBS);
 
 	glLinkProgram(m_uiUpdateShader);
 
 	glDeleteShader(_vertexShader);
-
-	GLint _maxLifeUni = glGetUniformLocation(m_uiUpdateShader, "lifeMax");
-	glUniform1f(_maxLifeUni, m_fLifeSpanMax);
-
-	GLint _mimLifeUni = glGetUniformLocation(m_uiUpdateShader, "lifeMin");
-	glUniform1f(_mimLifeUni, m_fLifeSpanMin);
 }
 
 void GPUEmitter::CreateDrawShader()
