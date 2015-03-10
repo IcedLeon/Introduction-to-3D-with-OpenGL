@@ -89,6 +89,12 @@
     <ClCompile Include="src\GPUParticleProject.cpp">
       <Filter>GPUParticleProject</Filter>
     </ClCompile>
+    <ClCompile Include="src\BoundingBoxes.cpp">
+      <Filter>BoundingBoxProject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CollisionProject.cpp">
+      <Filter>BoundingBoxProject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CameraProject.h">
@@ -201,6 +207,12 @@
     </ClInclude>
     <ClInclude Include="src\GPUParticleProject.h">
       <Filter>GPUParticleProject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BoundingBoxes.h">
+      <Filter>BoundingBoxProject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionProject.h">
+      <Filter>BoundingBoxProject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +331,9 @@
     </Filter>
     <Filter Include="GPUParticleProject">
       <UniqueIdentifier>{3db97d5e-30bd-46f5-98d2-a35850775677}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BoundingBoxProject">
+      <UniqueIdentifier>{b78676a1-d971-47f4-bb17-cb782ef85650}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
