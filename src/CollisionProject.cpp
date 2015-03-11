@@ -21,17 +21,23 @@ void CollisionP::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pc
 
 	Gizmos::create();
 
-	m_oShader.CreateShaderProgram("./shaders/ParticleVertex.glsl", "./shaders/ParticleFragment.glsl");
+	//m_oShader.CreateShaderProgram("./shaders/ParticleVertex.glsl", "./shaders/ParticleFragment.glsl");
 }
 
 void CollisionP::CleanUpWin()
 {
-	m_oShader.CleanUpProgram();
+	//m_oShader.CleanUpProgram();
 	Application::CleanUpWin();
 }
 
 void CollisionP::Update(GLdouble a_dDeltaTime)
 {
+	vec4 _white(1);
+	vec4 _black(0, 0, 0, 1);
+	vec4 _red(1, 0, 0, 1);
+	vec4 _green(0, 1, 0, 1);
+	vec4 _blue(0, 0, 1, 1);
+
 	m_oView = m_oCamera.GetViewTransform();
 	m_oWorld = m_oCamera.GetWorldTransform();
 
@@ -47,13 +53,30 @@ void CollisionP::Update(GLdouble a_dDeltaTime)
 	_collSphere.m_fRadius = 0.5f;
 
 	vec4 _planes[6];
-	//HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 
-	vec4 _white(1);
-	vec4 _black(0, 0, 0, 1);
-	vec4 _red(1, 0, 0, 1);
-	vec4 _green(0, 1, 0, 1);
-	vec4 _blue(0, 0, 1, 1);
+	GetFrustumPlanes(m_oCamera.GetProjViewTransform(vec2(m_vScreenSize.x, m_vScreenSize.y)), _planes);
+
+	vec4 _plane(0, 0, 0, 0);
+
+	vec4 _planeColour = _black;
+
+	for (int i = 0; i < 6; ++i)
+	{
+		float _dist = glm::dot(vec3(_plane), _collSphere.m_vCentre) + _plane.w;
+
+		if (_dist <= _collSphere.m_fRadius)
+		{
+			_planeColour = _red;
+			break;
+		}
+	}
+
+	Gizmos::addSphere(_collSphere.m_vCentre, _collSphere.m_fRadius, 10, 10, _green);
+
+	Gizmos::addTri(vec3(4, 1, 4), vec3(-4, 1, -4), vec3(4, 1, -4), _planeColour);
+	Gizmos::addTri(vec3(4, 1, 4), vec3(-4, 1, 4), vec3(-4, 1, -4), _planeColour);
+
+	_collSphere.CheckCollision(_plane);
 
 	for (int i = 0; i <= 20; ++i)
 	{
@@ -98,13 +121,13 @@ void CollisionP::MoveCamera(float a_fDeltaTime)
 
 void CollisionP::Use()
 {
-	m_oShader.Use();
+	//m_oShader.Use();
 
-	GLuint _projUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "Projection");
-	glUniformMatrix4fv(_projUni, 1, GL_FALSE, glm::value_ptr(m_oProjection));
-
-	GLuint _viewUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "View");
-	glUniformMatrix4fv(_viewUni, 1, GL_FALSE, glm::value_ptr(m_oView));
+	//GLuint _projUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "Projection");
+	//glUniformMatrix4fv(_projUni, 1, GL_FALSE, glm::value_ptr(m_oProjection));
+	//
+	//GLuint _viewUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "View");
+	//glUniformMatrix4fv(_viewUni, 1, GL_FALSE, glm::value_ptr(m_oView));
 }
 
 

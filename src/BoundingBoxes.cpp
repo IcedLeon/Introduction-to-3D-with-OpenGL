@@ -58,17 +58,17 @@ int BoundingSphere::CheckCollision(glm::vec4 a_vPlane)
 
 	if (_dotResult > m_fRadius)
 	{
-		printf("Front");
+		printf("Front \n");
 		return 1;
 	}
 	else if (_dotResult < -m_fRadius)
 	{
-		printf("Back");
+		printf("Back \n");
 		return -1;
 	}
 	else
 	{
-		printf("On the plane");
+		printf("On the plane \n");
 		return 0;
 	}
 }

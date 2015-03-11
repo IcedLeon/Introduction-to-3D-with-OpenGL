@@ -7,7 +7,7 @@
 class CollisionP : public Application
 {
 private:
-	ShaderCompiler m_oShader;
+	//ShaderCompiler m_oShader;
 	float m_fTimer;
 
 public:
