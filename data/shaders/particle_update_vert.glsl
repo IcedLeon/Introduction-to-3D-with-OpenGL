@@ -38,10 +38,11 @@ void main()
 {
 	Updated_Position  = position + velocity * deltaTime;
 	Updated_Velocity  = velocity;
+	Updated_Velocity.y -= (10.6 * deltaTime); 
 	Updated_SpawnTime = spawntime + deltaTime;
 	Updated_LifeSpan  = lifespan;
 
-	if (Updated_SpawnTime > Updated_LifeSpan)
+	if (Updated_SpawnTime < lifespan)
 	{
 		Updated_Position   = emitterPos;
 		

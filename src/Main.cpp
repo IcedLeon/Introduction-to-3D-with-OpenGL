@@ -1,8 +1,8 @@
-#include "CollisionProject.h"
+#include "GPUParticleProject.h"
 
 int main()
 {
-	CollisionP _app;
+	GPUParticle _app;
 
 	float _dt;
 

@@ -70,8 +70,8 @@ void GPUEmitter::Render(float a_fDeltaTime, mat4 a_oCameraTrans, mat4 a_oProj, m
 	GLint _timeUni = glGetUniformLocation(m_uiUpdateShader, "time");
 	glUniform1f(_timeUni, a_fDeltaTime);
 
-	float _t = a_fDeltaTime - m_fLastDrawTime;
 	GLint _deltaUni = glGetUniformLocation(m_uiUpdateShader, "deltaTime");
+	float _t = a_fDeltaTime - m_fLastDrawTime;
 	glUniform1f(_deltaUni, _t);
 
 	GLint _maxVelUni = glGetUniformLocation(m_uiUpdateShader, "velocityMax");

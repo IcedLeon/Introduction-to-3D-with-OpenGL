@@ -11,7 +11,7 @@ out float LifeSpan;
 
 void main()
 {
-	Position	= vec4(position, 1);
+	Position	= vec4(position.xyz, 1);
 	SpawnTime	= spawntime;
 	LifeSpan	= lifespan;
 }

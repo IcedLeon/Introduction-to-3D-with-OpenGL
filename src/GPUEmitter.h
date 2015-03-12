@@ -10,15 +10,8 @@ using glm::vec4;
 using glm::vec3;
 using glm::vec2;
 using glm::mat4;
-//Struct
-//struct OpenGLInfo
-//{
-//	GLuint m_uiVAO;
-//	GLuint m_uiVBO;
-//	GLuint m_uiIBO;
-//	GLuint m_uiIndexCount;
-//};
 
+//Struct
 struct GPUParticleData
 {
 	vec3	s_position;
@@ -26,8 +19,8 @@ struct GPUParticleData
 	float   s_spawntime;
 	float   s_lifespan;
 
-	GPUParticleData() : s_spawntime(0),
-						s_lifespan(1) { }
+	GPUParticleData() : s_spawntime(1),
+						s_lifespan(0) { }
 };
 
 class GPUEmitter

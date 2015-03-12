@@ -29,7 +29,7 @@ void GPUParticle::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_p
 		2, 5, 
 		0.8f, 1.0f,
 		1, 2, 
-		vec4(1, 0, 0, 1), vec4(1, 0, 0, 1));
+		vec4(1, 0, 0, 1), vec4(1, 0, 1, 1));
 
 	m_fTimer = 0.0f;
 }
