@@ -20,6 +20,7 @@ public:
 
 	void Reset();
 	void Fit(const vector<glm::vec3>& a_vPoints);
+	void GenerateAABB(glm::vec3* a_vPos, GLuint a_uiCount, GLuint a_uiStride = NULL);
 };
 
 class BoundingSphere

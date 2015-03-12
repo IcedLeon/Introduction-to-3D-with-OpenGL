@@ -95,6 +95,12 @@
     <ClCompile Include="src\CollisionProject.cpp">
       <Filter>BoundingBoxProject</Filter>
     </ClCompile>
+    <ClCompile Include="src\RenderTargetProject.cpp">
+      <Filter>RenderTargetProject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ThreadProject.cpp">
+      <Filter>Threadex</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CameraProject.h">
@@ -214,6 +220,12 @@
     <ClInclude Include="src\CollisionProject.h">
       <Filter>BoundingBoxProject</Filter>
     </ClInclude>
+    <ClInclude Include="src\RenderTargetProject.h">
+      <Filter>RenderTargetProject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ThreadProject.h">
+      <Filter>Threadex</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\LightingFragment.glsl">
@@ -257,6 +269,12 @@
     </None>
     <None Include="data\shaders\particle_update_vert.glsl">
       <Filter>GPUParticleProject</Filter>
+    </None>
+    <None Include="data\shaders\RenderingVertex.glsl">
+      <Filter>RenderTargetProject</Filter>
+    </None>
+    <None Include="data\shaders\RenderingFragment.glsl">
+      <Filter>RenderTargetProject</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -334,6 +352,12 @@
     </Filter>
     <Filter Include="BoundingBoxProject">
       <UniqueIdentifier>{b78676a1-d971-47f4-bb17-cb782ef85650}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderTargetProject">
+      <UniqueIdentifier>{622ccf05-a7b1-408d-b2af-e53675442f35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Threadex">
+      <UniqueIdentifier>{d7437129-633e-40b7-8e02-cf5a4124b2d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

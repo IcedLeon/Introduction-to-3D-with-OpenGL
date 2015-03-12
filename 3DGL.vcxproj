@@ -108,8 +108,10 @@
     <ClCompile Include="src\ParticlesUpdaters.cpp" />
     <ClCompile Include="src\ParticleSystem.cpp" />
     <ClCompile Include="src\ProjectOpenGL1.cpp" />
+    <ClCompile Include="src\RenderTargetProject.cpp" />
     <ClCompile Include="src\ShaderCompiler.cpp" />
     <ClCompile Include="src\TextRender.cpp" />
+    <ClCompile Include="src\ThreadProject.cpp" />
     <ClCompile Include="src\tiny_obj_loader.cc" />
     <ClCompile Include="src\TunnelEffect.cpp" />
   </ItemGroup>
@@ -147,9 +149,11 @@
     <ClInclude Include="src\ParticleSystem.h" />
     <ClInclude Include="src\ParticleUpdater.h" />
     <ClInclude Include="src\ProjectOpenGL1.h" />
+    <ClInclude Include="src\RenderTargetProject.h" />
     <ClInclude Include="src\ShaderCompiler.h" />
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\TextRender.h" />
+    <ClInclude Include="src\ThreadProject.h" />
     <ClInclude Include="src\tiny_obj_loader.h" />
     <ClInclude Include="src\TunnelEffect.h" />
     <ClInclude Include="src\Vertex.h" />
@@ -165,6 +169,8 @@
     <None Include="data\shaders\ParticleFragment.glsl" />
     <None Include="data\shaders\ParticleVertex.glsl" />
     <None Include="data\shaders\particle_update_vert.glsl" />
+    <None Include="data\shaders\RenderingFragment.glsl" />
+    <None Include="data\shaders\RenderingVertex.glsl" />
     <None Include="data\shaders\SkinnedFragment.glsl" />
     <None Include="data\shaders\SkinnedVertex.glsl" />
     <None Include="data\shaders\TextureFragment.glsl" />
