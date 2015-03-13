@@ -101,6 +101,9 @@
     <ClCompile Include="src\ThreadProject.cpp">
       <Filter>Threadex</Filter>
     </ClCompile>
+    <ClCompile Include="src\PostProcess.cpp">
+      <Filter>PostProcessProject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CameraProject.h">
@@ -226,6 +229,9 @@
     <ClInclude Include="src\ThreadProject.h">
       <Filter>Threadex</Filter>
     </ClInclude>
+    <ClInclude Include="src\PostProcess.h">
+      <Filter>PostProcessProject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\LightingFragment.glsl">
@@ -275,6 +281,12 @@
     </None>
     <None Include="data\shaders\RenderingFragment.glsl">
       <Filter>RenderTargetProject</Filter>
+    </None>
+    <None Include="data\shaders\PostEffectVertex.glsl">
+      <Filter>PostProcessProject</Filter>
+    </None>
+    <None Include="data\shaders\PostEffectFragment.glsl">
+      <Filter>PostProcessProject</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -358,6 +370,9 @@
     </Filter>
     <Filter Include="Threadex">
       <UniqueIdentifier>{d7437129-633e-40b7-8e02-cf5a4124b2d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PostProcessProject">
+      <UniqueIdentifier>{bbf9e433-7957-4d59-b513-a90f821c63ed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

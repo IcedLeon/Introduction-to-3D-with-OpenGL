@@ -1,8 +1,8 @@
-#include "GPUParticleProject.h"
+#include "RenderTargetProject.h"
 
 int main()
 {
-	GPUParticle _app;
+	RenderTargetP _app;
 
 	float _dt;
 

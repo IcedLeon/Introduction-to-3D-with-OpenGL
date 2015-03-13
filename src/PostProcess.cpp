@@ -1,33 +1,33 @@
-#include "RenderTargetProject.h"
+#include "PostProcess.h"
 #include <GLFW\glfw3.h>
 #include "Camera.h"
 #include "Gizmos.h"
 
 
-RenderTargetP::RenderTargetP()
+PostProcess::PostProcess()
 {
 
 }
 
-RenderTargetP::~RenderTargetP()
+PostProcess::~PostProcess()
 {
 
 }
 
-void RenderTargetP::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)
+void PostProcess::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)
 {
 	Application::InitWindow(a_vCamPos, a_vScreenSize, a_pccWinName, a_bFullScreen);
 	m_oProjection = m_oCamera.GetProjectionTransform(vec2(a_vScreenSize.x, a_vScreenSize.y));
-	m_iNewSize = 1024;
 
 	Gizmos::create();
 
 	GenerateFrameBuffers();
-	GeneratePlane();
+	GenScreenSpaceQuad();
+
 	m_oShader.CreateShaderProgram(RENDERING_VERTEX_GLSL, RENDERING_FRAGMENT_GLSL);
 }
 
-void RenderTargetP::Update(GLdouble a_fDeltaTime)
+void PostProcess::Update(GLdouble a_fDeltaTime)
 {
 	Gizmos::clear();
 	Gizmos::addTransform(mat4(1));
@@ -54,14 +54,14 @@ void RenderTargetP::Update(GLdouble a_fDeltaTime)
 	MoveCamera((float)a_fDeltaTime);
 }
 
-void RenderTargetP::CleanUpWin()
+void PostProcess::CleanUpWin()
 {
 	Gizmos::destroy();
 	m_oShader.CleanUpProgram();
 	Application::CleanUpWin();
 }
 
-void RenderTargetP::Draw()
+void PostProcess::Draw()
 {
 	mat4 _projView = m_oProjection * m_oView;
 	//Frame buffer
@@ -109,7 +109,7 @@ void RenderTargetP::Draw()
 	glDepthFunc(GL_GREATER);
 	Gizmos::draw(_projViewRef);
 	glDepthFunc(GL_LESS);
-	
+
 	glBindFramebuffer(GL_FRAMEBUFFER, NULL);
 	//back to the back_buffer.
 	glViewport(0, 0, (int)m_vScreenSize.x, (int)m_vScreenSize.y);
@@ -132,7 +132,7 @@ void RenderTargetP::Draw()
 	glDrawElements(GL_TRIANGLES, m_oPlane.m_uiIndexCount, GL_UNSIGNED_INT, NULL);
 }
 
-void RenderTargetP::MoveCamera(float a_fDeltaTime)
+void PostProcess::MoveCamera(float a_fDeltaTime)
 {
 	// Camera controls
 	if (m_bKeys[GLFW_KEY_W])
@@ -150,7 +150,7 @@ void RenderTargetP::MoveCamera(float a_fDeltaTime)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
-void RenderTargetP::Use()
+void PostProcess::Use()
 {
 	m_oShader.Use();
 
@@ -164,7 +164,7 @@ void RenderTargetP::Use()
 	//glUniformMatrix4fv(_viewUni, 1, GL_FALSE, glm::value_ptr(m_oWorld));
 }
 
-void RenderTargetP::GenerateFrameBuffers()
+void PostProcess::GenerateFrameBuffers()
 {
 	//Frame buffer generation
 	glGenFramebuffers(1, &m_uiFBO);
@@ -172,16 +172,16 @@ void RenderTargetP::GenerateFrameBuffers()
 	//Frame buffer texture generation
 	glGenTextures(1, &m_uiFBO_T);
 	glBindTexture(GL_TEXTURE_2D, m_uiFBO_T);
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB8, m_iNewSize, m_iNewSize);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB8, (int)m_vScreenSize.x, (int)m_vScreenSize.y);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	//Funny result
 	//glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_uiTexture, NULL);
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_uiFBO_T, NULL);
 	//Frame buffer depth generation
 	glGenRenderbuffers(1, &m_uiFBO_D);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_uiFBO_D);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_iNewSize, m_iNewSize);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, (int)m_vScreenSize.x, (int)m_vScreenSize.y);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_uiFBO_D);
 	//
 	GLenum _drawBuffers[] = { GL_COLOR_ATTACHMENT0 };
@@ -194,14 +194,17 @@ void RenderTargetP::GenerateFrameBuffers()
 	glBindFramebuffer(GL_FRAMEBUFFER, NULL);
 }
 
-void RenderTargetP::GeneratePlane()
+void PostProcess::GenScreenSpaceQuad()
 {
-	float _vertexData[] = 
+
+	vec2 _halfTexel = 1.0f / vec2(m_vScreenSize.x, m_vScreenSize.y) * 0.5f;
+
+	float _vertexData[] =
 	{
-		-5,  0, -5, 1, 0, 0,
-		 5,  0, -5, 1, 1, 0,
-		 5, 10, -5, 1, 1, 1,
-		-5, 10, -5, 1, 0, 1,
+		-1, -1, 0, 1,	_halfTexel.x, _halfTexel.y,
+		 1, -1, 0, 1,	1-_halfTexel.x, _halfTexel.y,
+		 1,  1, 0, 1,	1-_halfTexel.x, 1-_halfTexel.y,
+		-1,  1, 0, 1,	_halfTexel.x, 1-_halfTexel.y,
 	};
 
 	GLuint _indexData[] =
@@ -210,37 +213,26 @@ void RenderTargetP::GeneratePlane()
 		0, 2, 3,
 	};
 
-	m_oPlane.m_uiIndexCount = 6;
+	m_oQuad.m_uiIndexCount = 6;
 
-	glGenVertexArrays(1, &m_oPlane.m_uiVAO);
-	glBindVertexArray(m_oPlane.m_uiVAO);
+	glGenVertexArrays(1, &m_oQuad.m_uiVAO);
+	glBindVertexArray(m_oQuad.m_uiVAO);
 
-	glGenBuffers(1, &m_oPlane.m_uiVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_oPlane.m_uiVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)* 6 * 4, _vertexData, GL_STATIC_DRAW);
+	glGenBuffers(1, &m_oQuad.m_uiVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_oQuad.m_uiVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(_vertexData), _vertexData, GL_STATIC_DRAW);
 
-	glGenBuffers(1, &m_oPlane.m_uiIBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_oPlane.m_uiIBO);
+	glGenBuffers(1, &m_oQuad.m_uiIBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_oQuad.m_uiIBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(_indexData), _indexData, GL_STATIC_DRAW);
+
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 6, _indexData, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 6, NULL);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,	sizeof(float) * 6, (void*)(sizeof(float) * 4));
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float)* 6, NULL);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float)* 6, (void*)(sizeof(float)* 4));
 
 	glBindVertexArray(NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
 }
-
-//RenderTargetP2::RenderTargetP2()
-//{
-//
-//}
-//
-//RenderTargetP2::~RenderTargetP2()
-//{
-//
-//}
-
-//RenderTargetP2::
