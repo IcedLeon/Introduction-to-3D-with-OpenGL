@@ -226,6 +226,9 @@
     <ClInclude Include="src\ThreadProject.h">
       <Filter>Threadex</Filter>
     </ClInclude>
+    <ClInclude Include="src\ShadowMap.h">
+      <Filter>ShadowMapProject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\LightingFragment.glsl">
@@ -358,6 +361,9 @@
     </Filter>
     <Filter Include="Threadex">
       <UniqueIdentifier>{d7437129-633e-40b7-8e02-cf5a4124b2d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShadowMapProject">
+      <UniqueIdentifier>{4f8c118f-96ac-45ee-8935-3c5e8aee67e5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
