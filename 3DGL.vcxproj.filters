@@ -101,6 +101,9 @@
     <ClCompile Include="src\ThreadProject.cpp">
       <Filter>Threadex</Filter>
     </ClCompile>
+    <ClCompile Include="src\PostProcess.cpp">
+      <Filter>PostProcessProject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CameraProject.h">
@@ -226,8 +229,13 @@
     <ClInclude Include="src\ThreadProject.h">
       <Filter>Threadex</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="src\ShadowMap.h">
       <Filter>ShadowMapProject</Filter>
+=======
+    <ClInclude Include="src\PostProcess.h">
+      <Filter>PostProcessProject</Filter>
+>>>>>>> ff0a0c9aa5b35c9ded37fafd3046b37ffe7cddcd
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -278,6 +286,12 @@
     </None>
     <None Include="data\shaders\RenderingFragment.glsl">
       <Filter>RenderTargetProject</Filter>
+    </None>
+    <None Include="data\shaders\PostEffectVertex.glsl">
+      <Filter>PostProcessProject</Filter>
+    </None>
+    <None Include="data\shaders\PostEffectFragment.glsl">
+      <Filter>PostProcessProject</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -362,8 +376,13 @@
     <Filter Include="Threadex">
       <UniqueIdentifier>{d7437129-633e-40b7-8e02-cf5a4124b2d4}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="ShadowMapProject">
       <UniqueIdentifier>{4f8c118f-96ac-45ee-8935-3c5e8aee67e5}</UniqueIdentifier>
+=======
+    <Filter Include="PostProcessProject">
+      <UniqueIdentifier>{bbf9e433-7957-4d59-b513-a90f821c63ed}</UniqueIdentifier>
+>>>>>>> ff0a0c9aa5b35c9ded37fafd3046b37ffe7cddcd
     </Filter>
   </ItemGroup>
 </Project>

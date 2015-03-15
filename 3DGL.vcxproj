@@ -107,6 +107,7 @@
     <ClCompile Include="src\ParticlesRenderer.cpp" />
     <ClCompile Include="src\ParticlesUpdaters.cpp" />
     <ClCompile Include="src\ParticleSystem.cpp" />
+    <ClCompile Include="src\PostProcess.cpp" />
     <ClCompile Include="src\ProjectOpenGL1.cpp" />
     <ClCompile Include="src\RenderTargetProject.cpp" />
     <ClCompile Include="src\ShaderCompiler.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="src\ParticlesUpdaters.h" />
     <ClInclude Include="src\ParticleSystem.h" />
     <ClInclude Include="src\ParticleUpdater.h" />
+    <ClInclude Include="src\PostProcess.h" />
     <ClInclude Include="src\ProjectOpenGL1.h" />
     <ClInclude Include="src\RenderTargetProject.h" />
     <ClInclude Include="src\ShaderCompiler.h" />
@@ -170,6 +172,8 @@
     <None Include="data\shaders\ParticleFragment.glsl" />
     <None Include="data\shaders\ParticleVertex.glsl" />
     <None Include="data\shaders\particle_update_vert.glsl" />
+    <None Include="data\shaders\PostEffectFragment.glsl" />
+    <None Include="data\shaders\PostEffectVertex.glsl" />
     <None Include="data\shaders\RenderingFragment.glsl" />
     <None Include="data\shaders\RenderingVertex.glsl" />
     <None Include="data\shaders\SkinnedFragment.glsl" />
