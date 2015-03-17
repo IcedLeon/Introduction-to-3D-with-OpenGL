@@ -31,6 +31,7 @@ public:
 	//Shader compiler, it will run and compile the specific shader passed throught.
 	void CreateShaderProgram(const char* a_pccVertexID, const char* a_pccFragID);
 	void CreateShaderProgram(const char* a_pccVertexID, const char* a_pccGeometryID, const char* a_pccFragID);
+	GLuint GenerateShaderProgram(const char* a_pccVertexID, const char* a_pccGeometryID, const char* a_pccFragID);
 	//Get the shader program, once the shader class has been compiled all the shader are going to be linked with
 	//the current program so there will be no need to having extra variable for the both compiled shaders.
 	GLuint GetShaderProgram() const;

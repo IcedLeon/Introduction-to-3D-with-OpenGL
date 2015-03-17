@@ -130,6 +130,52 @@ void ShaderCompiler::CreateShaderProgram(const char* a_pccVertexID, const char* 
 	}
 }
 
+GLuint ShaderCompiler::GenerateShaderProgram(const char* a_pccVertexID, const char* a_pccGeometryID, const char* a_pccFragID)
+{
+	GLuint _uiShaderProgram = NULL;
+	//Create a container for the shader
+	std::vector<GLuint> _shaderPool;
+	//start pushing the shader into the vector
+	//First the Vertex shader
+	_shaderPool.push_back(CreateShader(GL_VERTEX_SHADER, a_pccVertexID));
+	//Geometry
+	if (a_pccGeometryID != nullptr)
+	{
+		_shaderPool.push_back(CreateShader(GL_GEOMETRY_SHADER, a_pccGeometryID));
+	}
+	//and now the frag shader
+	if (a_pccFragID != nullptr)
+	{
+		_shaderPool.push_back(CreateShader(GL_FRAGMENT_SHADER, a_pccFragID));
+	}
+	//Create the shader program
+	_uiShaderProgram = glCreateProgram();
+	//attach the shader to the program
+	std::vector<GLuint>::iterator _itr = _shaderPool.begin();
+	for (_itr; _itr != _shaderPool.end(); ++_itr)
+	{
+		glAttachShader(_uiShaderProgram, *_itr);
+	}
+	//link the program
+	glLinkProgram(_uiShaderProgram);
+	//Check for link errors, in the event of a falliure print the error on console.
+	GLint _success;
+	glGetProgramiv(_uiShaderProgram, GL_LINK_STATUS, &_success);
+	if (!_success)
+	{
+		GLchar _infoLog[SHD_ERR_LGH];
+		glGetProgramInfoLog(_uiShaderProgram, SHD_ERR_LGH, NULL, _infoLog);
+		printf("ERROR: <SHADER PROGRAM LINKING FAILLURE> %s\n", _infoLog);
+		delete[] & _infoLog;
+	}
+	_itr = _shaderPool.begin();
+	for (_itr; _itr != _shaderPool.end(); ++_itr)
+	{
+		glDeleteShader(*_itr);
+	}
+	return _uiShaderProgram;
+}
+
 GLuint ShaderCompiler::GetShaderProgram() const
 {
 	return m_uiShaderProgram;

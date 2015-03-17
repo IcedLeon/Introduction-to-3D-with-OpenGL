@@ -1,8 +1,8 @@
-#include "RenderTargetProject.h"
+#include "ShadowMap.h"
 
 int main()
 {
-	RenderTargetP _app;
+	ShadowMap _app;
 
 	float _dt;
 

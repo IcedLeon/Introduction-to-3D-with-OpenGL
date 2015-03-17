@@ -62,7 +62,7 @@ protected:
 	//World/model matrix.
 	mat4			m_oWorld;
 	//The screen size.
-	vec3			m_vScreenSize;
+	static vec3		m_vScreenSize;
 	//Time related variables.
 	//Delta time, the difference between one and the other update.
 	GLdouble		m_dDeltaTime;

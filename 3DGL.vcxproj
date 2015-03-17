@@ -111,6 +111,7 @@
     <ClCompile Include="src\ProjectOpenGL1.cpp" />
     <ClCompile Include="src\RenderTargetProject.cpp" />
     <ClCompile Include="src\ShaderCompiler.cpp" />
+    <ClCompile Include="src\ShadowMap.cpp" />
     <ClCompile Include="src\TextRender.cpp" />
     <ClCompile Include="src\ThreadProject.cpp" />
     <ClCompile Include="src\tiny_obj_loader.cc" />
@@ -176,6 +177,12 @@
     <None Include="data\shaders\PostEffectVertex.glsl" />
     <None Include="data\shaders\RenderingFragment.glsl" />
     <None Include="data\shaders\RenderingVertex.glsl" />
+    <None Include="data\shaders\Shadow_camera_fragment.glsl" />
+    <None Include="data\shaders\Shadow_camera_vertex.glsl" />
+    <None Include="data\shaders\Shadow_light_fragment.glsl" />
+    <None Include="data\shaders\Shadow_light_vertex.glsl" />
+    <None Include="data\shaders\Shadow_view_fragment.glsl" />
+    <None Include="data\shaders\Shadow_view_vertex.glsl" />
     <None Include="data\shaders\SkinnedFragment.glsl" />
     <None Include="data\shaders\SkinnedVertex.glsl" />
     <None Include="data\shaders\TextureFragment.glsl" />

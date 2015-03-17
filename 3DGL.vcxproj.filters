@@ -1,388 +1,464 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\CameraProject.cpp">
-      <Filter>CameraProject</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GeometryProject.cpp">
-      <Filter>GeometryProject</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LightingProject.cpp">
-      <Filter>LighitingProject</Filter>
-    </ClCompile>
-    <ClCompile Include="src\AdvanceTexture.cpp">
-      <Filter>AdvanceTexturing</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ProjectOpenGL1.cpp">
-      <Filter>BasicProject</Filter>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\Application.cpp">
-      <Filter>BaseClass</Filter>
+      <Filter>Source\ABC</Filter>
     </ClCompile>
-    <ClCompile Include="src\Mesh.cpp">
-      <Filter>LighitingProject\ModelLoader</Filter>
+    <ClCompile Include="src\ProjectOpenGL1.cpp">
+      <Filter>Source\Basic Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CameraProject.cpp">
+      <Filter>Source\Camera tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GeometryProject.cpp">
+      <Filter>Source\Geometry tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LightingProject.cpp">
+      <Filter>Source\Lighting tutorial</Filter>
     </ClCompile>
     <ClCompile Include="src\Camera.cpp">
-      <Filter>Utility\Visual</Filter>
+      <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\Gizmos.cpp">
-      <Filter>Utility\Visual</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TextRender.cpp">
-      <Filter>Utility\Visual</Filter>
+      <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\gl_core_4_4.c">
-      <Filter>Utility\OpenGL</Filter>
+      <Filter>Source\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShaderCompiler.cpp">
-      <Filter>Utility\OpenGL</Filter>
+    <ClCompile Include="src\TextRender.cpp">
+      <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\tiny_obj_loader.cc">
-      <Filter>Utility\ModelLoader</Filter>
+      <Filter>Source\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShaderCompiler.cpp">
+      <Filter>Source\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AdvanceTexture.cpp">
+      <Filter>Source\Advanced texturing tutorial</Filter>
     </ClCompile>
     <ClCompile Include="src\AnimationProject.cpp">
-      <Filter>Animation</Filter>
+      <Filter>Source\Animatron tutorial</Filter>
     </ClCompile>
     <ClCompile Include="src\FBXAnimationProject.cpp">
-      <Filter>FBXAnimation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ParticleData.cpp">
-      <Filter>ParticleProject\BaseParticles</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ParticleEmitter.cpp">
-      <Filter>ParticleProject\BaseParticles</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ParticleSystem.cpp">
-      <Filter>ParticleProject\BaseParticles</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ParticlesUpdaters.cpp">
-      <Filter>ParticleProject\ParticlesUpdaters</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ParticlesGenerators.cpp">
-      <Filter>ParticleProject\ParticleGenerators</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ParticlesRenderer.cpp">
-      <Filter>ParticleProject\ParticlesRenderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\glParticleRenderer.cpp">
-      <Filter>ParticleProject\ParticlesRenderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TunnelEffect.cpp">
-      <Filter>ParticleProject\ParticleEffect\TunnelEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="src\EmitterSh.cpp">
-      <Filter>ParticleSchool</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ParticleSh.cpp">
-      <Filter>ParticleSchool</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ParticleEffect.cpp">
-      <Filter>ParticleProject\ParticleEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Particle.cpp">
-      <Filter>ParticleProject</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GPUEmitter.cpp">
-      <Filter>GPUParticleProject</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GPUParticleProject.cpp">
-      <Filter>GPUParticleProject</Filter>
+      <Filter>Source\Animatron tutorial</Filter>
     </ClCompile>
     <ClCompile Include="src\BoundingBoxes.cpp">
-      <Filter>BoundingBoxProject</Filter>
+      <Filter>Source\Scene tutorial</Filter>
     </ClCompile>
     <ClCompile Include="src\CollisionProject.cpp">
-      <Filter>BoundingBoxProject</Filter>
+      <Filter>Source\Scene tutorial</Filter>
     </ClCompile>
     <ClCompile Include="src\RenderTargetProject.cpp">
-      <Filter>RenderTargetProject</Filter>
+      <Filter>Source\Scene tutorial</Filter>
     </ClCompile>
     <ClCompile Include="src\ThreadProject.cpp">
-      <Filter>Threadex</Filter>
+      <Filter>Source\Threading tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
+      <Filter>Source\Animatron tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Particle.cpp">
+      <Filter>Source\Particle Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleSh.cpp">
+      <Filter>Source\Particle Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPUParticleProject.cpp">
+      <Filter>Source\GPU particle tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPUEmitter.cpp">
+      <Filter>Source\GPU particle tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EmitterSh.cpp">
+      <Filter>Source\Cookbook particle tutorial\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\glParticleRenderer.cpp">
+      <Filter>Source\Cookbook particle tutorial\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleData.cpp">
+      <Filter>Source\Cookbook particle tutorial\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleEffect.cpp">
+      <Filter>Source\Cookbook particle tutorial\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleEmitter.cpp">
+      <Filter>Source\Cookbook particle tutorial\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticlesGenerators.cpp">
+      <Filter>Source\Cookbook particle tutorial\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticlesRenderer.cpp">
+      <Filter>Source\Cookbook particle tutorial\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticlesUpdaters.cpp">
+      <Filter>Source\Cookbook particle tutorial\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleSystem.cpp">
+      <Filter>Source\Cookbook particle tutorial\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TunnelEffect.cpp">
+      <Filter>Source\Cookbook particle tutorial\Test</Filter>
     </ClCompile>
     <ClCompile Include="src\PostProcess.cpp">
-      <Filter>PostProcessProject</Filter>
+      <Filter>Source\Post-process tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShadowMap.cpp">
+      <Filter>Source\Shadow mapping %28blue book%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\CameraProject.h">
-      <Filter>CameraProject</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GeometryProject.h">
-      <Filter>GeometryProject</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LightingProject.h">
-      <Filter>LighitingProject</Filter>
-    </ClInclude>
-    <ClInclude Include="src\AdvanceTexture.h">
-      <Filter>AdvanceTexturing</Filter>
-    </ClInclude>
     <ClInclude Include="src\ProjectOpenGL1.h">
-      <Filter>BasicProject</Filter>
+      <Filter>Header\Basic tutorial</Filter>
     </ClInclude>
     <ClInclude Include="src\Application.h">
-      <Filter>BaseClass</Filter>
+      <Filter>Header\ABC</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mesh.h">
-      <Filter>LighitingProject\ModelLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Model.h">
-      <Filter>LighitingProject\ModelLoader</Filter>
+    <ClInclude Include="src\CameraProject.h">
+      <Filter>Header\Camera tutorial</Filter>
     </ClInclude>
     <ClInclude Include="src\Camera.h">
-      <Filter>Utility\Visual</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Gizmos.h">
-      <Filter>Utility\Visual</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TextRender.h">
-      <Filter>Utility\Visual</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gl_core_4_4.h">
-      <Filter>Utility\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ShaderCompiler.h">
-      <Filter>Utility\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\stb_image.h">
-      <Filter>Utility\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tiny_obj_loader.h">
-      <Filter>Utility\ModelLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Vertex.h">
-      <Filter>Utility\Visual</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Oldsrc.h">
-      <Filter>BasicProject</Filter>
+      <Filter>Header\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\Constant.h">
-      <Filter>Utility\Constant</Filter>
+      <Filter>Header\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\AnimationProject.h">
-      <Filter>Animation</Filter>
+    <ClInclude Include="src\Gizmos.h">
+      <Filter>Header\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\KeyFrame.h">
-      <Filter>Animation</Filter>
+    <ClInclude Include="src\gl_core_4_4.h">
+      <Filter>Header\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\FBXAnimationProject.h">
-      <Filter>FBXAnimation</Filter>
+    <ClInclude Include="src\stb_image.h">
+      <Filter>Header\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\Particle.h">
-      <Filter>ParticleProject</Filter>
+    <ClInclude Include="src\TextRender.h">
+      <Filter>Header\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\ParticleData.h">
-      <Filter>ParticleProject\BaseParticles</Filter>
+    <ClInclude Include="src\Vertex.h">
+      <Filter>Header\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\ParticleEmitter.h">
-      <Filter>ParticleProject\BaseParticles</Filter>
+    <ClInclude Include="src\tiny_obj_loader.h">
+      <Filter>Header\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\ParticleGenerator.h">
-      <Filter>ParticleProject\BaseParticles</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ParticleSystem.h">
-      <Filter>ParticleProject\BaseParticles</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ParticleUpdater.h">
-      <Filter>ParticleProject\BaseParticles</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ParticlesUpdaters.h">
-      <Filter>ParticleProject\ParticlesUpdaters</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ParticlesGenerators.h">
-      <Filter>ParticleProject\ParticleGenerators</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ParticlesRenderer.h">
-      <Filter>ParticleProject\ParticlesRenderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\glParticleRenderer.h">
-      <Filter>ParticleProject\ParticlesRenderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ParticleEffect.h">
-      <Filter>ParticleProject\ParticleEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TunnelEffect.h">
-      <Filter>ParticleProject\ParticleEffect\TunnelEffect</Filter>
+    <ClInclude Include="src\AdvanceTexture.h">
+      <Filter>Header\Advanced texturing tutorial</Filter>
     </ClInclude>
     <ClInclude Include="src\EmitterSh.h">
-      <Filter>ParticleSchool</Filter>
+      <Filter>Header\Particle tutorial</Filter>
     </ClInclude>
     <ClInclude Include="src\ParticleSh.h">
-      <Filter>ParticleSchool</Filter>
+      <Filter>Header\Particle tutorial</Filter>
     </ClInclude>
     <ClInclude Include="src\GPUEmitter.h">
-      <Filter>GPUParticleProject</Filter>
+      <Filter>Header\GPU particle tutorial</Filter>
     </ClInclude>
     <ClInclude Include="src\GPUParticleProject.h">
-      <Filter>GPUParticleProject</Filter>
+      <Filter>Header\GPU particle tutorial</Filter>
     </ClInclude>
-    <ClInclude Include="src\BoundingBoxes.h">
-      <Filter>BoundingBoxProject</Filter>
+    <ClInclude Include="src\GeometryProject.h">
+      <Filter>Header\Geometry tutorial</Filter>
     </ClInclude>
-    <ClInclude Include="src\CollisionProject.h">
-      <Filter>BoundingBoxProject</Filter>
+    <ClInclude Include="src\FBXAnimationProject.h">
+      <Filter>Header\Animatron tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LightingProject.h">
+      <Filter>Header\Lighting tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AnimationProject.h">
+      <Filter>Header\Animatron tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShaderCompiler.h">
+      <Filter>Header\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\KeyFrame.h">
+      <Filter>Header\Animatron tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mesh.h">
+      <Filter>Header\Animatron tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model.h">
+      <Filter>Header\Animatron tutorial</Filter>
     </ClInclude>
     <ClInclude Include="src\RenderTargetProject.h">
-      <Filter>RenderTargetProject</Filter>
+      <Filter>Header\Scene tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BoundingBoxes.h">
+      <Filter>Header\Scene tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CollisionProject.h">
+      <Filter>Header\Scene tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Oldsrc.h">
+      <Filter>Header\Utility\Old src code</Filter>
     </ClInclude>
     <ClInclude Include="src\ThreadProject.h">
-      <Filter>Threadex</Filter>
+      <Filter>Header\Threading tutorial</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="src\ShadowMap.h">
-      <Filter>ShadowMapProject</Filter>
-=======
+    <ClInclude Include="src\ParticleData.h">
+      <Filter>Header\Cookbook particle tutorial\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleEffect.h">
+      <Filter>Header\Cookbook particle tutorial\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleGenerator.h">
+      <Filter>Header\Cookbook particle tutorial\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticlesGenerators.h">
+      <Filter>Header\Cookbook particle tutorial\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleEmitter.h">
+      <Filter>Header\Cookbook particle tutorial\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticlesRenderer.h">
+      <Filter>Header\Cookbook particle tutorial\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticlesUpdaters.h">
+      <Filter>Header\Cookbook particle tutorial\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleUpdater.h">
+      <Filter>Header\Cookbook particle tutorial\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\glParticleRenderer.h">
+      <Filter>Header\Cookbook particle tutorial\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Particle.h">
+      <Filter>Header\Cookbook particle tutorial\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleSystem.h">
+      <Filter>Header\Cookbook particle tutorial\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TunnelEffect.h">
+      <Filter>Header\Cookbook particle tutorial\Test</Filter>
+    </ClInclude>
     <ClInclude Include="src\PostProcess.h">
-      <Filter>PostProcessProject</Filter>
->>>>>>> ff0a0c9aa5b35c9ded37fafd3046b37ffe7cddcd
+      <Filter>Header\Post-process tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShadowMap.h">
+      <Filter>Header\Shadow mapping %28blue book%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\shaders\LightingFragment.glsl">
-      <Filter>LighitingProject</Filter>
-    </None>
-    <None Include="data\shaders\LightingVertex.glsl">
-      <Filter>LighitingProject</Filter>
-    </None>
-    <None Include="data\shaders\SkinnedVertex.glsl">
-      <Filter>FBXAnimation</Filter>
-    </None>
-    <None Include="data\shaders\SkinnedFragment.glsl">
-      <Filter>FBXAnimation</Filter>
-    </None>
-    <None Include="data\shaders\TextureFragment.glsl">
-      <Filter>AdvanceTexturing</Filter>
-    </None>
-    <None Include="data\shaders\TextureVertex.glsl">
-      <Filter>AdvanceTexturing</Filter>
-    </None>
-    <None Include="data\shaders\ParticleVertex.glsl">
-      <Filter>ParticleSchool</Filter>
-    </None>
-    <None Include="data\shaders\ParticleFragment.glsl">
-      <Filter>ParticleSchool</Filter>
-    </None>
-    <None Include="data\shaders\ParticleEffectVertex.glsl">
-      <Filter>ParticleProject</Filter>
-    </None>
-    <None Include="data\shaders\ParticleEffectFragment.glsl">
-      <Filter>ParticleProject</Filter>
-    </None>
-    <None Include="data\shaders\GPUParticleVertex.glsl">
-      <Filter>GPUParticleProject</Filter>
-    </None>
     <None Include="data\shaders\GPUParticleFragment.glsl">
-      <Filter>GPUParticleProject</Filter>
+      <Filter>Shaders\Particle\GPU</Filter>
     </None>
     <None Include="data\shaders\GPUParticleGeometry.glsl">
-      <Filter>GPUParticleProject</Filter>
+      <Filter>Shaders\Particle\GPU</Filter>
+    </None>
+    <None Include="data\shaders\GPUParticleVertex.glsl">
+      <Filter>Shaders\Particle\GPU</Filter>
     </None>
     <None Include="data\shaders\particle_update_vert.glsl">
-      <Filter>GPUParticleProject</Filter>
+      <Filter>Shaders\Particle\GPU</Filter>
     </None>
-    <None Include="data\shaders\RenderingVertex.glsl">
-      <Filter>RenderTargetProject</Filter>
+    <None Include="data\shaders\ParticleEffectVertex.glsl">
+      <Filter>Shaders\Particle\Cookbook</Filter>
     </None>
-    <None Include="data\shaders\RenderingFragment.glsl">
-      <Filter>RenderTargetProject</Filter>
+    <None Include="data\shaders\ParticleEffectFragment.glsl">
+      <Filter>Shaders\Particle\Cookbook</Filter>
+    </None>
+    <None Include="data\shaders\ParticleVertex.glsl">
+      <Filter>Shaders\Particle\CPU</Filter>
+    </None>
+    <None Include="data\shaders\ParticleFragment.glsl">
+      <Filter>Shaders\Particle\CPU</Filter>
+    </None>
+    <None Include="data\shaders\LightingFragment.glsl">
+      <Filter>Shaders\Lighting</Filter>
+    </None>
+    <None Include="data\shaders\LightingVertex.glsl">
+      <Filter>Shaders\Lighting</Filter>
+    </None>
+    <None Include="data\shaders\TextureFragment.glsl">
+      <Filter>Shaders\Texturing</Filter>
+    </None>
+    <None Include="data\shaders\TextureVertex.glsl">
+      <Filter>Shaders\Texturing</Filter>
+    </None>
+    <None Include="data\shaders\SkinnedFragment.glsl">
+      <Filter>Shaders\Animatron</Filter>
+    </None>
+    <None Include="data\shaders\SkinnedVertex.glsl">
+      <Filter>Shaders\Animatron</Filter>
     </None>
     <None Include="data\shaders\PostEffectVertex.glsl">
-      <Filter>PostProcessProject</Filter>
+      <Filter>Shaders\Post-processing</Filter>
     </None>
     <None Include="data\shaders\PostEffectFragment.glsl">
-      <Filter>PostProcessProject</Filter>
+      <Filter>Shaders\Post-processing</Filter>
+    </None>
+    <None Include="data\shaders\RenderingFragment.glsl">
+      <Filter>Shaders\Scene</Filter>
+    </None>
+    <None Include="data\shaders\RenderingVertex.glsl">
+      <Filter>Shaders\Scene</Filter>
+    </None>
+    <None Include="data\shaders\Shadow_light_vertex.glsl">
+      <Filter>Shaders\Shadow mapping</Filter>
+    </None>
+    <None Include="data\shaders\Shadow_light_fragment.glsl">
+      <Filter>Shaders\Shadow mapping</Filter>
+    </None>
+    <None Include="data\shaders\Shadow_camera_vertex.glsl">
+      <Filter>Shaders\Shadow mapping</Filter>
+    </None>
+    <None Include="data\shaders\Shadow_camera_fragment.glsl">
+      <Filter>Shaders\Shadow mapping</Filter>
+    </None>
+    <None Include="data\shaders\Shadow_view_vertex.glsl">
+      <Filter>Shaders\Shadow mapping</Filter>
+    </None>
+    <None Include="data\shaders\Shadow_view_fragment.glsl">
+      <Filter>Shaders\Shadow mapping</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Utility">
-      <UniqueIdentifier>{265fd039-ed58-4593-a516-b36bd23c8d69}</UniqueIdentifier>
+    <Filter Include="Source">
+      <UniqueIdentifier>{b5d84cbe-5ad3-4639-aa5c-4a352920ca1f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CameraProject">
-      <UniqueIdentifier>{09418119-44de-4337-a852-30e9a4c8fe79}</UniqueIdentifier>
+    <Filter Include="Header">
+      <UniqueIdentifier>{bcc40f62-1519-4b1d-89b9-d98f510d3091}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GeometryProject">
-      <UniqueIdentifier>{a53294b3-c847-4ec9-98ca-b223ee834ec0}</UniqueIdentifier>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{8b841a01-5169-44a0-adc9-9b63ce7d4b9c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="LighitingProject">
-      <UniqueIdentifier>{75eea11a-f8c7-4f5e-b0f6-8135ad151d1a}</UniqueIdentifier>
+    <Filter Include="Header\Basic tutorial">
+      <UniqueIdentifier>{82a5b08c-2f50-42c2-ba7a-36655550fe1d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AdvanceTexturing">
-      <UniqueIdentifier>{025fcafb-06e4-45a1-9e44-d3ad0c362283}</UniqueIdentifier>
+    <Filter Include="Header\ABC">
+      <UniqueIdentifier>{9d8d1594-117d-441e-af26-50e3daa02731}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BasicProject">
-      <UniqueIdentifier>{0e68c0c3-96c3-4f63-9547-1eac1efc88ee}</UniqueIdentifier>
+    <Filter Include="Header\Camera tutorial">
+      <UniqueIdentifier>{a34be6f9-fb5b-498a-83f3-53978483de3f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BaseClass">
-      <UniqueIdentifier>{c5e60906-25b0-4127-86a6-c3273bc1fbfe}</UniqueIdentifier>
+    <Filter Include="Header\Geometry tutorial">
+      <UniqueIdentifier>{6ed3cbaa-1921-4043-9844-5d860a37c079}</UniqueIdentifier>
     </Filter>
-    <Filter Include="LighitingProject\ModelLoader">
-      <UniqueIdentifier>{7c03bce7-7533-45ef-b425-f86e7a617e7b}</UniqueIdentifier>
+    <Filter Include="Header\Utility">
+      <UniqueIdentifier>{b3278788-50d3-4c69-875a-767e20fc140f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility\Visual">
-      <UniqueIdentifier>{adc5cc74-98be-44d6-b3df-33531fc8c7d9}</UniqueIdentifier>
+    <Filter Include="Header\GPU particle tutorial">
+      <UniqueIdentifier>{08031c91-edef-455b-86f3-7acafd3e212d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility\OpenGL">
-      <UniqueIdentifier>{06c74b87-d981-4b3f-baee-f4f0318c2080}</UniqueIdentifier>
+    <Filter Include="Header\Particle tutorial">
+      <UniqueIdentifier>{9d92fce6-ddd1-47a9-b987-ba8efd0c19de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility\Texture">
-      <UniqueIdentifier>{fd6f7483-9233-43ba-a02c-24c2224c9739}</UniqueIdentifier>
+    <Filter Include="Header\Advanced texturing tutorial">
+      <UniqueIdentifier>{4f1b1839-f3d2-49d3-b2d5-2325779309bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility\ModelLoader">
-      <UniqueIdentifier>{d02f85b2-4590-4455-87bf-b5202becc5da}</UniqueIdentifier>
+    <Filter Include="Header\Animatron tutorial">
+      <UniqueIdentifier>{228e605b-a20b-48f4-a84e-4504a60ac64f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility\Constant">
-      <UniqueIdentifier>{8c142eaf-9a04-446f-8ebe-d58f90c87c7b}</UniqueIdentifier>
+    <Filter Include="Header\Lighting tutorial">
+      <UniqueIdentifier>{a7ac8f3b-5e1d-4f70-8db0-f46f1f1835b0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Animation">
-      <UniqueIdentifier>{054c58ba-cc58-4556-b99c-c5f7b5575520}</UniqueIdentifier>
+    <Filter Include="Header\Scene tutorial">
+      <UniqueIdentifier>{d236f335-1f4d-42bd-bdad-0bb2cc4b0bd7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FBXAnimation">
-      <UniqueIdentifier>{47857266-c639-4f22-bf03-e5e42f7d0652}</UniqueIdentifier>
+    <Filter Include="Header\Utility\Old src code">
+      <UniqueIdentifier>{59ec8491-26a5-4675-9401-6eab7aafa2d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ParticleProject">
-      <UniqueIdentifier>{33db099b-be1c-4b4a-ba27-0d2b5a91f322}</UniqueIdentifier>
+    <Filter Include="Header\Threading tutorial">
+      <UniqueIdentifier>{c8de90eb-a86e-474e-8b64-850ea230c696}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ParticleProject\BaseParticles">
-      <UniqueIdentifier>{7b051396-372b-45ad-a341-0d84813f46b4}</UniqueIdentifier>
+    <Filter Include="Header\Post-process tutorial">
+      <UniqueIdentifier>{6fcad6c9-21ca-4a1c-a373-5ab29984156c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ParticleProject\ParticlesUpdaters">
-      <UniqueIdentifier>{9b1ef30b-3585-48f7-bf74-7b38ba8d0381}</UniqueIdentifier>
+    <Filter Include="Header\Shadow mapping %28blue book%29">
+      <UniqueIdentifier>{3322ae1d-dbbf-4e12-aa9b-b849ccc12898}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ParticleProject\ParticleGenerators">
-      <UniqueIdentifier>{b4a9465a-e0de-4a0c-af0a-d70afc1cb967}</UniqueIdentifier>
+    <Filter Include="Shaders\Particle">
+      <UniqueIdentifier>{fedc8671-6cb9-4b7f-a521-19f752755bb1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ParticleProject\ParticlesRenderer">
-      <UniqueIdentifier>{addca3ec-c24a-4396-9e41-255b46279080}</UniqueIdentifier>
+    <Filter Include="Shaders\Particle\GPU">
+      <UniqueIdentifier>{ab48ad0c-c3e8-4968-8d24-62eec737aa6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ParticleProject\ParticleEffect">
-      <UniqueIdentifier>{b3080899-e330-49f2-92c0-98891c7f4b96}</UniqueIdentifier>
+    <Filter Include="Shaders\Particle\CPU">
+      <UniqueIdentifier>{63fc884a-2d5e-453c-bf0d-5837a16f7a9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ParticleProject\ParticleEffect\TunnelEffect">
-      <UniqueIdentifier>{4ed82290-12c0-47f6-a6f3-f140aa2949a0}</UniqueIdentifier>
+    <Filter Include="Shaders\Particle\Cookbook">
+      <UniqueIdentifier>{26004de3-7c1a-4c20-a544-9516a79ff93a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ParticleSchool">
-      <UniqueIdentifier>{724b2c63-17c1-47cd-b7f5-994d84ce11a2}</UniqueIdentifier>
+    <Filter Include="Shaders\Animatron">
+      <UniqueIdentifier>{d37b02eb-015c-4cf1-a925-a5ce4e0aa471}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GPUParticleProject">
-      <UniqueIdentifier>{3db97d5e-30bd-46f5-98d2-a35850775677}</UniqueIdentifier>
+    <Filter Include="Shaders\Lighting">
+      <UniqueIdentifier>{0c1edc5f-621e-4118-908c-8d8331975e53}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BoundingBoxProject">
-      <UniqueIdentifier>{b78676a1-d971-47f4-bb17-cb782ef85650}</UniqueIdentifier>
+    <Filter Include="Shaders\Texturing">
+      <UniqueIdentifier>{bbeb107b-3e5e-4a49-924d-328834d79eed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RenderTargetProject">
-      <UniqueIdentifier>{622ccf05-a7b1-408d-b2af-e53675442f35}</UniqueIdentifier>
+    <Filter Include="Shaders\Post-processing">
+      <UniqueIdentifier>{54bc228d-c739-40ac-b6bf-f42bf9175a5d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Threadex">
-      <UniqueIdentifier>{d7437129-633e-40b7-8e02-cf5a4124b2d4}</UniqueIdentifier>
+    <Filter Include="Shaders\Scene">
+      <UniqueIdentifier>{184f2b9f-0e33-4259-97c8-a13a04b47c88}</UniqueIdentifier>
     </Filter>
-<<<<<<< HEAD
-    <Filter Include="ShadowMapProject">
-      <UniqueIdentifier>{4f8c118f-96ac-45ee-8935-3c5e8aee67e5}</UniqueIdentifier>
-=======
-    <Filter Include="PostProcessProject">
-      <UniqueIdentifier>{bbf9e433-7957-4d59-b513-a90f821c63ed}</UniqueIdentifier>
->>>>>>> ff0a0c9aa5b35c9ded37fafd3046b37ffe7cddcd
+    <Filter Include="Source\Basic Tutorial">
+      <UniqueIdentifier>{bc0750e7-2f61-42ee-8e18-99601a030322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ABC">
+      <UniqueIdentifier>{0d3ce7ff-809b-485e-8e1c-bc620dd94e03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Camera tutorial">
+      <UniqueIdentifier>{9b3eb045-b4dc-4d08-a466-dbbeff8b6ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Geometry tutorial">
+      <UniqueIdentifier>{264ef9fd-d8c5-4d14-81c3-a6756e167ca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Lighting tutorial">
+      <UniqueIdentifier>{82f64bae-f35b-466f-9bf7-0ce5c5d8d320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Utility">
+      <UniqueIdentifier>{78b18e74-6ce0-4d6a-a9cf-a40270596666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Advanced texturing tutorial">
+      <UniqueIdentifier>{6ce07a2b-92d8-4989-a243-260b803fc825}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Animatron tutorial">
+      <UniqueIdentifier>{635062de-4895-4fea-a832-68283f509a0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scene tutorial">
+      <UniqueIdentifier>{c4213090-784f-4a19-b609-343f691e929d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Threading tutorial">
+      <UniqueIdentifier>{624de7c5-84e6-4d66-b6a7-7e1ce4313c07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GPU particle tutorial">
+      <UniqueIdentifier>{b7cc92d9-9398-4abb-8083-f6ee802c10e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Cookbook particle tutorial">
+      <UniqueIdentifier>{a29ca314-80a8-4611-949e-67db50188770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Cookbook particle tutorial\Data">
+      <UniqueIdentifier>{d99d41b2-9b18-4f08-a8a9-ccd62638cec5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Cookbook particle tutorial\Test">
+      <UniqueIdentifier>{7b0aeab3-8d98-4cd1-8804-6d0de17ab1de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Cookbook particle tutorial">
+      <UniqueIdentifier>{dca289e1-5e41-4b3e-8df4-e70d9b1c61dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Particle Tutorial">
+      <UniqueIdentifier>{e5f741dc-379d-421d-8ca3-bcb25b04bf88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Cookbook particle tutorial\Data">
+      <UniqueIdentifier>{611fe4ca-3eb7-4097-901a-aa448537ee46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Cookbook particle tutorial\Test">
+      <UniqueIdentifier>{058018c6-e131-43ef-b89c-436b7f3bb275}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Post-process tutorial">
+      <UniqueIdentifier>{80e037f9-b22f-4ebd-8220-bdf9f853d0c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Shadow mapping %28blue book%29">
+      <UniqueIdentifier>{d389070a-46b1-4b5d-911c-992947ef9469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Shadow mapping">
+      <UniqueIdentifier>{e849ad61-f928-47ed-806c-dd4ea799d9b7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 
 Camera	Application::m_oCamera = Camera();
 TweekBar Application::m_oTweek = TweekBar();
+vec3	Application::m_vScreenSize;
 bool	Application::m_bKeys[1024] = { 0 };
 static	GLdouble	 m_fPrevX;
 static	GLdouble	 m_fPrevY;
@@ -84,7 +85,7 @@ void TweekBar::AddTweakDir3f(const char* a_pccDivisor, const char* a_pccName, ve
  //			Application			//
 /////////////////////////////////
 Application::Application() : m_oWin(nullptr),
-							 m_vScreenSize(vec3(0.0f, 0.0f, 0.0f)),
+							 //m_vScreenSize(vec3(0.0f, 0.0f, 0.0f)),
 							 m_dDeltaTime(NULL),
 							 m_dCurrTime(NULL),
 							 m_dPrevTime(NULL)
@@ -270,6 +271,7 @@ void Application::scroll_callback(GLFWwindow* a_oWindow, double a_fOffsetX, doub
 void Application::framebuffer_size_callback(GLFWwindow* a_oWindow, int a_iWidth, int a_iHeight)
 {
 	glfwGetFramebufferSize(a_oWindow, &a_iWidth, &a_iHeight);
+	m_vScreenSize = vec3(a_iWidth, a_iHeight, NULL);
 	TwWindowSize(a_iWidth, a_iHeight);
 	glViewport(0, 0, a_iWidth, a_iHeight);
 }

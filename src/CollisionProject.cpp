@@ -234,8 +234,8 @@ void CollisionP::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pc
 
 	float _extents = 100.0f;
 
-	for (GLuint mesh_idx = 0; mesh_idx < 20; ++mesh_idx)
-	{
+	//for (GLuint mesh_idx = 0; mesh_idx < 20; ++mesh_idx)
+	//{
 		m_oMesh.push_back(m_oMesh[0]);
 		//m_oMesh.back().m_mTransform =
 		//	glm::translate(
@@ -248,7 +248,7 @@ void CollisionP::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pc
 		//		 vec3(glm::linearRand(-10, 10), 
 		//			  glm::linearRand(-10, 10), 
 		//			  glm::linearRand(-10, 10))));
-	}
+	//}
 
 	m_vAmbientLight = vec3(0.1f);
 	m_vLightDir = vec3(0, -1, 0);
@@ -322,13 +322,10 @@ void CollisionP::Draw()
 	Use();
 
 	mat4 _projview = m_oProjection * m_oView;
-	Gizmos::draw(_projview);
 
 	vec4 _planes[6];
 
 	GetFrustumPlanes(m_oCamera.GetProjViewTransform(vec2(m_vScreenSize.x, m_vScreenSize.y)), _planes);
-	
-	vec4 _planeColour = _black;
 
 	for (unsigned int mesh_idx = 0; mesh_idx < m_oMesh.size(); ++mesh_idx)
 	{
@@ -355,8 +352,10 @@ void CollisionP::Draw()
 			//GLuint _modelUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "Model");
 			//glUniformMatrix4fv(_modelUni, 1, GL_FALSE, glm::value_ptr(m_oWorld));
 			DrawMesh(m_oMesh[mesh_idx]);
+			RenderAABB(m_oMesh[mesh_idx].m_oAABB, m_oMesh[mesh_idx].m_mTransform);
 		}
 	}
+	Gizmos::draw(_projview);
 }
 
 void CollisionP::MoveCamera(float a_fDeltaTime)
