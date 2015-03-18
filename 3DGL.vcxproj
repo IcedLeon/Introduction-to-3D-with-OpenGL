@@ -86,6 +86,7 @@
     <ClCompile Include="src\BoundingBoxes.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\CameraProject.cpp" />
+    <ClCompile Include="src\ClothSimulation.cpp" />
     <ClCompile Include="src\CollisionProject.cpp" />
     <ClCompile Include="src\EmitterSh.cpp" />
     <ClCompile Include="src\FBXAnimationProject.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="src\BoundingBoxes.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\CameraProject.h" />
+    <ClInclude Include="src\ClothSimulation.h" />
     <ClInclude Include="src\CollisionProject.h" />
     <ClInclude Include="src\Constant.h" />
     <ClInclude Include="src\EmitterSh.h" />
@@ -163,6 +165,10 @@
     <ClInclude Include="src\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="data\shaders\AdsFragment.glsl" />
+    <None Include="data\shaders\AdsVertex.glsl" />
+    <None Include="data\shaders\ClothCompute.glsl" />
+    <None Include="data\shaders\ClothNormalCompute.glsl" />
     <None Include="data\shaders\GPUParticleFragment.glsl" />
     <None Include="data\shaders\GPUParticleGeometry.glsl" />
     <None Include="data\shaders\GPUParticleVertex.glsl" />

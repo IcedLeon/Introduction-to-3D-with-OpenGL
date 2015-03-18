@@ -109,6 +109,9 @@
     <ClCompile Include="src\ShadowMap.cpp">
       <Filter>Source\Shadow mapping %28blue book%29</Filter>
     </ClCompile>
+    <ClCompile Include="src\ClothSimulation.cpp">
+      <Filter>Source\Cloth simulation tutorial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ProjectOpenGL1.h">
@@ -240,6 +243,9 @@
     <ClInclude Include="src\ShadowMap.h">
       <Filter>Header\Shadow mapping %28blue book%29</Filter>
     </ClInclude>
+    <ClInclude Include="src\ClothSimulation.h">
+      <Filter>Header\Cloth simulation tutorial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\GPUParticleFragment.glsl">
@@ -313,6 +319,18 @@
     </None>
     <None Include="data\shaders\Shadow_view_fragment.glsl">
       <Filter>Shaders\Shadow mapping</Filter>
+    </None>
+    <None Include="data\shaders\AdsVertex.glsl">
+      <Filter>Shaders\Cloth</Filter>
+    </None>
+    <None Include="data\shaders\AdsFragment.glsl">
+      <Filter>Shaders\Cloth</Filter>
+    </None>
+    <None Include="data\shaders\ClothCompute.glsl">
+      <Filter>Shaders\Cloth</Filter>
+    </None>
+    <None Include="data\shaders\ClothNormalCompute.glsl">
+      <Filter>Shaders\Cloth</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -459,6 +477,15 @@
     </Filter>
     <Filter Include="Shaders\Shadow mapping">
       <UniqueIdentifier>{e849ad61-f928-47ed-806c-dd4ea799d9b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Cloth simulation tutorial">
+      <UniqueIdentifier>{d91cef66-b9a2-49c1-ae67-367133dd25b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Cloth simulation tutorial">
+      <UniqueIdentifier>{054658a7-7255-4a1a-ba08-8881d8943e68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Cloth">
+      <UniqueIdentifier>{c71c4041-40ab-44a8-8e83-e11df4b2a797}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

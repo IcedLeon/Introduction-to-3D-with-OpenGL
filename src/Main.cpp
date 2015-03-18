@@ -1,8 +1,8 @@
-#include "ShadowMap.h"
+#include "ClothSimulation.h"
 
 int main()
 {
-	ShadowMap _app;
+	ClothSimulation _app;
 
 	float _dt;
 
