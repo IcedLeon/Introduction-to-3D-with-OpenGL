@@ -88,6 +88,7 @@
     <ClCompile Include="src\CameraProject.cpp" />
     <ClCompile Include="src\ClothSimulation.cpp" />
     <ClCompile Include="src\CollisionProject.cpp" />
+    <ClCompile Include="src\Dof.cpp" />
     <ClCompile Include="src\EmitterSh.cpp" />
     <ClCompile Include="src\FBXAnimationProject.cpp" />
     <ClCompile Include="src\GeometryProject.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="src\ClothSimulation.h" />
     <ClInclude Include="src\CollisionProject.h" />
     <ClInclude Include="src\Constant.h" />
+    <ClInclude Include="src\Dof.h" />
     <ClInclude Include="src\EmitterSh.h" />
     <ClInclude Include="src\FBXAnimationProject.h" />
     <ClInclude Include="src\GeometryProject.h" />
@@ -169,6 +171,11 @@
     <None Include="data\shaders\AdsVertex.glsl" />
     <None Include="data\shaders\ClothCompute.glsl" />
     <None Include="data\shaders\ClothNormalCompute.glsl" />
+    <None Include="data\shaders\DofDisplayFragment.glsl" />
+    <None Include="data\shaders\DofDisplayVertex.glsl" />
+    <None Include="data\shaders\DofFragment.glsl" />
+    <None Include="data\shaders\DofVertex.glsl" />
+    <None Include="data\shaders\GenSatCompute.glsl" />
     <None Include="data\shaders\GPUParticleFragment.glsl" />
     <None Include="data\shaders\GPUParticleGeometry.glsl" />
     <None Include="data\shaders\GPUParticleVertex.glsl" />

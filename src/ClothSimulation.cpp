@@ -172,6 +172,8 @@ void ClothSimulation::Draw()
 	glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 	//Render pass
 	//glUseProgram(m_uiRenderProgram); //Redoundant?! HERE!!!! CHECK IF IT WORK SWITCHED OFF.
+
+	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	Use();
 	//Last render pass, draw the cloth.
@@ -202,7 +204,7 @@ void ClothSimulation::MoveCamera(float a_fDeltaTime)
 		glEnable(GL_CULL_FACE);
 	//Culling off
 	if (m_bKeys[GLFW_KEY_V])
-		glDisable(GL_CULL_FACE);
+		glDisable(GL_CULL_FACE);		
 }
 
 void ClothSimulation::Use()
@@ -224,9 +226,9 @@ void ClothSimulation::Use()
 void ClothSimulation::CreateBuffer()
 {
 	//Starting position for the cloth
-	mat4 _clothTransform	= glm::translate(mat4(1.0f), vec3(0, m_vClothSize.y, 0));
-	_clothTransform			= glm::rotate(_clothTransform, glm::radians(-80.0f), vec3(1, 0, 0));
-	_clothTransform			= glm::translate(_clothTransform, vec3(0, -m_vClothSize.y, 0));
+	mat4 _clothTransform = glm::translate(mat4(1.0f), vec3(0, m_vClothSize.y, 0));
+		 _clothTransform = glm::rotate(_clothTransform, glm::radians(-80.0f), vec3(1, 0, 0));
+		 _clothTransform = glm::translate(_clothTransform, vec3(0, -m_vClothSize.y, 0));
 
 	std::vector<GLfloat> _initPos;
 	std::vector<GLfloat> _initVel(m_viParticleNum.x * m_viParticleNum.y * 2, 0.0f);

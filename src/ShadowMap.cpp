@@ -97,21 +97,19 @@ void ShadowMap::Update(GLdouble a_dDeltaTime)
 
 	vec3 _lightPos = vec3(_f * 1.2f, _f * 1.2f, _f * 1.2f);
 	glUniform3fv(m_oUniform.View.Light_Pos, 1, (float*)&_lightPos);
-	Gizmos::addSphere(_lightPos, 5, 20, 20, vec4(1));
 
 	m_mLightProjTrans = glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 200.0f);
 	m_mLightViewTrans = glm::lookAt(_lightPos, vec3(0.0f), vec3(0.0f, 1.0f, 0.0f));
 
 	mat4 _lightProjView = m_mLightProjTrans * m_mLightViewTrans;
-	Gizmos::draw(m_oCamera.GetProjViewTransform(m_vScreenSize.xy()));
 	//m_oObject[0].m_mModelTrans = glm::rotate(_f * 4.5f, vec3(0, 1, 0));
 
 	float _sinTranslation = sinf(_f * 0.37f);
 	float _cosTranslation = cosf(_f * 0.37f);
 
 	m_oObject[1].m_mModelTrans = m_oObject[0].m_mModelTrans * glm::rotate(_f, vec3(0, 1, 0)) * glm::translate(vec3(_sinTranslation * 13.0f, _cosTranslation * 17.5f, 10.0f)) * glm::scale(vec3(0.5f));
-	m_oObject[2].m_mModelTrans = m_oObject[0].m_mModelTrans * glm::rotate(_f, vec3(0, 1, 0)) * glm::translate(vec3(_sinTranslation * 11.7f, _cosTranslation * 15.5f, 8.0f)) * glm::scale(vec3(0.5f));
-	m_oObject[3].m_mModelTrans = m_oObject[0].m_mModelTrans * glm::rotate(_f, vec3(0, 1, 0)) * glm::translate(vec3(_sinTranslation * 12.0f, _cosTranslation * 11.0f, 4.0f)) * glm::scale(vec3(0.5f));
+	m_oObject[2].m_mModelTrans = m_oObject[0].m_mModelTrans * glm::rotate(_f, vec3(0, 1, 0)) * glm::translate(vec3(_sinTranslation * 21.7f, _cosTranslation * 15.5f, 8.0f)) * glm::scale(vec3(0.5f));
+	m_oObject[3].m_mModelTrans = m_oObject[0].m_mModelTrans * glm::rotate(_f, vec3(0, 1, 0)) * glm::translate(vec3(_sinTranslation * 32.0f, _cosTranslation * 11.0f, 4.0f)) * glm::scale(vec3(0.5f));
 
 	OnKey();
 	MoveCamera((float)a_dDeltaTime);

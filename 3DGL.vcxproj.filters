@@ -112,6 +112,9 @@
     <ClCompile Include="src\ClothSimulation.cpp">
       <Filter>Source\Cloth simulation tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="src\Dof.cpp">
+      <Filter>Source\DOF tutorial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ProjectOpenGL1.h">
@@ -246,6 +249,9 @@
     <ClInclude Include="src\ClothSimulation.h">
       <Filter>Header\Cloth simulation tutorial</Filter>
     </ClInclude>
+    <ClInclude Include="src\Dof.h">
+      <Filter>Header\DOF tutorial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\GPUParticleFragment.glsl">
@@ -331,6 +337,21 @@
     </None>
     <None Include="data\shaders\ClothNormalCompute.glsl">
       <Filter>Shaders\Cloth</Filter>
+    </None>
+    <None Include="data\shaders\DofVertex.glsl">
+      <Filter>Shaders\DOF</Filter>
+    </None>
+    <None Include="data\shaders\DofFragment.glsl">
+      <Filter>Shaders\DOF</Filter>
+    </None>
+    <None Include="data\shaders\DofDisplayVertex.glsl">
+      <Filter>Shaders\DOF</Filter>
+    </None>
+    <None Include="data\shaders\DofDisplayFragment.glsl">
+      <Filter>Shaders\DOF</Filter>
+    </None>
+    <None Include="data\shaders\GenSatCompute.glsl">
+      <Filter>Shaders\DOF</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -486,6 +507,15 @@
     </Filter>
     <Filter Include="Shaders\Cloth">
       <UniqueIdentifier>{c71c4041-40ab-44a8-8e83-e11df4b2a797}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\DOF tutorial">
+      <UniqueIdentifier>{a2505bbf-27f5-4b6e-b53f-f627d489d246}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DOF tutorial">
+      <UniqueIdentifier>{e6d39f19-8383-4f58-98dc-a099d6555a91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\DOF">
+      <UniqueIdentifier>{658335cf-abfb-4395-8bed-0ce2e822c46b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

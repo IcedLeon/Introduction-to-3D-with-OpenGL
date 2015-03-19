@@ -32,6 +32,18 @@ void main(void)
     vec3 diffuse = max(dot(N, L), 0.0) * Diffuse_Albedo;
     vec3 specular = pow(max(dot(R, V), 0.0), Specular_Power) * Specular_Albedo;
 
+	//PCF render pass
+	float _sum = 0;
+	//Summing the contribution from the texel around the shadow uv coord.
+	_sum += textureProjOffset(Shadow_Tex, fs_in.shadow_coord, ivec2(-1, -1));
+	_sum += textureProjOffset(Shadow_Tex, fs_in.shadow_coord, ivec2(-1,  1));
+	_sum += textureProjOffset(Shadow_Tex, fs_in.shadow_coord, ivec2( 1,  1));
+	_sum += textureProjOffset(Shadow_Tex, fs_in.shadow_coord, ivec2( 1, -1));
+
+	float _pfc = _sum * 0.25;
+
+	//Colour = vec4(vec3(0.2) + diffuse + specular * _pfc, 1.0);
+
     // Write final color to the framebuffer
-    Colour = textureProj(Shadow_Tex, fs_in.shadow_coord) * mix(vec4(1.0), vec4(diffuse + specular, 1.0), bvec4(Full_Shading));
+    Colour = textureProj(Shadow_Tex, fs_in.shadow_coord) * mix(vec4(1.0), vec4((diffuse + specular) * _pfc, 1.0), bvec4(Full_Shading));
 }
