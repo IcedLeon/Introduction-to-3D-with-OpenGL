@@ -17,7 +17,7 @@ ShadowMap::ShadowMap() : Application(),
 
 ShadowMap::~ShadowMap()
 {
-
+	m_oObject.clear();
 }
 
 void ShadowMap::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)
@@ -41,7 +41,6 @@ void ShadowMap::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pcc
 	for (unsigned int i = 0; i < 4; ++i)
 	{
 		LoadMesh(_objNames[i]);
-		m_oObject.push_back(m_oObject[i]);
 	}
 
 	glGenFramebuffers(1, &m_uiFBO_D);
@@ -135,6 +134,7 @@ void ShadowMap::Draw()
 		glBindVertexArray(m_uiVAO_Quad);
 		glUseProgram(m_uiShowLightDepthProgram);
 		glBindTexture(GL_TEXTURE_2D, m_uiFBO_D_T);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	}
 	else
 	{

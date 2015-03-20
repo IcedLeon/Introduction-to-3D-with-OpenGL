@@ -44,6 +44,7 @@ void main(void)
 
 	//Colour = vec4(vec3(0.2) + diffuse + specular * _pfc, 1.0);
 
+	Colour = pow(Colour, vec4(1.0 / 2.2) );
     // Write final color to the framebuffer
     Colour = textureProj(Shadow_Tex, fs_in.shadow_coord) * mix(vec4(1.0), vec4((diffuse + specular) * _pfc, 1.0), bvec4(Full_Shading));
 }

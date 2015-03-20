@@ -1,8 +1,8 @@
-#include "ClothSimulation.h"
+#include "Dof.h"
 
 int main()
 {
-	ClothSimulation _app;
+	Dof _app;
 
 	float _dt;
 

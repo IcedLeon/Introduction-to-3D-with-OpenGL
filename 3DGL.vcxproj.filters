@@ -115,6 +115,9 @@
     <ClCompile Include="src\Dof.cpp">
       <Filter>Source\DOF tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="src\DeferredRendering.cpp">
+      <Filter>Source\Deferred rendering tutorial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ProjectOpenGL1.h">
@@ -252,6 +255,9 @@
     <ClInclude Include="src\Dof.h">
       <Filter>Header\DOF tutorial</Filter>
     </ClInclude>
+    <ClInclude Include="src\DeferredRendering.h">
+      <Filter>Header\Deferred rendering tutorial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\GPUParticleFragment.glsl">
@@ -352,6 +358,21 @@
     </None>
     <None Include="data\shaders\GenSatCompute.glsl">
       <Filter>Shaders\DOF</Filter>
+    </None>
+    <None Include="data\shaders\GBufferVertex.glsl">
+      <Filter>Shaders\Deferred</Filter>
+    </None>
+    <None Include="data\shaders\GBufferFragment.glsl">
+      <Filter>Shaders\Deferred</Filter>
+    </None>
+    <None Include="data\shaders\CompositeVertex.glsl">
+      <Filter>Shaders\Deferred</Filter>
+    </None>
+    <None Include="data\shaders\CompositeFragment.glsl">
+      <Filter>Shaders\Deferred</Filter>
+    </None>
+    <None Include="data\shaders\DirectionalLightFragment.glsl">
+      <Filter>Shaders\Deferred</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -516,6 +537,15 @@
     </Filter>
     <Filter Include="Shaders\DOF">
       <UniqueIdentifier>{658335cf-abfb-4395-8bed-0ce2e822c46b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Deferred rendering tutorial">
+      <UniqueIdentifier>{f3e3ace9-8060-4770-a9a4-04a8e15e6cbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Deferred">
+      <UniqueIdentifier>{1e884832-a8e6-4a45-b5b4-e580dffb11f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Deferred rendering tutorial">
+      <UniqueIdentifier>{d505260f-d23d-4fb1-a9f2-2bbe985039c2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
