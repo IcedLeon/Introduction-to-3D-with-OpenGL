@@ -1,26 +1,38 @@
 #include "Dof.h"
 #include <GLFW\glfw3.h>
 #include "Camera.h"
-#include "tiny_obj_loader.h"
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <thread>
 
 Dof::Dof() : Application(),
+			 m_oFile(nullptr),
 			 m_fFocalDist(NULL),
 			 m_fFocalDepth(NULL),
 			 m_uiQuad_VAO(NULL),
+			 m_uiViewProgram(NULL),
+			 m_uiFilterProgram(NULL),
+			 m_uiDisplayProgram(NULL),
+			 m_bLoaded(false),
+			 m_bUnlockContent(false),
 			 m_bPaused(false)
 { }
 
 Dof::~Dof()
 {
-
 }
 
 void Dof::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)
 {
+	int _idLenght, //Lenght of the image ID field.
+		_mapType,  //Color map type (expect 0 == no color map).
+		_typeCode, //Image type code (expect 2 == uncompressed).
+		_originX,  //UV coordinate of the origin for the X.
+		_originY,  //UV coordinate of the origin for the Y.
+		_bpp	   //Bits per pixel (expect 24 or 32).
+		= NULL;
 	Application::InitWindow(a_vCamPos, a_vScreenSize, a_pccWinName, a_bFullScreen);
 	
 	m_oProjection = m_oCamera.GetProjectionTransform(glm::vec2(a_vScreenSize.x, a_vScreenSize.y), 2.0f, 300.0f);
@@ -32,36 +44,34 @@ void Dof::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccWinNam
 
 	static const char* const _objNames[] =
 	{
-		"./models/stanford/dragon.obj",
-		"./models/stanford/buddha.obj",
-		"./models/stanford/bunny.obj",
-		"./models/stanford/dragon.obj",
-		"./models/stanford/Batman.obj",
+		"./models/stanford/dragon.fbx",
+		"./models/stanford/buddha.fbx",
+		"./models/stanford/bunny.fbx",
 	};
+	int _choosedMesh = glm::linearRand(0, 3);
 
-	static const vec4 object_colors[] =
-	{
-		vec4(1.0f, 0.7f, 0.8f, 1.0f),
-		vec4(0.7f, 0.8f, 1.0f, 1.0f),
-		vec4(0.3f, 0.9f, 0.4f, 1.0f),
-		vec4(0.6f, 0.4f, 0.9f, 1.0f),
-		vec4(0.8f, 0.2f, 0.1f, 1.0f),
-	};
-
-	for (unsigned int i = 0; i < 5; ++i)
-	{
-		LoadMesh(_objNames[i]);
-		m_oObject[i].m_vDiffuseAlbedo = object_colors[i];
-		m_oObject.push_back(m_oObject[i]);
-	}
+	StartThreding(_objNames[_choosedMesh]);
 
 	GenBuffers();
+}
+
+void Dof::LoadFBXFile(const char* a_pccFileName)
+{
+	printf("Loading mesh %s \n", a_pccFileName);
+	m_oFile = new FBXFile();
+	m_oFile->load(a_pccFileName);
+	m_bUnlockContent = true;
+}
+
+void Dof::StartThreding(const char* a_pccFileName)
+{
+	_newThread	= std::thread(&Dof::LoadFBXFile, this, a_pccFileName);
 }
 
 void Dof::Update(GLdouble a_dDeltaTime)
 {
 	m_oView = m_oCamera.GetViewTransform();
-	//m_oWorld = m_oCamera.GetWorldTransform();
+	m_oWorld = m_oCamera.GetWorldTransform();
 	//m_oView = glm::lookAt(vec3(0.0f, 0.0f, 40.0f), vec3(0.0f), vec3(0.0f, 1.0f, 0.0f));
 
 	static const GLfloat _zeros[] = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -73,37 +83,62 @@ void Dof::Update(GLdouble a_dDeltaTime)
 		_totalTime += (float)(a_dDeltaTime - _lastTime);
 
 	const float _f = _totalTime * 0.12f;
-
-	m_oObject[0].m_mModelTrans = glm::translate(vec3(5.0f, 0.0f, 20.0f)) *
-								 glm::rotate(_f, vec3(0.0f, 1.0f, 0.0f)) *
-								 glm::rotate(20.0f, vec3(1.0f, 0.0f, 0.0f)) *
-								 glm::translate(vec3(0.0f, -4.0f, 0.0f));
-
-	m_oObject[1].m_mModelTrans = glm::translate(vec3(-5.0f, 0.0f, 20.0f)) *
-								 glm::rotate(_f, vec3(0.0f, 1.0f, 0.0f)) *
-								 glm::rotate(20.0f, vec3(1.0f, 0.0f, 0.0f)) *
-								 glm::translate(vec3(0.0f, -4.0f, 0.0f));
-
-	m_oObject[2].m_mModelTrans = glm::translate(vec3(-15.0f, 0.0f, 20.0f)) *
-								 glm::rotate(_f, vec3(0.0f, 1.0f, 0.0f)) *
-								 glm::rotate(20.0f, vec3(1.0f, 0.0f, 0.0f)) *
-								 glm::translate(vec3(0.0f, -4.0f, 0.0f));
 	
-	m_oObject[3].m_mModelTrans = glm::translate(vec3(-25.0f, 0.0f, 20.0f)) *
-								 glm::rotate(_f, vec3(0.0f, 1.0f, 0.0f)) *
-								 glm::rotate(20.0f, vec3(1.0f, 0.0f, 0.0f)) *
-								 glm::translate(vec3(0.0f, -4.0f, 0.0f));
-	
-	m_oObject[4].m_mModelTrans = glm::translate(vec3(-35.0f, 0.0f, 20.0f)) *
-								 glm::rotate(_f, vec3(0.0f, 1.0f, 0.0f)) *
-								 glm::rotate(20.0f, vec3(1.0f, 0.0f, 0.0f)) *
-								 glm::translate(vec3(0.0f, -4.0f, 0.0f));
+	if (m_bUnlockContent)
+	{
+		static const vec4 object_colors[] =
+		{
+			vec4(1.0f, 0.7f, 0.8f, 1.0f),
+			vec4(0.7f, 0.8f, 1.0f, 1.0f),
+			vec4(0.3f, 0.9f, 0.4f, 1.0f),
+			vec4(0.6f, 0.4f, 0.9f, 1.0f),
+			vec4(0.8f, 0.2f, 0.1f, 1.0f),
+		};
+
+		for (unsigned int i = 0; i < 5; ++i)
+		{
+			m_oObject.push_back(LoadMesh(m_oFile));
+			m_oObject[i]->m_vDiffuseAlbedo = object_colors[i];
+		}
+		m_bUnlockContent = !m_bUnlockContent;
+		m_bLoaded		 = !m_bLoaded;
+	}
+
+	if (m_bLoaded)
+	{ 
+		m_oObject[0]->m_mModelTrans = glm::translate(vec3(5.0f, 0.0f, 20.0f)) *
+									 glm::rotate(_f, vec3(0.0f, 1.0f, 0.0f)) *
+									 glm::rotate(20.0f, vec3(1.0f, 0.0f, 0.0f)) *
+									 glm::translate(vec3(0.0f, -4.0f, 0.0f));
+
+		m_oObject[1]->m_mModelTrans = glm::translate(vec3(-5.0f, 0.0f, 20.0f)) *
+									 glm::rotate(_f, vec3(0.0f, 1.0f, 0.0f)) *
+									 glm::rotate(20.0f, vec3(1.0f, 0.0f, 0.0f)) *
+									 glm::translate(vec3(0.0f, -4.0f, 0.0f));
+
+		m_oObject[2]->m_mModelTrans = glm::translate(vec3(-15.0f, 0.0f, 20.0f)) *
+									 glm::rotate(_f, vec3(0.0f, 1.0f, 0.0f)) *
+									 glm::rotate(20.0f, vec3(1.0f, 0.0f, 0.0f)) *
+									 glm::translate(vec3(0.0f, -4.0f, 0.0f));
+		
+		m_oObject[3]->m_mModelTrans = glm::translate(vec3(-25.0f, 0.0f, 20.0f)) *
+									 glm::rotate(_f, vec3(0.0f, 1.0f, 0.0f)) *
+									 glm::rotate(20.0f, vec3(1.0f, 0.0f, 0.0f)) *
+									 glm::translate(vec3(0.0f, -4.0f, 0.0f));
+		
+		m_oObject[4]->m_mModelTrans = glm::translate(vec3(-35.0f, 0.0f, 20.0f)) *
+									 glm::rotate(_f, vec3(0.0f, 1.0f, 0.0f)) *
+									 glm::rotate(20.0f, vec3(1.0f, 0.0f, 0.0f)) *
+									 glm::translate(vec3(0.0f, -4.0f, 0.0f));
+	}
 	OnKey();
 	MoveCamera((float)a_dDeltaTime);
 }
 
 void Dof::CleanUpWin()
 {
+	_newThread.join();
+	delete m_oFile;
 	glDeleteProgram(m_uiDisplayProgram);
 	glDeleteProgram(m_uiFilterProgram);
 	glDeleteProgram(m_uiViewProgram);
@@ -113,7 +148,9 @@ void Dof::CleanUpWin()
 void Dof::Draw()
 {
 	glEnable(GL_DEPTH_TEST);
-	RenderPass();
+
+	if (m_bLoaded)
+		RenderPass();
 
 	glUseProgram(m_uiFilterProgram);
 	glBindImageTexture(0, Buffer.m_uiCol_T, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA32F);
@@ -226,12 +263,12 @@ void Dof::RenderPass()
 
 	glClearBufferfv(GL_DEPTH, 0, _ones);
 
-	int i;
-	for (i = 0; i < 4; ++i)
+	unsigned int i;
+	for (i = 0; i < m_oObject.size(); ++i)
 	{
-		mat4& _modelMat = m_oObject[i].m_mModelTrans;
+		mat4& _modelMat = m_oObject[i]->m_mModelTrans;
 		glUniformMatrix4fv(Uniforms.View.m_iMV, 1, GL_FALSE, value_ptr(m_oView * _modelMat));
-		glUniform3fv(Uniforms.View.m_iDiffuseAlb, 1, (float*)&m_oObject[i].m_vDiffuseAlbedo);
+		glUniform3fv(Uniforms.View.m_iDiffuseAlb, 1, (float*)&m_oObject[i]->m_vDiffuseAlbedo);
 		DrawMesh(m_oObject[i]);
 	}
 
@@ -364,69 +401,48 @@ void Dof::LoadShader()
 	ComputeProgram(DOF_COMPUTE_GLSL, &m_uiFilterProgram);
 }
 
-void Dof::LoadMesh(const char* a_pccFileName)
+MeshData* Dof::LoadMesh(FBXFile* a_oFile)
 {
-	std::vector<tinyobj::shape_t> _shapes;
-	std::vector<tinyobj::material_t> _materials;
+	MeshData* _result = new MeshData();
 
-	tinyobj::LoadObj(_shapes, _materials, a_pccFileName);
+	unsigned int _meshCount = a_oFile->getMeshCount();
 
-	unsigned int mesh_count = m_oObject.size();
-
-	m_oObject.resize(m_oObject.size() + _shapes.size());
-
-	for (unsigned int shape_index = 0; shape_index < _shapes.size(); ++shape_index)
+	for (unsigned int meshIndx = 0; meshIndx < _meshCount; ++meshIndx)
 	{
-		unsigned int mesh_index = mesh_count + shape_index;
+		FBXMeshNode* _currMesh = a_oFile->getMeshByIndex(meshIndx);
 
-		std::vector<float> _vertexData;
+		_result->m_uiIndexCount = _currMesh->m_indices.size();
 
-		unsigned int float_count = _shapes[shape_index].mesh.positions.size();
-		float_count += _shapes[shape_index].mesh.normals.size();
+		glGenBuffers(1, &_result->m_uiVBO);
+		glGenBuffers(1, &_result->m_uiIBO);
+		glGenVertexArrays(1, &_result->m_uiVAO);
 
-		_vertexData.reserve(float_count);
+		glBindVertexArray(_result->m_uiVAO);
 
-		_vertexData.insert(_vertexData.end(),
-			_shapes[shape_index].mesh.positions.begin(),
-			_shapes[shape_index].mesh.positions.end());
+		glBindBuffer(GL_ARRAY_BUFFER, _result->m_uiVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(FBXVertex) * _currMesh->m_vertices.size(),
+			_currMesh->m_vertices.data(), GL_STATIC_DRAW);
 
-		_vertexData.insert(_vertexData.end(),
-			_shapes[shape_index].mesh.normals.begin(),
-			_shapes[shape_index].mesh.normals.end());
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _result->m_uiIBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * _currMesh->m_indices.size(),
+			_currMesh->m_indices.data(), GL_STATIC_DRAW);
 
-		m_oObject[mesh_index].m_uiIndexCount =
-			_shapes[shape_index].mesh.indices.size();
+		glEnableVertexAttribArray(0); //Position
+		glEnableVertexAttribArray(1); //Normal
 
-		glGenVertexArrays(1, &m_oObject[mesh_index].m_uiVAO);
-		glGenBuffers(1, &m_oObject[mesh_index].m_uiVBO);
-		glGenBuffers(1, &m_oObject[mesh_index].m_uiIBO);
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::PositionOffset);
 
-		glBindVertexArray(m_oObject[mesh_index].m_uiVAO);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::NormalOffset);
 
-		glBindBuffer(GL_ARRAY_BUFFER, m_oObject[mesh_index].m_uiVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* float_count,
-			_vertexData.data(), GL_STATIC_DRAW);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_oObject[mesh_index].m_uiIBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-			_shapes[shape_index].mesh.indices.size() * sizeof(unsigned int),
-			_shapes[shape_index].mesh.indices.data(), GL_STATIC_DRAW);
-
-		glEnableVertexAttribArray(0); //position
-		glEnableVertexAttribArray(1); //normals
-
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, NULL, NULL);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE, NULL,
-			(void*)(sizeof(float)* _shapes[shape_index].mesh.positions.size()));
-
-		glBindVertexArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindVertexArray(NULL);
+		glBindBuffer(GL_ARRAY_BUFFER, NULL);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
 	}
+	return _result;
 }
 
-void Dof::DrawMesh(MeshData a_oMesh)
+void Dof::DrawMesh(MeshData* a_oMesh)
 {
-	glBindVertexArray(a_oMesh.m_uiVAO);
-	glDrawElements(GL_TRIANGLES, a_oMesh.m_uiIndexCount, GL_UNSIGNED_INT, NULL);
+	glBindVertexArray(a_oMesh->m_uiVAO);
+	glDrawElements(GL_TRIANGLES, a_oMesh->m_uiIndexCount, GL_UNSIGNED_INT, NULL);
 }

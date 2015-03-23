@@ -118,6 +118,9 @@
     <ClCompile Include="src\DeferredRendering.cpp">
       <Filter>Source\Deferred rendering tutorial</Filter>
     </ClCompile>
+    <ClCompile Include="src\TgaWrapper.cpp">
+      <Filter>Source\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ProjectOpenGL1.h">
@@ -257,6 +260,9 @@
     </ClInclude>
     <ClInclude Include="src\DeferredRendering.h">
       <Filter>Header\Deferred rendering tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TgaWrapper.h">
+      <Filter>Header\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@
 //Lib
 #include "Application.h"
 #include "ShaderCompiler.h"
+#include "FBXFile.h"
 #include <vector>
 //Using
 using std::vector;
@@ -24,48 +25,67 @@ struct MeshData
 	GLuint m_uiVBO;
 	GLuint m_uiIBO;
 	GLuint m_uiIndexCount;
+
+	MeshData() : m_mModelTrans(mat4(0)),
+				 m_vDiffuseAlbedo(vec4(0)),
+				 m_uiVAO(NULL),
+				 m_uiVBO(NULL),
+				 m_uiIBO(NULL),
+				 m_uiIndexCount(NULL)
+	{ }
+	MeshData(const MeshData& a_Mesh) : m_mModelTrans(a_Mesh.m_mModelTrans),
+									   m_vDiffuseAlbedo(a_Mesh.m_vDiffuseAlbedo),
+									   m_uiVAO(a_Mesh.m_uiVAO),
+									   m_uiVBO(a_Mesh.m_uiVBO),
+									   m_uiIBO(a_Mesh.m_uiIBO),
+									   m_uiIndexCount(a_Mesh.m_uiIndexCount)
+	{ }
 };
 
 class Dof : public Application
 {
 private:
 	//
-	ShaderCompiler	 m_oShader;
-	vector<MeshData> m_oObject;
-	float			 m_fFocalDist;
-	float			 m_fFocalDepth;
+	FBXFile*			m_oFile;
+	ShaderCompiler		m_oShader;
+	vector<MeshData*>	m_oObject;
+	std::thread			_newThread;
+	float				m_fFocalDist;
+	float				m_fFocalDepth;
 	//
 	struct
 	{
 		struct
 		{
-			GLint m_iFocalDist;
-			GLint m_iFocalDepth;
+			GLint		m_iFocalDist;
+			GLint		m_iFocalDepth;
 		} DOF;
 		struct
 		{
-			GLint m_iMV;
-			GLint m_iProj;
-			GLint m_iFullShading;
-			GLint m_iDiffuseAlb;
+			GLint		m_iMV;
+			GLint		m_iProj;
+			GLint		m_iFullShading;
+			GLint		m_iDiffuseAlb;
 		} View;
 	} Uniforms;
 	//
 	struct
 	{
-		GLuint m_uiFBO_D;
-		GLuint m_uiFBO_T;
-		GLuint m_uiCol_T;
-		GLuint m_uiTemp_T;
+		GLuint			m_uiFBO_D;
+		GLuint			m_uiFBO_T;
+		GLuint			m_uiCol_T;
+		GLuint			m_uiTemp_T;
 	} Buffer;
-	GLuint m_uiQuad_VAO;
 
-	GLuint m_uiViewProgram;
-	GLuint m_uiFilterProgram;
-	GLuint m_uiDisplayProgram;
+	GLuint				m_uiQuad_VAO;
 
-	bool m_bPaused;
+	GLuint				m_uiViewProgram;
+	GLuint				m_uiFilterProgram;
+	GLuint				m_uiDisplayProgram;
 
+	bool				m_bLoaded;
+	bool				m_bUnlockContent;
+	bool				m_bPaused;
 
 public:
 	Dof();
@@ -82,7 +102,9 @@ public:
 	void RenderPass();
 	void OnKey();
 	void LoadShader();
-	void LoadMesh(const char* a_pccFileName);
-	void DrawMesh(MeshData a_oMesh);
+	void StartThreding(const char* a_pccFileName);
+	void LoadFBXFile(const char* a_pccFileName);
+	MeshData* LoadMesh(FBXFile* a_oFile);
+	void DrawMesh(MeshData* a_oMesh);
 };
 #endif //!_DOF_H_

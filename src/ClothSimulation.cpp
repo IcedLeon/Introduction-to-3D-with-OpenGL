@@ -1,7 +1,7 @@
 #include "ClothSimulation.h"
 #include <GLFW\glfw3.h>
 #include "Camera.h"
-#include <string>
+#include "TgaWrapper.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -368,5 +368,5 @@ void ClothSimulation::SetUniform()
 	glUniform1f(ComputeUni.m_iRestLenghtDiag, _restLDiag);
 
 	glActiveTexture(GL_TEXTURE0);
-	m_oTexLoader.GetTexture("./textures/me_textile.tga");
+	TGAWRAP::LoadTexture("./textures/me_textile.tga");
 }

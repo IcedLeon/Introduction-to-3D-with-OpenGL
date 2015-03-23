@@ -116,6 +116,7 @@
     <ClCompile Include="src\ShaderCompiler.cpp" />
     <ClCompile Include="src\ShadowMap.cpp" />
     <ClCompile Include="src\TextRender.cpp" />
+    <ClCompile Include="src\TgaWrapper.cpp" />
     <ClCompile Include="src\ThreadProject.cpp" />
     <ClCompile Include="src\tiny_obj_loader.cc" />
     <ClCompile Include="src\TunnelEffect.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="src\ShadowMap.h" />
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\TextRender.h" />
+    <ClInclude Include="src\TgaWrapper.h" />
     <ClInclude Include="src\ThreadProject.h" />
     <ClInclude Include="src\tiny_obj_loader.h" />
     <ClInclude Include="src\TunnelEffect.h" />
