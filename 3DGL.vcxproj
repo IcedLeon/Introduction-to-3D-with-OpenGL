@@ -39,8 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>./deps/glfw/include;./deps/glm;./deps/freetype/include;./deps/AntTweakBar/include;./deps/FBXLoader;$(IncludePath)</IncludePath>
-    <LibraryPath>./deps/glfw/lib-vc2013;./deps/freetype/lib;./deps/AntTweakBar/lib;./deps/FBXLoader;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
+    <IncludePath>./deps/glfw/include;./deps/glm;./deps/freetype/include;./deps/AntTweakBar/include;./deps/Leap/include;./deps/FBXLoader;$(IncludePath)</IncludePath>
+    <LibraryPath>./deps/Leap/lib;./deps/glfw/lib-vc2013;./deps/freetype/lib;./deps/AntTweakBar/lib;./deps/FBXLoader;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
     <SourcePath>$(VC_SourcePath);</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -48,8 +48,8 @@
     <LibraryPath>./deps/glfw/lib-vc2013;./deps/fmod/lib;./deps/assimp/lib;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>./deps/glfw/include;./deps/glm;./deps/freetype/include;./deps/AntTweakBar/include;./deps/FBXLoader;./deps/fmod/include;./deps/assimp/include;$(IncludePath)</IncludePath>
-    <LibraryPath>./deps/glfw/lib-vc2013;./deps/freetype/lib;./deps/AntTweakBar/lib;./deps/FBXLoader;./deps/fmod/lib;./deps/assimp/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>./deps/glfw/include;./deps/glm;./deps/freetype/include;./deps/AntTweakBar/include;./deps/Leap/include;./deps/FBXLoader;./deps/fmod/include;./deps/assimp/include;$(IncludePath)</IncludePath>
+    <LibraryPath>./deps/Leap/lib;./deps/glfw/lib-vc2013;./deps/freetype/lib;./deps/AntTweakBar/lib;./deps/FBXLoader;./deps/fmod/lib;./deps/assimp/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -157,6 +157,7 @@
     <ClInclude Include="src\ParticlesUpdaters.h" />
     <ClInclude Include="src\ParticleSystem.h" />
     <ClInclude Include="src\ParticleUpdater.h" />
+    <ClInclude Include="src\PGFT.h" />
     <ClInclude Include="src\PostProcess.h" />
     <ClInclude Include="src\ProjectOpenGL1.h" />
     <ClInclude Include="src\RenderTargetProject.h" />

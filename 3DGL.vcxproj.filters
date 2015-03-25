@@ -264,6 +264,9 @@
     <ClInclude Include="src\TgaWrapper.h">
       <Filter>Header\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="src\PGFT.h">
+      <Filter>Header\Procedural Fractal terain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\GPUParticleFragment.glsl">
@@ -552,6 +555,9 @@
     </Filter>
     <Filter Include="Source\Deferred rendering tutorial">
       <UniqueIdentifier>{d505260f-d23d-4fb1-a9f2-2bbe985039c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Procedural Fractal terain">
+      <UniqueIdentifier>{1e8f61a1-6752-4304-8feb-d11ad5e3eb35}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
