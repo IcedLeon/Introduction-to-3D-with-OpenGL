@@ -32,12 +32,15 @@ void DeferredRendering::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const cha
 		"./models/stanford/dragon.obj",
 		"./models/stanford/buddha.obj",
 	};
-
-	LoadMesh(_objNames[1]);
+	int _meshRand = glm::linearRand(0, 3);
+	LoadMesh(_objNames[_meshRand]);
+	
+	glEnable(GL_CULL_FACE);
 
 	GenBuffers();
 	GenLightBuffer();
 	GenScreenSpaceQuad();
+	GenCube();
 }
 
 void DeferredRendering::Update(GLdouble a_dDeltaTime)
@@ -85,30 +88,32 @@ void DeferredRendering::Draw()
 	//Depth pass
 	glEnable(GL_DEPTH_TEST);
 	glBindFramebuffer(GL_FRAMEBUFFER, Buffer.G.m_uiFBO_GB);
-
-	glClearBufferfv(GL_COLOR, 0, (float*)&_clearColour);
-	glClearBufferfv(GL_COLOR, 1, (float*)&_clearColour);
-	glClearBufferfv(GL_COLOR, 2, (float*)&_clearNormal);
-
+	glClearColor(_clearColour.x, _clearColour.y, _clearColour.z, _clearColour.w);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClearBufferfv(GL_COLOR, 0, (float*)&_clearColour);
+	//glClearBufferfv(GL_COLOR, 1, (float*)&_clearColour);
+	//glClearBufferfv(GL_COLOR, 2, (float*)&_clearNormal);
 	glUseProgram(Program.m_uiGBufferProgram);
+	GLint _projViewUni = glGetUniformLocation(Program.m_uiGBufferProgram, "View_Projection");
 	GLint _viewUni		= glGetUniformLocation(Program.m_uiGBufferProgram, "View");
-	GLint _projViewUni	= glGetUniformLocation(Program.m_uiGBufferProgram, "View_Projection");
 
-	glUniformMatrix4fv(_viewUni, 1, GL_FALSE, value_ptr(m_oView));
 	glUniformMatrix4fv(_projViewUni, 1, GL_FALSE, value_ptr(_projView));
+	glUniformMatrix4fv(_viewUni, 1, GL_FALSE, value_ptr(m_oView));
 	//Draw mesh
 	DrawMesh(m_oObject[0]);
 	//Light pass
 	glBindFramebuffer(GL_FRAMEBUFFER, Buffer.Light.m_uiFBO_Light);
+	glClear(GL_COLOR_BUFFER_BIT);
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_DEPTH_TEST);
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
+
 	glUseProgram(Program.m_uiDirLightProgram);
 	
-	int _posTexUni	= glGetUniformLocation(Program.m_uiCompositeProgram, "Position_Tex");
-	int _normTexUni	= glGetUniformLocation(Program.m_uiCompositeProgram, "Normal_Tex");
+	int _posTexUni	= glGetUniformLocation(Program.m_uiDirLightProgram, "Position_Tex");
+	int _normTexUni = glGetUniformLocation(Program.m_uiDirLightProgram, "Normal_Tex");
 
 	glUniform1i(_posTexUni, 0);
 	glUniform1i(_normTexUni, 1);
@@ -116,26 +121,41 @@ void DeferredRendering::Draw()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, Buffer.G.m_uiPos_T);
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, Buffer.Light.m_uiFBO_TLight);
+	glBindTexture(GL_TEXTURE_2D, Buffer.G.m_uiNorm_T);
 
-	vec3 _lightDir = vec3(0, -1, 0);
-	vec4 _viewSpaceLightDir = m_oView * vec4(_lightDir, 0);
-	vec3 _lightColour = vec3(0.8, 1, 0.43);
+	vec3 _lightDir = vec3(0, 1, 0);
+	vec3 _lightColour = vec3(0.5f, 1, 0.5f);
+	LightRenderPass(_lightDir, _lightColour);
+	//Point light pass.
+	glUseProgram(Program.m_uiPointLightProgram);
 
-	int _LightDirUni = glGetUniformLocation(Program.m_uiCompositeProgram, "Light_Dir");
-	int _LightColUni = glGetUniformLocation(Program.m_uiCompositeProgram, "Light_Colour");
+	GLint _pointLightViewPUni	= glGetUniformLocation(Program.m_uiPointLightProgram, "Proj_View");
+	GLint _pointLightPosTex		= glGetUniformLocation(Program.m_uiPointLightProgram, "Position_Tex");
+	GLint _pointLightNorTex		= glGetUniformLocation(Program.m_uiPointLightProgram, "Normal_Tex");
 
-	glUniform3fv(_LightDirUni, 1, (float*)&_lightDir);
-	glUniform3fv(_LightColUni, 1, (float*)&_lightColour);
+	glUniformMatrix4fv(_pointLightViewPUni, 1, GL_FALSE, value_ptr(_projView));
+	glUniform1i(_pointLightPosTex, 0);
+	glUniform1i(_pointLightNorTex, 1);
 
-	glBindVertexArray(m_uiQuad_VAO.m_uiVAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, Buffer.G.m_uiPos_T);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, Buffer.G.m_uiNorm_T);
+
+	vec3 _pointPos = vec3(0, 1, 0);
+	float _pointRad = 6.0f;
+	vec3 _PointDiffuse = vec3(1, 0, 0);
+
+	//glCullFace(GL_FRONT);
+	PointLightPass(_pointPos, _pointRad, _PointDiffuse);
+	//glCullFace(GL_BACK);
 
 	glDisable(GL_BLEND);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, NULL);
-	glClearColor(0.3f, 0.3f, 0.3f, 0.3f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
+	//glClearColor(0.3f, 0.3f, 0.3f, 0.3f);
+	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(Program.m_uiCompositeProgram);
 
@@ -153,7 +173,7 @@ void DeferredRendering::Draw()
 	glBindVertexArray(m_uiQuad_VAO.m_uiVAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-	Gizmos::draw(_projView);
+	//Gizmos::draw(_projView);
 }
 
 void DeferredRendering::MoveCamera(float a_fDeltaTime)
@@ -194,19 +214,19 @@ void DeferredRendering::GenBuffers()
 	//Albedo
 	glGenTextures(1, &Buffer.G.m_uiAlb_T);
 	glBindTexture(GL_TEXTURE_2D, Buffer.G.m_uiAlb_T);
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RG8, (int)m_vScreenSize.x, (int)m_vScreenSize.y);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB8, (int)m_vScreenSize.x, (int)m_vScreenSize.y);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	//Position Texture
 	glGenTextures(1, &Buffer.G.m_uiPos_T);
 	glBindTexture(GL_TEXTURE_2D, Buffer.G.m_uiPos_T);
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RG8, (int)m_vScreenSize.x, (int)m_vScreenSize.y);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, (int)m_vScreenSize.x, (int)m_vScreenSize.y);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	//Normals Texture
 	glGenTextures(1, &Buffer.G.m_uiNorm_T);
 	glBindTexture(GL_TEXTURE_2D, Buffer.G.m_uiNorm_T);
-	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RG8, (int)m_vScreenSize.x, (int)m_vScreenSize.y);
+	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB8, (int)m_vScreenSize.x, (int)m_vScreenSize.y);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	//Depth buffer
@@ -245,8 +265,8 @@ void DeferredRendering::GenLightBuffer()
 	//Attaching Texture
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, Buffer.Light.m_uiFBO_TLight, NULL);
 	//Generate draw buffers
-	GLenum _lightTarget = { GL_COLOR_ATTACHMENT0 };
-	glDrawBuffers(1, &_lightTarget);
+	GLenum _lightTarget[] = { GL_COLOR_ATTACHMENT0 };
+	glDrawBuffers(1, _lightTarget);
 	//check frame Buffer
 	GLenum _frameBuffStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (_frameBuffStatus != GL_FRAMEBUFFER_COMPLETE)
@@ -299,23 +319,160 @@ void DeferredRendering::GenScreenSpaceQuad()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
 }
 
-void DeferredRendering::RenderPass(bool a_bFromLight)
+//void DeferredRendering::GenCube()
+//{
+//	float _side		= 1.0f;
+//	float _halfside = _side / 2.0f;
+//
+//	float _vertices[24 * 3] = 
+//	{
+//		// Front
+//		-_halfside, -_halfside, _halfside,
+//		 _halfside, -_halfside, _halfside,
+//		 _halfside, _halfside, _halfside,
+//		-_halfside, _halfside, _halfside,
+//		// Right
+//		 _halfside, -_halfside, _halfside,
+//		 _halfside, -_halfside, -_halfside,
+//		 _halfside, _halfside, -_halfside,
+//		 _halfside, _halfside, _halfside,
+//		// Back
+//		-_halfside, -_halfside, -_halfside,
+//		-_halfside, _halfside, -_halfside,
+//		_halfside, _halfside, -_halfside,
+//		_halfside, -_halfside, -_halfside,
+//		// Left
+//		-_halfside, -_halfside, _halfside,
+//		-_halfside, _halfside, _halfside,
+//		-_halfside, _halfside, -_halfside,
+//		-_halfside, -_halfside, -_halfside,
+//		// Bottom
+//		-_halfside, -_halfside, _halfside,
+//		-_halfside, -_halfside, -_halfside,
+//		_halfside, -_halfside, -_halfside,
+//		_halfside, -_halfside, _halfside,
+//		// Top
+//		-_halfside, _halfside, _halfside,
+//		_halfside, _halfside, _halfside,
+//		_halfside, _halfside, -_halfside,
+//		-_halfside, _halfside, -_halfside
+//	}
+//}
+
+void DeferredRendering::GenCube()
+{
+	float _cubeVertexData[] = {
+		-1, -1,  1, 1,
+		 1, -1,  1, 1,
+		 1, -1, -1, 1,
+		-1, -1, -1, 1,
+
+		-1,  1,  1, 1,
+		 1,  1,  1, 1,
+		 1,  1, -1, 1,
+		-1,  1, -1, 1,
+	};
+
+	unsigned int _cubeIndexData[] = {
+		4, 5, 0,
+		5, 1, 0,
+		5, 6, 1,
+		6, 2, 1,
+		6, 7, 2,
+		7, 3, 2,
+		7, 4, 3,
+		4, 0, 3,
+		7, 6, 4,
+		6, 5, 4,
+		0, 1, 3,
+		1, 2, 3
+	};
+
+	m_uiCube.m_uiIndexCount = 36;
+
+	glGenVertexArrays(1, &m_uiCube.m_uiVAO);
+	glBindVertexArray(m_uiCube.m_uiVAO);
+
+	glGenBuffers(1, &m_uiCube.m_uiVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_uiCube.m_uiVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(_cubeVertexData), _cubeVertexData, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &m_uiQuad_VAO.m_uiIBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_uiQuad_VAO.m_uiIBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(_cubeIndexData), _cubeIndexData, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float)* 4, NULL);
+
+	glBindVertexArray(NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
+}
+
+void DeferredRendering::LightRenderPass(const vec3& a_vDir, const vec3& a_vCol)
+{
+	vec4 _viewSpaceLightDir = m_oView * vec4(normalize(a_vDir), 0);
+	int _LightDirUni = glGetUniformLocation(Program.m_uiDirLightProgram, "Light_Dir");
+	int _LightColUni = glGetUniformLocation(Program.m_uiDirLightProgram, "Light_Colour");
+
+	glUniform3fv(_LightDirUni, 1, (float*)&_viewSpaceLightDir);
+	glUniform3fv(_LightColUni, 1, (float*)&a_vCol);
+
+	glBindVertexArray(m_uiQuad_VAO.m_uiVAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+void DeferredRendering::PointLightPass(vec3 a_vPos, float a_fRad, vec3 a_vDiffuse)
+{
+	vec4 _viewSpacePos = m_oView * vec4(a_vPos, 1);
+
+	GLint _posUni		= glGetUniformLocation(Program.m_uiPointLightProgram, "Light_Pos");
+	GLint _viewPosUni	= glGetUniformLocation(Program.m_uiPointLightProgram, "Light_View_Pos");
+	GLint _diffuseUni	= glGetUniformLocation(Program.m_uiPointLightProgram, "Light_Diffuse");
+	GLint _radUni		= glGetUniformLocation(Program.m_uiPointLightProgram, "Light_Radius");
+
+	glUniform3fv(_posUni, 1, (float*)&a_vPos);
+	glUniform3fv(_viewPosUni, 1, (float*)&_viewSpacePos);
+	glUniform3fv(_diffuseUni, 1, (float*)&a_vDiffuse);
+	glUniform1f(_radUni, a_fRad);
+
+	glBindVertexArray(m_uiCube.m_uiVAO);
+	glDrawElements(GL_TRIANGLES, m_uiCube.m_uiIndexCount, GL_UNSIGNED_INT, 0);
+}
+
+void DeferredRendering::RenderPass()
 {
 
 }
 
 void DeferredRendering::OnKey()
 {
-
+	if (m_bKeys[GLFW_KEY_R])
+	{
+		LoadShader();
+		printf("SHADER RELOADED \n");
+	}
+		
 }
 
 void DeferredRendering::LoadShader()
 {
+	if (Program.m_uiGBufferProgram)
+		glDeleteProgram(Program.m_uiGBufferProgram);
 	Program.m_uiGBufferProgram		= m_oShader.GenerateShaderProgram(GBUFFER_VERTEX_GLSL, nullptr, GBUFFER_FRAGMENT_GLSL);
 
+	if (Program.m_uiCompositeProgram)
+		glDeleteProgram(Program.m_uiCompositeProgram);
 	Program.m_uiCompositeProgram	= m_oShader.GenerateShaderProgram(COMPOSITE_VERTEX_GLSL, nullptr, COMPOSITE_FRAGMENT_GLSL);
 
+	if (Program.m_uiDirLightProgram)
+		glDeleteProgram(Program.m_uiDirLightProgram);
 	Program.m_uiDirLightProgram		= m_oShader.GenerateShaderProgram(COMPOSITE_VERTEX_GLSL, nullptr, LIGHT_FRAGMENT_GLSL);
+
+	if (Program.m_uiPointLightProgram)
+		glDeleteProgram(Program.m_uiPointLightProgram);
+	Program.m_uiPointLightProgram	= m_oShader.GenerateShaderProgram(POINT_VERTEX_GLSL, nullptr, POINT_FRAGMENT_GLSL);
 }
 
 void DeferredRendering::LoadMesh(const char* a_pccFileName)

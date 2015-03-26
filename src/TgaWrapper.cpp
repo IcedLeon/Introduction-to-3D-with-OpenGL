@@ -104,7 +104,8 @@ namespace TGAWRAP
 					   _bpp,
 					   _originX, _originY);
 				//Read the pixel data
-				assert((a_iWidth != NULL || a_iHeight != NULL), (a_iWidth != NULL && a_iHeight != NULL), printf("Width or Height of this .tga file is equal to zero. \n"));
+				assert(a_iWidth != NULL || a_iHeight != NULL);
+					printf("Width or Height of this .tga file is equal to zero. \n");
 				GLubyte* _pixel = new GLubyte[a_iWidth * a_iHeight * 4];
 				//24 bpp -- Blue, Green, Red
 				//32 bpp -- Blue, Green, Red, Alpha
@@ -161,7 +162,8 @@ namespace TGAWRAP
 				LITTLE_ENDIAN::WriteShort(_ofFile, a_iHeight);	//Image height.
 				_ofFile.put(32);								//Bits per pixel (32).
 				_ofFile.put(8);									//Image descriptor (8 => 32bpp).
-				assert((a_iWidth != NULL || a_iHeight != NULL), (a_iWidth != NULL && a_iHeight != NULL), printf("Width or Height of this .tga file is equal to zero. \n"));
+				assert(a_iWidth != NULL || a_iHeight != NULL);
+					printf("Width or Height of this .tga file is equal to zero. \n");
 				int _imageSize = a_iWidth * a_iHeight;
 				for (int i = 0; i < _imageSize; ++i)
 				{

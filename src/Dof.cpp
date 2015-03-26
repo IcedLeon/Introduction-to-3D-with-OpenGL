@@ -26,13 +26,6 @@ Dof::~Dof()
 
 void Dof::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)
 {
-	int _idLenght, //Lenght of the image ID field.
-		_mapType,  //Color map type (expect 0 == no color map).
-		_typeCode, //Image type code (expect 2 == uncompressed).
-		_originX,  //UV coordinate of the origin for the X.
-		_originY,  //UV coordinate of the origin for the Y.
-		_bpp	   //Bits per pixel (expect 24 or 32).
-		= NULL;
 	Application::InitWindow(a_vCamPos, a_vScreenSize, a_pccWinName, a_bFullScreen);
 	
 	m_oProjection = m_oCamera.GetProjectionTransform(glm::vec2(a_vScreenSize.x, a_vScreenSize.y), 2.0f, 300.0f);

@@ -88,6 +88,7 @@
     <ClCompile Include="src\CameraProject.cpp" />
     <ClCompile Include="src\ClothSimulation.cpp" />
     <ClCompile Include="src\CollisionProject.cpp" />
+    <ClCompile Include="src\ComputeParticle.cpp" />
     <ClCompile Include="src\DeferredRendering.cpp" />
     <ClCompile Include="src\Dof.cpp" />
     <ClCompile Include="src\EmitterSh.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="src\CameraProject.h" />
     <ClInclude Include="src\ClothSimulation.h" />
     <ClInclude Include="src\CollisionProject.h" />
+    <ClInclude Include="src\ComputeParticle.h" />
     <ClInclude Include="src\Constant.h" />
     <ClInclude Include="src\DeferredRendering.h" />
     <ClInclude Include="src\Dof.h" />
@@ -196,6 +198,8 @@
     <None Include="data\shaders\ParticleFragment.glsl" />
     <None Include="data\shaders\ParticleVertex.glsl" />
     <None Include="data\shaders\particle_update_vert.glsl" />
+    <None Include="data\shaders\PointLightFragment.glsl" />
+    <None Include="data\shaders\PointLightVertex.glsl" />
     <None Include="data\shaders\PostEffectFragment.glsl" />
     <None Include="data\shaders\PostEffectVertex.glsl" />
     <None Include="data\shaders\RenderingFragment.glsl" />

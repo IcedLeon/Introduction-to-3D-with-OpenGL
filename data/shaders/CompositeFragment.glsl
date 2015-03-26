@@ -11,6 +11,6 @@ void main()
 {
 	vec3 light	= texture(Light_Tex, Tex_Coord).rgb;
 	vec3 albedo = texture(Albedo_Tex, Tex_Coord).rgb;
-
+	//Change to look the box here
 	Out_Colour = vec4(albedo * light, 1);
 }

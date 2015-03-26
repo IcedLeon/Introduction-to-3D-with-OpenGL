@@ -12,6 +12,8 @@ using std::vector;
 #define COMPOSITE_VERTEX_GLSL "./shaders/CompositeVertex.glsl"
 #define COMPOSITE_FRAGMENT_GLSL "./shaders/CompositeFragment.glsl"
 #define LIGHT_FRAGMENT_GLSL "./shaders/DirectionalLightFragment.glsl"
+#define POINT_VERTEX_GLSL "./shaders/PointLightVertex.glsl"
+#define POINT_FRAGMENT_GLSL "./shaders/PointLightFragment.glsl"
 
 struct MeshData
 {
@@ -20,6 +22,17 @@ struct MeshData
 	GLuint m_uiVBO;
 	GLuint m_uiIBO;
 	GLuint m_uiIndexCount;
+
+	MeshData() : m_mModelTrans(mat4(0)),
+		m_uiVAO(NULL),
+		m_uiVBO(NULL),
+		m_uiIBO(NULL),
+		m_uiIndexCount(NULL) {}
+	MeshData(const MeshData& a_Mesh) : m_mModelTrans(a_Mesh.m_mModelTrans),
+		m_uiVAO(a_Mesh.m_uiVAO),
+		m_uiVBO(a_Mesh.m_uiVBO),
+		m_uiIBO(a_Mesh.m_uiIBO),
+		m_uiIndexCount(a_Mesh.m_uiIndexCount) {}
 };
 
 class DeferredRendering : public Application
@@ -63,6 +76,8 @@ private:
 	} Buffer;
 
 	MeshData m_uiQuad_VAO;
+	MeshData m_uiCube;
+
 	struct
 	{
 		GLuint m_uiGBufferProgram;
@@ -88,7 +103,10 @@ public:
 	void GenBuffers();
 	void GenLightBuffer();
 	void GenScreenSpaceQuad();
-	void RenderPass(bool a_bFromLight);
+	void GenCube();
+	void LightRenderPass(const vec3& a_vDir, const vec3& a_vCol);
+	void PointLightPass(vec3 a_vPos, float a_fRad, vec3 a_vDiffuse);
+	void RenderPass();
 	void OnKey();
 	void LoadShader();
 

@@ -121,6 +121,9 @@
     <ClCompile Include="src\TgaWrapper.cpp">
       <Filter>Source\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="src\ComputeParticle.cpp">
+      <Filter>Source\Compute particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ProjectOpenGL1.h">
@@ -267,6 +270,9 @@
     <ClInclude Include="src\PGFT.h">
       <Filter>Header\Procedural Fractal terain</Filter>
     </ClInclude>
+    <ClInclude Include="src\ComputeParticle.h">
+      <Filter>Header\Compute particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\GPUParticleFragment.glsl">
@@ -381,6 +387,12 @@
       <Filter>Shaders\Deferred</Filter>
     </None>
     <None Include="data\shaders\DirectionalLightFragment.glsl">
+      <Filter>Shaders\Deferred</Filter>
+    </None>
+    <None Include="data\shaders\PointLightVertex.glsl">
+      <Filter>Shaders\Deferred</Filter>
+    </None>
+    <None Include="data\shaders\PointLightFragment.glsl">
       <Filter>Shaders\Deferred</Filter>
     </None>
   </ItemGroup>
@@ -558,6 +570,15 @@
     </Filter>
     <Filter Include="Header\Procedural Fractal terain">
       <UniqueIdentifier>{1e8f61a1-6752-4304-8feb-d11ad5e3eb35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Compute particle">
+      <UniqueIdentifier>{1889b6e8-73c8-485c-a69d-cb48ac8656de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Compute particle">
+      <UniqueIdentifier>{5058ee60-9111-48fb-9015-2133e28c3d7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\NewFilter1">
+      <UniqueIdentifier>{5124b208-2d81-4503-8ebb-5884c97c27a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

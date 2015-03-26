@@ -1,8 +1,8 @@
-#include "ClothSimulation.h"
+#include "DeferredRendering.h"
 
 int main()
 {
-	ClothSimulation _app;
+	DeferredRendering _app;
 
 	float _dt;
 

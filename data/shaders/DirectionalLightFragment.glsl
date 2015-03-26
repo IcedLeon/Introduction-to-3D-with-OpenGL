@@ -2,7 +2,7 @@
 
 in vec2 Tex_Coord;
 
-out vec3 Out_Colour;
+out vec3 Out_Light;
 
 uniform vec3 Light_Dir;
 uniform vec3 Light_Colour;
@@ -18,7 +18,7 @@ void main()
 
 	vec3 positionSample = texture(Position_Tex, Tex_Coord).xyz;
 	
-	float d = max(0, dot(-Light_Dir, normalSample));
+	float d = max(0, dot(normalSample, Light_Dir));
 
-	Out_Colour = Light_Colour * d;
+	Out_Light = Light_Colour * d;
 }

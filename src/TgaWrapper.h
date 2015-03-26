@@ -4,6 +4,9 @@
 #include "gl_core_4_4.h"
 #include <stdexcept>
 #include <string>
+
+#pragma warning(disable: 4290)
+
 //Using macro
 using std::string;
 //Class forwarding

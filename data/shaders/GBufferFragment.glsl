@@ -9,7 +9,7 @@ layout (location = 2) out vec3 Tex_Normal;
 
 void main()
 {
+	Tex_Albedo	 = vec3(1);
 	Tex_Position = ViewSpace_Position.xyz;
 	Tex_Normal	 = (ViewSpace_Normal.xyz) * 0.5f + 0.5f;
-	Tex_Albedo	 = vec3(1);
 }

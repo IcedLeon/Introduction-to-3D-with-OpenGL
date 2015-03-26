@@ -12,7 +12,7 @@ uniform mat4 View;
 void main()
 {
 	ViewSpace_Position	= View * vec4(position.xyz, 1);
-	ViewSpace_Normal	= View * vec4(normal.xyz, 0);
+	ViewSpace_Normal	= normalize(View * vec4(normal.xyz, 0));
 
 	gl_Position = View_Projection * position;
 }
