@@ -124,6 +124,9 @@
     <ClCompile Include="src\ComputeParticle.cpp">
       <Filter>Source\Compute particle</Filter>
     </ClCompile>
+    <ClCompile Include="src\PGT.cpp">
+      <Filter>Source\Procedurally Gen terrain %28school%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ProjectOpenGL1.h">
@@ -273,6 +276,9 @@
     <ClInclude Include="src\ComputeParticle.h">
       <Filter>Header\Compute particle</Filter>
     </ClInclude>
+    <ClInclude Include="src\PGT.h">
+      <Filter>Header\Procedurally Gen terrain %28school%29</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\GPUParticleFragment.glsl">
@@ -394,6 +400,12 @@
     </None>
     <None Include="data\shaders\PointLightFragment.glsl">
       <Filter>Shaders\Deferred</Filter>
+    </None>
+    <None Include="data\shaders\PerlinVertex.glsl">
+      <Filter>Shaders\PGT</Filter>
+    </None>
+    <None Include="data\shaders\PerlinFragment.glsl">
+      <Filter>Shaders\PGT</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -579,6 +591,15 @@
     </Filter>
     <Filter Include="Shaders\NewFilter1">
       <UniqueIdentifier>{5124b208-2d81-4503-8ebb-5884c97c27a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Procedurally Gen terrain %28school%29">
+      <UniqueIdentifier>{00e887e2-b893-49e3-a83b-a081c7396248}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Procedurally Gen terrain %28school%29">
+      <UniqueIdentifier>{d2d50cf0-70eb-422d-8eab-a271ed14430a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PGT">
+      <UniqueIdentifier>{a41148da-833d-476e-8683-790d1326c6fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

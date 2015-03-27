@@ -29,5 +29,5 @@ void main()
 	float _fallOff			= 1 - min(1, _dist);
 	//Output the final light
 	//Changed to look at the box
-	Light_Output			= vec3(1);//Light_Diffuse * _d * _fallOff;
+	Light_Output			= Light_Diffuse * _d;// * _fallOff;
 }

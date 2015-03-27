@@ -1,8 +1,8 @@
-#include "DeferredRendering.h"
+#include "PGT.h"
 
 int main()
 {
-	DeferredRendering _app;
+	PGT _app;
 
 	float _dt;
 

@@ -20,7 +20,7 @@ void DeferredRendering::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const cha
 	Application::InitWindow(a_vCamPos, a_vScreenSize, a_pccWinName, a_bFullScreen);
 	m_oProjection = m_oCamera.GetProjectionTransform(glm::vec2(a_vScreenSize.x, a_vScreenSize.y));
 
-	Gizmos::create();
+	//Gizmos::create();
 
 	LoadShader();
 
@@ -38,8 +38,8 @@ void DeferredRendering::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const cha
 	glEnable(GL_CULL_FACE);
 
 	GenBuffers();
-	GenLightBuffer();
 	GenScreenSpaceQuad();
+	GenLightBuffer();
 	GenCube();
 }
 
@@ -54,16 +54,16 @@ void DeferredRendering::Update(GLdouble a_dDeltaTime)
 	vec4 _green(0, 1, 0, 1);
 	vec4 _blue(0, 0, 1, 1);
 
-	Gizmos::clear();
-	Gizmos::addTransform(mat4(1));
-
-	for (int i = 0; i <= 20; ++i)
-	{
-		Gizmos::addLine(vec3(-10 + i, 0, -10), vec3(-10 + i, 0, 10),
-			i == 10 ? _blue : _white);
-		Gizmos::addLine(vec3(-10, 0, -10 + i), vec3(10, 0, -10 + i),
-			i == 10 ? _red : _white);
-	}
+	//Gizmos::clear();
+	//Gizmos::addTransform(mat4(1));
+	//
+	//for (int i = 0; i <= 20; ++i)
+	//{
+	//	Gizmos::addLine(vec3(-10 + i, 0, -10), vec3(-10 + i, 0, 10),
+	//		i == 10 ? _blue : _white);
+	//	Gizmos::addLine(vec3(-10, 0, -10 + i), vec3(10, 0, -10 + i),
+	//		i == 10 ? _red : _white);
+	//}
 
 	OnKey();
 	MoveCamera((float)a_dDeltaTime);
@@ -83,30 +83,31 @@ void DeferredRendering::CleanUpWin()
 void DeferredRendering::Draw()
 {
 	mat4 _projView = m_oProjection * m_oView;
-	vec4 _clearColour = vec4(0.0f);
-	vec4 _clearNormal = vec4(0.5f);
 	//Depth pass
 	glEnable(GL_DEPTH_TEST);
 	glBindFramebuffer(GL_FRAMEBUFFER, Buffer.G.m_uiFBO_GB);
-	glClearColor(_clearColour.x, _clearColour.y, _clearColour.z, _clearColour.w);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glClearBufferfv(GL_COLOR, 0, (float*)&_clearColour);
-	//glClearBufferfv(GL_COLOR, 1, (float*)&_clearColour);
-	//glClearBufferfv(GL_COLOR, 2, (float*)&_clearNormal);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	//glClearColor(_clearColour.x, _clearColour.y, _clearColour.z, _clearColour.w);
+	vec4 _clearColour = vec4(0.0f);
+	vec4 _clearNormal = vec4(0.5f);
+	glClearBufferfv(GL_COLOR, 0, (float*)&_clearColour);
+	glClearBufferfv(GL_COLOR, 1, (float*)&_clearColour);
+	glClearBufferfv(GL_COLOR, 2, (float*)&_clearNormal);
+	//
 	glUseProgram(Program.m_uiGBufferProgram);
+	//
 	GLint _projViewUni = glGetUniformLocation(Program.m_uiGBufferProgram, "View_Projection");
 	GLint _viewUni		= glGetUniformLocation(Program.m_uiGBufferProgram, "View");
-
+	//
 	glUniformMatrix4fv(_projViewUni, 1, GL_FALSE, value_ptr(_projView));
 	glUniformMatrix4fv(_viewUni, 1, GL_FALSE, value_ptr(m_oView));
 	//Draw mesh
 	DrawMesh(m_oObject[0]);
 	//Light pass
 	glBindFramebuffer(GL_FRAMEBUFFER, Buffer.Light.m_uiFBO_Light);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glDisable(GL_DEPTH_TEST);
-
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
 

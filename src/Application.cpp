@@ -187,7 +187,7 @@ void Application::CleanUpWin()
 void Application::ClearColor(vec4 a_vScreenColor)
 {
 	glClearColor(a_vScreenColor.x, a_vScreenColor.y, a_vScreenColor.z, a_vScreenColor.w);
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 bool Application::IsOpen() const
