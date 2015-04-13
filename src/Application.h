@@ -1,5 +1,6 @@
 #ifndef _APPLICATION_H_
 #define _APPLICATION_H_
+//Lib
 #include "Constant.h"
 #include <AntTweakBar.h>
 //Forward declaration
@@ -84,6 +85,8 @@ protected:
 	static void framebuffer_size_callback(GLFWwindow* a_oWindow, int a_iWidth, int a_iHeight);
 	//
 	static void on_char_callback(GLFWwindow* a_oWindow, unsigned int a_uiCodepoint, int a_iMode);
+	//
+	static void APIENTRY debug_callback(GLenum a_eSource, GLenum a_eType, GLuint a_uiID, GLenum a_eSeverity, GLsizei a_siLength, const GLchar* a_pccMsg, const GLvoid* a_pcvParam);
 
 public:
 	//Ctor & d-Ctor.
@@ -105,6 +108,8 @@ public:
 	void StartFrame();
 	//End frame simply set the last frame to be equal to this frame to mine the delta on top.
 	void EndFrame();
+	//
+	static int CheckforOpenGLError(const char* a_pccFile, int a_iLine);
 	//virtual void InitTweekBar();
 	//Update, here we put all the function that need to be constantly keeping changing(or not) during 
 	//the application is running.

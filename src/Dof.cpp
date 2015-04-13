@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include <thread>
+#include "Gizzle.h"
 
 Dof::Dof() : Application(),
 			 m_oFile(nullptr),
@@ -35,15 +36,27 @@ void Dof::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccWinNam
 
 	LoadShader();
 
+	float _data[] =
+	{
+		15.0f,
+		15.0f,
+		15.0f,
+		15.0f
+	};
+	int* _data2 = new int[2]
+	{
+		12, 12
+	};
+
 	static const char* const _objNames[] =
 	{
-		"./models/stanford/dragon.fbx",
+		"./models/rigged/Husk.fbx",
 		"./models/stanford/buddha.fbx",
 		"./models/stanford/bunny.fbx",
 	};
 	int _choosedMesh = glm::linearRand(0, 3);
 
-	StartThreding(_objNames[_choosedMesh]);
+	StartThreding(_objNames[0]);
 
 	GenBuffers();
 }
@@ -132,6 +145,10 @@ void Dof::CleanUpWin()
 {
 	_newThread.join();
 	delete m_oFile;
+	for (auto it : m_oObject)
+	{
+		delete it;
+	}
 	glDeleteProgram(m_uiDisplayProgram);
 	glDeleteProgram(m_uiFilterProgram);
 	glDeleteProgram(m_uiViewProgram);

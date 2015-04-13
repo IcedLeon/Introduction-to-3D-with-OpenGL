@@ -28,8 +28,8 @@ void FBXAnimationP::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a
 	//TwAddVarRW(m_oTweek.GetMappedBar("Time"), "Time agumenter", TW_TYPE_FLOAT, &m_fAugmenter, "min=0.1 max=100 step=0.5");
 
 	m_oFile = new FBXFile();
-	m_oFile->load("./models/rigged/Pyro/pyro.fbx");
-	m_oFile->initialiseOpenGLTextures();
+	m_oFile->load("./models/rigged/Stick_Figure/Stick_Figure_by_Swp.fbx");
+	//m_oFile->initialiseOpenGLTextures();
 
 	m_oShader.CreateShaderProgram(SKINNED_VERTEX_GLSL, SKINNED_FRAGMENT_GLSL);
 
@@ -110,10 +110,10 @@ void FBXAnimationP::Draw()
 		GLuint _worldUni = glGetUniformLocation(m_oShader.GetShaderProgram(), "World");
 		glUniformMatrix4fv(_worldUni, 1, GL_FALSE, glm::value_ptr(_worldTrans));
 
-		FBXMaterial* _meshMaterial = _currMesh->m_material;
-
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, _meshMaterial->textures[FBXMaterial::DiffuseTexture]->handle);
+		//FBXMaterial* _meshMaterial = _currMesh->m_material;
+		//
+		//glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_2D, _meshMaterial->textures[FBXMaterial::DiffuseTexture]->handle);
 		glBindVertexArray(m_oMeshes[i].m_uiVAO);
 		glDrawElements(GL_TRIANGLES, m_oMeshes[i].m_uiIndexCount, GL_UNSIGNED_INT, NULL);
 	}

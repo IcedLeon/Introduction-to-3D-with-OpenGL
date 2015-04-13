@@ -15,6 +15,8 @@ using std::vector;
 #define POINT_VERTEX_GLSL "./shaders/PointLightVertex.glsl"
 #define POINT_FRAGMENT_GLSL "./shaders/PointLightFragment.glsl"
 
+class Gizzle;
+
 struct MeshData
 {
 	mat4   m_mModelTrans;
@@ -41,6 +43,7 @@ private:
 	//
 	ShaderCompiler	 m_oShader;
 	vector<MeshData> m_oObject;
+	Gizzle* m_oMyGizzle;
 	//
 	//struct
 	//{

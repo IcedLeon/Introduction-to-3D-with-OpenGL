@@ -17,6 +17,8 @@ using std::vector;
 #define DOF_DISPLAY_FRAGMENT_GLSL	"./shaders/DofDisplayFragment.glsl"
 #define DOF_COMPUTE_GLSL			"./shaders/GenSatCompute.glsl"
 
+class Gizzle;
+
 struct MeshData
 {
 	mat4   m_mModelTrans;

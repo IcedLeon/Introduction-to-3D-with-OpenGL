@@ -10,8 +10,10 @@
 #define _SHADERCOMPILER_H_
 //Library
 #include "gl_core_4_4.h"
+#include <map>
 //Shader info lenght
 #define SHD_ERR_LGH 512
+using std::map;
 
 class ShaderCompiler
 {

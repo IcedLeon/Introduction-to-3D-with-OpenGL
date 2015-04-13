@@ -19,16 +19,10 @@
     <ClCompile Include="src\LightingProject.cpp">
       <Filter>Source\Lighting tutorial</Filter>
     </ClCompile>
-    <ClCompile Include="src\Camera.cpp">
-      <Filter>Source\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="src\Gizmos.cpp">
       <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\gl_core_4_4.c">
-      <Filter>Source\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TextRender.cpp">
       <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\tiny_obj_loader.cc">
@@ -118,14 +112,32 @@
     <ClCompile Include="src\DeferredRendering.cpp">
       <Filter>Source\Deferred rendering tutorial</Filter>
     </ClCompile>
-    <ClCompile Include="src\TgaWrapper.cpp">
-      <Filter>Source\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="src\ComputeParticle.cpp">
       <Filter>Source\Compute particle</Filter>
     </ClCompile>
     <ClCompile Include="src\PGT.cpp">
       <Filter>Source\Procedurally Gen terrain %28school%29</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Gizzle.cpp">
+      <Filter>Source\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseApplication.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GraphicsAssigment.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShaderProgram.cpp">
+      <Filter>Source\Engine\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextureLoader.cpp">
+      <Filter>Source\Engine\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextRender.cpp">
+      <Filter>Source\Engine\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>Source\Engine\Accessory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -138,9 +150,6 @@
     <ClInclude Include="src\CameraProject.h">
       <Filter>Header\Camera tutorial</Filter>
     </ClInclude>
-    <ClInclude Include="src\Camera.h">
-      <Filter>Header\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\Constant.h">
       <Filter>Header\Utility</Filter>
     </ClInclude>
@@ -151,9 +160,6 @@
       <Filter>Header\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\stb_image.h">
-      <Filter>Header\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TextRender.h">
       <Filter>Header\Utility</Filter>
     </ClInclude>
     <ClInclude Include="src\Vertex.h">
@@ -267,9 +273,6 @@
     <ClInclude Include="src\DeferredRendering.h">
       <Filter>Header\Deferred rendering tutorial</Filter>
     </ClInclude>
-    <ClInclude Include="src\TgaWrapper.h">
-      <Filter>Header\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="src\PGFT.h">
       <Filter>Header\Procedural Fractal terain</Filter>
     </ClInclude>
@@ -278,6 +281,30 @@
     </ClInclude>
     <ClInclude Include="src\PGT.h">
       <Filter>Header\Procedurally Gen terrain %28school%29</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Gizzle.h">
+      <Filter>Header\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseInclude.h">
+      <Filter>Header\Engine\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseApplication.h">
+      <Filter>Header\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GraphicsAssignment.h">
+      <Filter>Header\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ShaderProgram.h">
+      <Filter>Header\Engine\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextureLoader.h">
+      <Filter>Header\Engine\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextRender.h">
+      <Filter>Header\Engine\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera.h">
+      <Filter>Header\Engine\Accessory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -407,6 +434,36 @@
     <None Include="data\shaders\PerlinFragment.glsl">
       <Filter>Shaders\PGT</Filter>
     </None>
+    <None Include="data\shaders\TextRendering.vs">
+      <Filter>Shaders\Engine Shaders</Filter>
+    </None>
+    <None Include="data\shaders\TextRendering.fs">
+      <Filter>Shaders\Engine Shaders</Filter>
+    </None>
+    <None Include="data\shaders\Skybox.frag">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Sky</Filter>
+    </None>
+    <None Include="data\shaders\Skybox.vert">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Sky</Filter>
+    </None>
+    <None Include="data\shaders\TerrainGeneration.vert">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
+    </None>
+    <None Include="data\shaders\TerrainVertex.vert">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
+    </None>
+    <None Include="data\shaders\TerrainControl.tcs">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
+    </None>
+    <None Include="data\shaders\TerrainWire.geom">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
+    </None>
+    <None Include="data\shaders\TerrainWire.frag">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
+    </None>
+    <None Include="data\shaders\TerrainTessellation.tes">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
@@ -420,9 +477,6 @@
     </Filter>
     <Filter Include="Header\Basic tutorial">
       <UniqueIdentifier>{82a5b08c-2f50-42c2-ba7a-36655550fe1d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header\ABC">
-      <UniqueIdentifier>{9d8d1594-117d-441e-af26-50e3daa02731}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header\Camera tutorial">
       <UniqueIdentifier>{a34be6f9-fb5b-498a-83f3-53978483de3f}</UniqueIdentifier>
@@ -492,9 +546,6 @@
     </Filter>
     <Filter Include="Source\Basic Tutorial">
       <UniqueIdentifier>{bc0750e7-2f61-42ee-8e18-99601a030322}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\ABC">
-      <UniqueIdentifier>{0d3ce7ff-809b-485e-8e1c-bc620dd94e03}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Camera tutorial">
       <UniqueIdentifier>{9b3eb045-b4dc-4d08-a466-dbbeff8b6ac1}</UniqueIdentifier>
@@ -589,9 +640,6 @@
     <Filter Include="Source\Compute particle">
       <UniqueIdentifier>{5058ee60-9111-48fb-9015-2133e28c3d7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders\NewFilter1">
-      <UniqueIdentifier>{5124b208-2d81-4503-8ebb-5884c97c27a5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header\Procedurally Gen terrain %28school%29">
       <UniqueIdentifier>{00e887e2-b893-49e3-a83b-a081c7396248}</UniqueIdentifier>
     </Filter>
@@ -600,6 +648,36 @@
     </Filter>
     <Filter Include="Shaders\PGT">
       <UniqueIdentifier>{a41148da-833d-476e-8683-790d1326c6fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine">
+      <UniqueIdentifier>{eee97ea4-745e-4be6-8e25-0e60dd4e1c3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine">
+      <UniqueIdentifier>{432ec756-98f7-4452-b929-7a793d52704b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Engine\Accessory">
+      <UniqueIdentifier>{f024282f-f577-49db-8d36-394da4d57d12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\ABC">
+      <UniqueIdentifier>{9d8d1594-117d-441e-af26-50e3daa02731}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ABC">
+      <UniqueIdentifier>{0d3ce7ff-809b-485e-8e1c-bc620dd94e03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\Accessory">
+      <UniqueIdentifier>{64e44ce3-14d6-4474-9782-68f85c6a4045}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Engine Shaders">
+      <UniqueIdentifier>{1e4a6421-7096-40a7-ad1c-7cb7c0eaf061}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Engine Shaders\Procidural Gen">
+      <UniqueIdentifier>{65502a80-0f45-43aa-bbdf-6ad65cf0b992}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Engine Shaders\Procidural Gen\Sky">
+      <UniqueIdentifier>{8b334af6-70e9-4e50-84a5-ce8c97cb86d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Engine Shaders\Procidural Gen\Terrain">
+      <UniqueIdentifier>{29e3bdf8-2f39-4cc9-9300-946a5051eac3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

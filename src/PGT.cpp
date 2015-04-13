@@ -133,7 +133,7 @@ float SimplexNoise::RawNoise2D(const float xIn, const float yIn)
 	int _gi1 = m_iPerm[_ii +_i1 + m_iPerm[_jj + _j1]] % 12;
 	int _gi2 = m_iPerm[_ii + 1 + m_iPerm[_jj + 1]] % 12;
 	//Calculate the contributions from the three corners
-	float _t0 = 0.5 - _x0 * _x0 - _y0 * _y0;
+	float _t0 = 0.5f - _x0 * _x0 - _y0 * _y0;
 	if (_t0 < 0.0f)
 		_n0 = 0.0f;
 	else
@@ -142,7 +142,7 @@ float SimplexNoise::RawNoise2D(const float xIn, const float yIn)
 		_n0 = _t0 * _t0 * Dot(m_iGrad3[_gi0], _x0, _y0);
 	}
 
-	float _t1 = 0.5 - _x1 * _x1 - _y1 * _y1;
+	float _t1 = 0.5f - _x1 * _x1 - _y1 * _y1;
 	if (_t1 < 0.0f)
 		_n1 = 0.0f;
 	else
@@ -151,7 +151,7 @@ float SimplexNoise::RawNoise2D(const float xIn, const float yIn)
 		_n1 = _t1 * _t1 * Dot(m_iGrad3[_gi2], _x1, _y1);
 	}
 
-	float _t2 = 0.5 - _originX1 * _originX1 - _originY1 * _originY1;
+	float _t2 = 0.5f - _originX1 * _originX1 - _originY1 * _originY1;
 	if (_t2 < 0.0f)
 		_n2 = 0.0f;
 	else

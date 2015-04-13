@@ -1,8 +1,18 @@
 #include "TextRender.h"
-#include "ShaderCompiler.h"
 
-void Text::InitTextRendering(int a_iFontSize, const char* a_pccFontPath)
+void Text::InitTextRendering(int a_iFontSize, const char* a_pccFontPath, vec2 a_vScreenDim)
 {
+#define TEXT_REND_VERT "./shaders/TextRendering.vs"
+#define TEXT_REND_FRAG "./shaders/TextRendering.fs"
+
+	vector<const char*> _shaderPool;
+	_shaderPool.push_back(TEXT_REND_VERT);
+	_shaderPool.push_back(TEXT_REND_FRAG);
+
+	m_oTexProgram.CreateProgram(_shaderPool);
+	mat4 _ortoProj = glm::ortho(0.0f, a_vScreenDim.x, 0.0f, a_vScreenDim.y);
+	m_oTexProgram.SetUniform("Ortho_Proj", _ortoProj);
+
 	//It return a different value from 0 if an error occur during initialization.
 	if (FT_Init_FreeType(&m_oFT))
 	{
@@ -67,14 +77,18 @@ void Text::InitTextRendering(int a_iFontSize, const char* a_pccFontPath)
 	glBindVertexArray(NULL);
 }
 
-void Text::RenderText(ShaderCompiler* a_iShaderProg, string a_sText, glm::vec2 a_vTextPos, GLfloat a_fScale, glm::vec3 a_VColour)
+void Text::RenderText(string a_sText, glm::vec2 a_vTextPos, GLfloat a_fScale, glm::vec3 a_vColour)
 {
+	m_oTexProgram.Use();
+	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	GLuint _textColourUni = glGetUniformLocation(a_iShaderProg->GetShaderProgram(), "textColour");
-	glUniform3f(_textColourUni, a_VColour.x, a_VColour.y, a_VColour.z);
+
+	m_oTexProgram.SetUniform("Text_Colour", a_vColour);
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(m_uiTVAO);
+
 	string::const_iterator chr;
 
 	for (chr = a_sText.begin(); chr != a_sText.end(); ++chr)

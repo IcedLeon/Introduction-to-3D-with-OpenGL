@@ -144,6 +144,11 @@ void Application::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_p
 			glEnable(GL_DEPTH_TEST);
 			printf("-- GL_DEPTH_TEST ENABLED. \n");
 			//
+			glDebugMessageCallback(debug_callback, NULL);
+			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+			glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
+			glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_MARKER, 0, GL_DEBUG_SEVERITY_NOTIFICATION, -1, "START DEBUGGING\n");
+			printf("-- GL DEBUG MESSAGE ENABLED. \n");
 			glfwSetCharModsCallback(m_oWin, on_char_callback);
 			printf("-- CHAR_CALLBACK ENABLED. \n");
 			glfwSetKeyCallback(m_oWin, key_callback);
@@ -161,17 +166,21 @@ void Application::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_p
 			printf("-- CAMERA BUILT SUCCESSFULLY. \n");
 			//Note: I should consider moving this function call into the appropriate application.
 			m_oTweek.InitTweek();
-			printf("-------------------------------------------------------------------------------- \n");
-			//Version print.
 			printf("--------------------------------------------------------------------------------");
+			//Version print.
 			GLint _majorVer = ogl_GetMajorVersion();
 			GLint _minorVer = ogl_GetMinorVersion();
 			printf("-- Successfully loaded this version of OpenGL %d.%d \n", _majorVer, _minorVer);
+			printf("--------------------------------------------------------------------------------");
 			//card and version supported.
-			const GLubyte* _renderer = glGetString(GL_RENDERER); // get renderer string
-			const GLubyte* _version = glGetString(GL_VERSION); // version as a string
+			const GLubyte* _vendor		= glGetString(GL_VENDOR); //Get vendor
+			const GLubyte* _renderer	= glGetString(GL_RENDERER); // get renderer string
+			const GLubyte* _version		= glGetString(GL_VERSION); // version as a string
+			const GLubyte* _glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+			printf("-- Vendor: %s\n", _vendor);
 			printf("-- Renderer: %s\n", _renderer);
-			printf("-- OpenGL version supported and current driver version: %s \n", _version);
+			printf("-- OpenGL Version: %s\n", _version);
+			printf("-- GLSL Version: %s\n", _glslVersion);
 			printf("--------------------------------------------------------------------------------");
 		}
 	}
@@ -186,6 +195,7 @@ void Application::CleanUpWin()
 
 void Application::ClearColor(vec4 a_vScreenColor)
 {
+	//CheckforOpenGLError(__FILE__, __LINE__);
 	glClearColor(a_vScreenColor.x, a_vScreenColor.y, a_vScreenColor.z, a_vScreenColor.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -252,6 +262,8 @@ void Application::mouse_callback(GLFWwindow* a_oWindow, double a_iMouseX, double
 {
 	TwEventMousePosGLFW((int)a_iMouseX, (int)a_iMouseY);
 
+	glfwGetCursorPos(a_oWindow, &a_iMouseX, &a_iMouseY);
+
 	if (m_bKeys[GLFW_MOUSE_BUTTON_LEFT] == GLFW_PRESS)
 	{
 		GLfloat _xOffset = (float)(a_iMouseX - m_fPrevX);
@@ -279,4 +291,128 @@ void Application::framebuffer_size_callback(GLFWwindow* a_oWindow, int a_iWidth,
 void Application::on_char_callback(GLFWwindow* a_oWindow, unsigned int a_uiCodepoint, int a_iMode)
 {
 
+}
+
+void APIENTRY Application::debug_callback(GLenum a_eSource, GLenum a_eType, GLuint a_uiID, GLenum a_eSeverity, GLsizei a_siLength, const GLchar* a_pccMsg, const void* a_pcvParam)
+{
+	string _sourceString;
+
+	switch (a_eSource)
+	{
+	case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
+		_sourceString = "WindowSys";
+		break;
+	case GL_DEBUG_SOURCE_APPLICATION:
+		_sourceString = "App";
+		break;
+	case GL_DEBUG_SOURCE_API:
+		_sourceString = "OpenGL";
+		break;
+	case GL_DEBUG_SOURCE_SHADER_COMPILER:
+		_sourceString = "ShaderCompiler";
+		break;
+	case GL_DEBUG_SOURCE_THIRD_PARTY:
+		_sourceString = "3rdParty";
+		break;
+	case GL_DEBUG_SOURCE_OTHER:
+		_sourceString = "Other";
+		break;
+	default:
+		_sourceString = "Unknown";
+	}
+
+	string _typeStr;
+
+	switch (a_eType) {
+	case GL_DEBUG_TYPE_ERROR:
+		_typeStr = "Error";
+		break;
+	case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+		_typeStr = "Deprecated";
+		break;
+	case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+		_typeStr = "Undefined";
+		break;
+	case GL_DEBUG_TYPE_PORTABILITY:
+		_typeStr = "Portability";
+		break;
+	case GL_DEBUG_TYPE_PERFORMANCE:
+		_typeStr = "Performance";
+		break;
+	case GL_DEBUG_TYPE_MARKER:
+		_typeStr = "Marker";
+		break;
+	case GL_DEBUG_TYPE_PUSH_GROUP:
+		_typeStr = "PushGrp";
+		break;
+	case GL_DEBUG_TYPE_POP_GROUP:
+		_typeStr = "PopGrp";
+		break;
+	case GL_DEBUG_TYPE_OTHER:
+		_typeStr = "Other";
+		break;
+	default:
+		_typeStr = "Unknown";
+	}
+
+	string _sevStr;
+
+	switch (a_eSeverity) {
+	case GL_DEBUG_SEVERITY_HIGH:
+		_sevStr = "HIGH";
+		break;
+	case GL_DEBUG_SEVERITY_MEDIUM:
+		_sevStr = "MED";
+		break;
+	case GL_DEBUG_SEVERITY_LOW:
+		_sevStr = "LOW";
+		break;
+	case GL_DEBUG_SEVERITY_NOTIFICATION:
+		_sevStr = "NOTIFY";
+		break;
+	default:
+		_sevStr = "UNKNOWN";
+	}
+
+	printf("%s:%s[%s](%d): %s\n", _sourceString.c_str(), _typeStr.c_str(), _sevStr.c_str(),
+		a_uiID, a_pccMsg);
+}
+
+int Application::CheckforOpenGLError(const char* a_pccFile, int a_iLine) {
+	//
+	// Expect 1 if an OpenGL error occurred, otherwise a 0 would be returned.
+	//
+	GLenum _glErr;
+	int    _retCode = 0;
+
+	_glErr = glGetError();
+	while (_glErr != GL_NO_ERROR)
+	{
+		const char* _message = "";
+		switch (_glErr)
+		{
+		case GL_INVALID_ENUM:
+			_message = "Invalid enum";
+			break;
+		case GL_INVALID_VALUE:
+			_message = "Invalid value";
+			break;
+		case GL_INVALID_OPERATION:
+			_message = "Invalid operation";
+			break;
+		case GL_INVALID_FRAMEBUFFER_OPERATION:
+			_message = "Invalid framebuffer operation";
+			break;
+		case GL_OUT_OF_MEMORY:
+			_message = "Out of memory";
+			break;
+		default:
+			_message = "Unknown error";
+		}
+
+		printf("<ERROR>: file %s @ line %d: %s\n", a_pccFile, a_iLine, _message);
+		_retCode = 1;
+		_glErr = glGetError();
+	}
+	return _retCode;
 }

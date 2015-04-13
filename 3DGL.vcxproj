@@ -83,6 +83,7 @@
     <ClCompile Include="src\AdvanceTexture.cpp" />
     <ClCompile Include="src\AnimationProject.cpp" />
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\BaseApplication.cpp" />
     <ClCompile Include="src\BoundingBoxes.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\CameraProject.cpp" />
@@ -95,10 +96,12 @@
     <ClCompile Include="src\FBXAnimationProject.cpp" />
     <ClCompile Include="src\GeometryProject.cpp" />
     <ClCompile Include="src\Gizmos.cpp" />
+    <ClCompile Include="src\Gizzle.cpp" />
     <ClCompile Include="src\glParticleRenderer.cpp" />
     <ClCompile Include="src\gl_core_4_4.c" />
     <ClCompile Include="src\GPUEmitter.cpp" />
     <ClCompile Include="src\GPUParticleProject.cpp" />
+    <ClCompile Include="src\GraphicsAssigment.cpp" />
     <ClCompile Include="src\LightingProject.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
@@ -116,9 +119,10 @@
     <ClCompile Include="src\ProjectOpenGL1.cpp" />
     <ClCompile Include="src\RenderTargetProject.cpp" />
     <ClCompile Include="src\ShaderCompiler.cpp" />
+    <ClCompile Include="src\ShaderProgram.cpp" />
     <ClCompile Include="src\ShadowMap.cpp" />
     <ClCompile Include="src\TextRender.cpp" />
-    <ClCompile Include="src\TgaWrapper.cpp" />
+    <ClCompile Include="src\TextureLoader.cpp" />
     <ClCompile Include="src\ThreadProject.cpp" />
     <ClCompile Include="src\tiny_obj_loader.cc" />
     <ClCompile Include="src\TunnelEffect.cpp" />
@@ -127,6 +131,8 @@
     <ClInclude Include="src\AdvanceTexture.h" />
     <ClInclude Include="src\AnimationProject.h" />
     <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\BaseApplication.h" />
+    <ClInclude Include="src\BaseInclude.h" />
     <ClInclude Include="src\BoundingBoxes.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\CameraProject.h" />
@@ -140,10 +146,12 @@
     <ClInclude Include="src\FBXAnimationProject.h" />
     <ClInclude Include="src\GeometryProject.h" />
     <ClInclude Include="src\Gizmos.h" />
+    <ClInclude Include="src\Gizzle.h" />
     <ClInclude Include="src\glParticleRenderer.h" />
     <ClInclude Include="src\gl_core_4_4.h" />
     <ClInclude Include="src\GPUEmitter.h" />
     <ClInclude Include="src\GPUParticleProject.h" />
+    <ClInclude Include="src\GraphicsAssignment.h" />
     <ClInclude Include="src\ParticleEffect.h" />
     <ClInclude Include="src\ParticlesGenerators.h" />
     <ClInclude Include="src\KeyFrame.h" />
@@ -166,10 +174,11 @@
     <ClInclude Include="src\ProjectOpenGL1.h" />
     <ClInclude Include="src\RenderTargetProject.h" />
     <ClInclude Include="src\ShaderCompiler.h" />
+    <ClInclude Include="src\ShaderProgram.h" />
     <ClInclude Include="src\ShadowMap.h" />
     <ClInclude Include="src\stb_image.h" />
     <ClInclude Include="src\TextRender.h" />
-    <ClInclude Include="src\TgaWrapper.h" />
+    <ClInclude Include="src\TextureLoader.h" />
     <ClInclude Include="src\ThreadProject.h" />
     <ClInclude Include="src\tiny_obj_loader.h" />
     <ClInclude Include="src\TunnelEffect.h" />
@@ -216,6 +225,16 @@
     <None Include="data\shaders\Shadow_view_vertex.glsl" />
     <None Include="data\shaders\SkinnedFragment.glsl" />
     <None Include="data\shaders\SkinnedVertex.glsl" />
+    <None Include="data\shaders\Skybox.frag" />
+    <None Include="data\shaders\Skybox.vert" />
+    <None Include="data\shaders\TerrainControl.tcs" />
+    <None Include="data\shaders\TerrainGeneration.vert" />
+    <None Include="data\shaders\TerrainTessellation.tes" />
+    <None Include="data\shaders\TerrainVertex.vert" />
+    <None Include="data\shaders\TerrainWire.frag" />
+    <None Include="data\shaders\TerrainWire.geom" />
+    <None Include="data\shaders\TextRendering.fs" />
+    <None Include="data\shaders\TextRendering.vs" />
     <None Include="data\shaders\TextureFragment.glsl" />
     <None Include="data\shaders\TextureVertex.glsl" />
   </ItemGroup>

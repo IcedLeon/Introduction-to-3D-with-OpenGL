@@ -1,20 +1,14 @@
 #ifndef _TEXTRENDER_H_
 #define _TEXTRENDER_H_
 //Libs
-#include "gl_core_4_4.h"
-#define GLM_SWIZZLE
-#include "glm/glm.hpp"
-#include "glm/ext.hpp"
+#include "BaseInclude.h"
 #include "ft2build.h"
 #include FT_FREETYPE_H
-#include <string>
-#include <map>
+#include "ShaderProgram.h"
 
 using std::string;
 using std::map;
 using glm::ivec2;
-
-class ShaderCompiler;
 
 struct Character
 {
@@ -31,18 +25,19 @@ private:
 	FT_Face					m_oFontFace;
 	Character				m_oCharacter;
 	map<GLchar, Character>	m_mCharacters;
+	ShaderProgram			m_oTexProgram;
 	GLuint					m_uiTVAO;
 	GLuint					m_uiTVBO;
+
 public:
 	Text() {}
 	~Text() {}
 
-	void InitTextRendering(int a_iFontSize, const char* a_pccFontPath);
+	void InitTextRendering(int a_iFontSize, const char* a_pccFontPath, vec2 a_vScreenDim);
 
-	void RenderText(ShaderCompiler* a_iShaderProg,
-		string a_sText,
-		glm::vec2 a_vTextPos,
-		GLfloat a_fScale,
-		glm::vec3 a_VColour);
+	void RenderText(string a_sText,	
+					vec2 a_vTextPos,
+					GLfloat a_fScale,
+					vec3 a_vColour);
 };
 #endif //!_TEXTRENDER_H_

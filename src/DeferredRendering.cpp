@@ -2,8 +2,7 @@
 #include <GLFW\glfw3.h>
 #include "Camera.h"
 #include "tiny_obj_loader.h"
-#include "Gizmos.h"
-
+#include "Gizzle.h"
 
 DeferredRendering::DeferredRendering()
 {
@@ -20,8 +19,6 @@ void DeferredRendering::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const cha
 	Application::InitWindow(a_vCamPos, a_vScreenSize, a_pccWinName, a_bFullScreen);
 	m_oProjection = m_oCamera.GetProjectionTransform(glm::vec2(a_vScreenSize.x, a_vScreenSize.y));
 
-	//Gizmos::create();
-
 	LoadShader();
 
 	static const char* const _objNames[] =
@@ -34,7 +31,7 @@ void DeferredRendering::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const cha
 	};
 	int _meshRand = glm::linearRand(0, 3);
 	LoadMesh(_objNames[_meshRand]);
-	
+
 	glEnable(GL_CULL_FACE);
 
 	GenBuffers();
@@ -54,24 +51,12 @@ void DeferredRendering::Update(GLdouble a_dDeltaTime)
 	vec4 _green(0, 1, 0, 1);
 	vec4 _blue(0, 0, 1, 1);
 
-	//Gizmos::clear();
-	//Gizmos::addTransform(mat4(1));
-	//
-	//for (int i = 0; i <= 20; ++i)
-	//{
-	//	Gizmos::addLine(vec3(-10 + i, 0, -10), vec3(-10 + i, 0, 10),
-	//		i == 10 ? _blue : _white);
-	//	Gizmos::addLine(vec3(-10, 0, -10 + i), vec3(10, 0, -10 + i),
-	//		i == 10 ? _red : _white);
-	//}
-
 	OnKey();
 	MoveCamera((float)a_dDeltaTime);
 }
 
 void DeferredRendering::CleanUpWin()
 {
-	Gizmos::destroy();
 	glDeleteProgram(Program.m_uiGBufferProgram);
 	glDeleteProgram(Program.m_uiDirLightProgram);
 	glDeleteProgram(Program.m_uiPointLightProgram);
@@ -174,7 +159,6 @@ void DeferredRendering::Draw()
 	glBindVertexArray(m_uiQuad_VAO.m_uiVAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-	//Gizmos::draw(_projView);
 }
 
 void DeferredRendering::MoveCamera(float a_fDeltaTime)
