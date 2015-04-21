@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ShaderCompiler.h"
 #include "FBXFile.h"
+#include "ShaderProgram.h"
 #include <vector>
 //Using
 using std::vector;

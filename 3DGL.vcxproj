@@ -94,6 +94,7 @@
     <ClCompile Include="src\Dof.cpp" />
     <ClCompile Include="src\EmitterSh.cpp" />
     <ClCompile Include="src\FBXAnimationProject.cpp" />
+    <ClCompile Include="src\FbxSubLoader.cpp" />
     <ClCompile Include="src\GeometryProject.cpp" />
     <ClCompile Include="src\Gizmos.cpp" />
     <ClCompile Include="src\Gizzle.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="src\Dof.h" />
     <ClInclude Include="src\EmitterSh.h" />
     <ClInclude Include="src\FBXAnimationProject.h" />
+    <ClInclude Include="src\FbxSubLoader.h" />
     <ClInclude Include="src\GeometryProject.h" />
     <ClInclude Include="src\Gizmos.h" />
     <ClInclude Include="src\Gizzle.h" />
@@ -228,11 +230,14 @@
     <None Include="data\shaders\Skybox.frag" />
     <None Include="data\shaders\Skybox.vert" />
     <None Include="data\shaders\TerrainControl.tcs" />
+    <None Include="data\shaders\TerrainFragment.frag" />
+    <None Include="data\shaders\TerrainGeneration.frag" />
     <None Include="data\shaders\TerrainGeneration.vert" />
     <None Include="data\shaders\TerrainTessellation.tes" />
     <None Include="data\shaders\TerrainVertex.vert" />
     <None Include="data\shaders\TerrainWire.frag" />
     <None Include="data\shaders\TerrainWire.geom" />
+    <None Include="data\shaders\TerrainWire.vert" />
     <None Include="data\shaders\TextRendering.fs" />
     <None Include="data\shaders\TextRendering.vs" />
     <None Include="data\shaders\TextureFragment.glsl" />

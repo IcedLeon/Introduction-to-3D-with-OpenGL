@@ -71,7 +71,7 @@ public:
 	//Return the view matrix
 	mat4 GetWorldTransform() const;
 	mat4 GetViewTransform() const;
-	mat4 GetProjectionTransform(glm::vec2 a_vScreenSize, float a_fNearPlane = 0.1f, float a_fFarPlane = 1000.0f) const;
+	mat4 GetProjectionTransform(glm::vec2 a_vScreenSize, float a_fNearPlane = 0.01f, float a_fFarPlane = 100000.0f) const;
 	mat4 GetProjViewTransform(glm::vec2 a_vScreenSize) const;
 
 	//Keyborad input processor.

@@ -116,7 +116,8 @@ namespace App
 
 	void BaseApplication::OnResize(GLint a_iWidth, GLint a_iHeight)
 	{
-		this->APPINFO.m_viWinSize = ivec2(a_iWidth, a_iHeight);
+		this->m_oApp->APPINFO.m_viWinSize = ivec2(a_iWidth, a_iHeight);
+		this->m_oApp->DATA.TRANSFORM.m_mProjection = this->m_oApp->DATA.m_oCurrCamera->GetProjectionTransform(this->APPINFO.m_viWinSize);
 	}
 
 	void BaseApplication::GetGLError(GLenum a_eSource, GLenum a_eType, GLuint a_uiID,
@@ -200,14 +201,14 @@ namespace App
 		default:
 			_sevStr = "UNKNOWN";
 		}
-#define FORMAT_GL_ERROR_MSG "<OpenGL Error>: %s.\n[Source]:%s\n[Type]:%s\n[Severity]:%s\n [ID]:%d.\n"
+#define FORMAT_GL_ERROR_MSG "<OpenGL Error>: %s.\n[Source]:%s\n[Type]:%s\n[Severity]:%s\n[ID]:%d.\n"
 		printf(FORMAT_GL_ERROR_MSG, a_pccMsg, _sourceString.c_str(), _typeStr.c_str(), _sevStr.c_str(),
 			a_uiID);
 	}
 
 	void BaseApplication::Shutdown()
 	{
-		delete this->APPINFO.m_pccTitle;
+		delete this->m_oApp->APPINFO.m_pccTitle;
 		glfwDestroyWindow(this->DATA.m_oWin);
 		glfwTerminate();
 		delete this->m_oApp;
@@ -220,7 +221,7 @@ namespace App
 		Camera* _newCamera = new Camera();
 		_newCamera->BuildCamera(a_vCamPos);
 
-		this->DATA.m_oTotalCameras[_camID] = _newCamera;
+		this->m_oApp->DATA.m_oTotalCameras[_camID] = _newCamera;
 
 		_camID++;
 	}

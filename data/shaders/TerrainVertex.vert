@@ -1,12 +1,9 @@
-#version 420 core
+#version 440 core
+#extension GL_ARB_tessellation_shader : enable
 #extension GL_EXT_shader_io_blocks : enable
+precision mediump float;
 
 layout (location = 0) in vec4 vertex;
-
-uniform vec3 GridOrigin;
-uniform vec3 TileSize;
-uniform int GridW;
-uniform int GridH;
 
 out gl_PerVertex
 {
@@ -16,6 +13,12 @@ out gl_PerVertex
 layout (location = 1) out block {
     mediump vec2 Tex_Coord;
 } Out;
+
+uniform mat4 MVP;
+uniform vec3 GridOrigin;
+uniform vec3 TileSize;
+uniform int GridW;
+uniform int GridH;
 
 void main()
 {

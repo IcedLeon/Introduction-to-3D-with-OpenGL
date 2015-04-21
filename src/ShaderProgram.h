@@ -58,16 +58,21 @@ public:
 	~ShaderProgram();
 	
 	void CreateProgram(vector<const char*> a_pccShaderIDs);
+	void CreateProgramPipeline(const char* a_pccShrSource);
 	void ValidateProgram();
 	void Use();
+	void Disable();
+	void Release();
 	//Get the shader program, once the shader class has been compiled all the shader are going to be linked with
 	//the current program so there will be no need to having extra variable for the both compiled shaders.
 	GLuint GetHandle() const;
 	bool IsLinked() const;
+
 	
 	void SetUniform(const char* a_pccUniName, const vec2& a_vVector);
 	void SetUniform(const char* a_pccUniName, const vec3& a_vVector);
 	void SetUniform(const char* a_pccUniName, const vec4& a_vVector);
+	void SetUniform(const char* a_pccUniName, const vec4& a_vVector, int a_iNumOfVec);
 	void SetUniform(const char* a_pccUniName, const mat3& a_mMatrix);
 	void SetUniform(const char* a_pccUniName, const mat4& a_mMatrix);
 	void SetUniform(const char* a_pccUniName, float a_fX, float a_fY, float a_fZ, float a_fW);

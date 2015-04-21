@@ -106,7 +106,7 @@ namespace TEXLOADER
 						_bpp,
 						_originX, _originY);
 					//Read the pixel data
-					if (a_iWidth != NULL || a_iHeight != NULL);
+					if (a_iWidth != NULL || a_iHeight != NULL)
 						printf("<WARNING>: Width: %d or Height: %d of this .tga file is equal to zero. \n", a_iWidth, a_iHeight);
 					GLubyte* _pixel = new GLubyte[a_iWidth * a_iHeight * 4];
 					//24 bpp -- Blue, Green, Red
@@ -164,7 +164,7 @@ namespace TEXLOADER
 					LITTLE_ENDIAN::WriteShort(_ofFile, a_iHeight);	//Image height.
 					_ofFile.put(32);								//Bits per pixel (32).
 					_ofFile.put(8);									//Image descriptor (8 => 32bpp).
-					if (a_iWidth != NULL || a_iHeight != NULL);
+					if (a_iWidth != NULL || a_iHeight != NULL)
 						printf("<WARNING>: Width: %d or Height: %d of this .tga file is equal to zero. \n", a_iWidth, a_iHeight);
 					int _imageSize = a_iWidth * a_iHeight;
 					for (int i = 0; i < _imageSize; ++i)

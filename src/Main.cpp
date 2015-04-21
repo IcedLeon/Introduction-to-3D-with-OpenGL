@@ -1,7 +1,7 @@
 #include "GraphicsAssignment.h"
 
 int main()
-{
+{	
 	GraphicsAssignment* _app = new GraphicsAssignment();
 
 	_app->Init(_app, vec3(10, 10, 10), ivec2(1920, 1080), "GraphicsAssignment", false);
@@ -15,7 +15,6 @@ int main()
 
 /*Other exercise main*/
 //#include "Dof.h"
-//#include "TextRender.h"
 //
 //int main()
 //{

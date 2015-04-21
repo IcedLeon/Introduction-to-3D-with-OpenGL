@@ -83,7 +83,7 @@ namespace App
 
 		virtual void OnResize(GLint a_iWidth, GLint i_iHeight);
 		
-		virtual void OnKey(GLint a_iKey) = NULL;
+		virtual void OnKey() = NULL;
 
 		virtual void OnMouseButton(GLint a_iButton) = NULL;
 
@@ -95,6 +95,8 @@ namespace App
 			GLenum a_eSeverity, const GLchar* a_pccMsg);
 
 		virtual void Shutdown();
+
+		void EnableVsync(bool a_bVsyncEnable);
 		
 	public:
 		BaseApplication();
@@ -105,7 +107,6 @@ namespace App
 		
 		void RunApp();
 
-		void EnableVsync(bool a_bVsyncEnable);
 	};
 }
 //

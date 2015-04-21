@@ -139,6 +139,9 @@
     <ClCompile Include="src\Camera.cpp">
       <Filter>Source\Engine\Accessory</Filter>
     </ClCompile>
+    <ClCompile Include="src\FbxSubLoader.cpp">
+      <Filter>Source\Engine\Accessory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ProjectOpenGL1.h">
@@ -306,6 +309,9 @@
     <ClInclude Include="src\Camera.h">
       <Filter>Header\Engine\Accessory</Filter>
     </ClInclude>
+    <ClInclude Include="src\FbxSubLoader.h">
+      <Filter>Header\Engine\Accessory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\GPUParticleFragment.glsl">
@@ -449,9 +455,6 @@
     <None Include="data\shaders\TerrainGeneration.vert">
       <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
     </None>
-    <None Include="data\shaders\TerrainVertex.vert">
-      <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
-    </None>
     <None Include="data\shaders\TerrainControl.tcs">
       <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
     </None>
@@ -462,6 +465,18 @@
       <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
     </None>
     <None Include="data\shaders\TerrainTessellation.tes">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
+    </None>
+    <None Include="data\shaders\TerrainFragment.frag">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
+    </None>
+    <None Include="data\shaders\TerrainVertex.vert">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
+    </None>
+    <None Include="data\shaders\TerrainGeneration.frag">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
+    </None>
+    <None Include="data\shaders\TerrainWire.vert">
       <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
     </None>
   </ItemGroup>

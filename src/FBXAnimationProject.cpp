@@ -28,7 +28,7 @@ void FBXAnimationP::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a
 	//TwAddVarRW(m_oTweek.GetMappedBar("Time"), "Time agumenter", TW_TYPE_FLOAT, &m_fAugmenter, "min=0.1 max=100 step=0.5");
 
 	m_oFile = new FBXFile();
-	m_oFile->load("./models/rigged/Stick_Figure/Stick_Figure_by_Swp.fbx");
+	m_oFile->load("./models/rigged/Bat/bat.fbx");
 	//m_oFile->initialiseOpenGLTextures();
 
 	m_oShader.CreateShaderProgram(SKINNED_VERTEX_GLSL, SKINNED_FRAGMENT_GLSL);
@@ -219,7 +219,8 @@ void FBXAnimationP::EvalueteSkeleton(FBXAnimation* a_oAnimation, FBXSkeleton* a_
 
 		//find the key frames that influce the bones
 		FBXKeyFrame _currentKeyFrame = a_oAnimation->m_tracks[trackidex].m_keyframes[track_frame];
-		FBXKeyFrame _nextKeyFrame = a_oAnimation->m_tracks[trackidex].m_keyframes[(track_frame + 1) % track_frame_count];
+		FBXKeyFrame _nextKeyFrame = a_oAnimation->m_tracks[trackidex].m_keyframes[
+			(track_frame + 1) % track_frame_count];
 
 		float _time_since_frame_flip = a_fDeltaTime - (_currentFrame / _FPS);
 

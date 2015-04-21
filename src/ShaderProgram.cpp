@@ -155,8 +155,8 @@ void ShaderProgram::LinkProgram()
 		{
 			GLchar* _infoLog = new GLchar[LOG_LHG];
 			int _written = NULL;
-			glGetShaderInfoLog(this->m_uiPrgHandle, LOG_LHG, &_written, _infoLog);
-			printf("<ERROR>: Shader program linking has failed:\n%s\n", _infoLog);
+			glGetProgramInfoLog(this->m_uiPrgHandle, LOG_LHG, &_written, _infoLog);
+			printf("<ERROR>: Shader program linking has failed: %s\n", _infoLog);
 			delete[] _infoLog;
 		}
 	}
@@ -228,6 +228,94 @@ void ShaderProgram::CreateProgram(vector<const char*> a_pccShaderIDs)
 	m_oUniformLocations.clear();
 }
 
+void ShaderProgram::CreateProgramPipeline(const char* a_pccShrSource)
+{
+	//I determine the number of Extensions available.
+	int _numOfExt = sizeof(SHADERINFO::Extensions) / sizeof(SHADERINFO::Shader_File_ext);
+	//The current Extensions.
+	string _currExt = GetExtension(a_pccShrSource);
+	//It's just for filling and avoiding junk to be stored, 
+	//if the compilation fail to find the match it will return an error.
+	GLSLShader::ShaderType _type = GLSLShader::VERTEX;
+	//A flag to be raised upon match is found
+	bool _hasMatch = false;
+
+	for (int i = 0; i < _numOfExt; ++i)
+	{
+		if (_currExt == SHADERINFO::Extensions[i]._pccExt)
+		{
+			_hasMatch = true;
+			_type = SHADERINFO::Extensions[i]._eType;
+			break;
+		}
+	}
+
+	if (!_hasMatch)
+	{
+		const char* _errMsg = "<ERROR>: Extension could not be recognized: %s";
+		printf(_errMsg, _currExt);
+	}
+	else
+	{
+		const char* _errMsg;
+
+		if (!IsFileIDExists(*a_pccShrSource))
+		{
+			_errMsg = "<ERROR> Shader: %s could not be found.\n";
+			printf(_errMsg, a_pccShrSource);
+		}
+
+		//if (this->m_uiPrgHandle <= 0)
+		//{
+		//	m_uiPrgHandle = glCreateProgram();
+		//	if (this->m_uiPrgHandle == 0)
+		//	{
+		//		_errMsg = "<ERROR>: Unable to create shader program.\n";
+		//		printf(_errMsg);
+		//	}
+		//}
+
+		std::ifstream _shaderFile(a_pccShrSource, std::ios::in);
+
+		if (!_shaderFile)
+		{
+			_errMsg = "<ERROR>: Unable to open and read: %s";
+			printf(_errMsg, a_pccShrSource);
+		}
+
+		std::stringstream _shaderCode;
+
+		_shaderCode << _shaderFile.rdbuf();
+		_shaderFile.close();
+
+		string _stringToConvert = _shaderCode.str();
+
+		const char* _compiledShrCode = _stringToConvert.c_str();
+
+		this->m_uiPrgHandle = glCreateShaderProgramv(_type, 2, &_compiledShrCode);
+
+		GLint _success = NULL;
+		glGetProgramiv(this->m_uiPrgHandle, GL_LINK_STATUS, &_success);
+		if (!_success)
+		{
+			int LOG_LHG = NULL;
+			glGetProgramiv(this->m_uiPrgHandle, GL_INFO_LOG_LENGTH, &LOG_LHG);
+			if (LOG_LHG > 0)
+			{
+				GLchar* _infoLog = new GLchar[LOG_LHG];
+				int _written = NULL;
+				glGetShaderInfoLog(this->m_uiPrgHandle, LOG_LHG, &_written, _infoLog);
+				printf("<ERROR>: Shader program linking has failed:\n%s\n", _infoLog);
+				delete[] _infoLog;
+			}
+		}
+		else
+		{
+			m_bLinked = true;
+		}
+	}
+}
+
 void ShaderProgram::ValidateProgram()
 {
 	if (!m_bLinked)
@@ -266,6 +354,16 @@ void ShaderProgram::Use()
 	glUseProgram(this->m_uiPrgHandle);
 }
 
+void ShaderProgram::Disable()
+{
+	glUseProgram(NULL);
+}
+
+void ShaderProgram::Release()
+{
+	glDeleteProgram(this->m_uiPrgHandle);
+}
+
 GLuint ShaderProgram::GetHandle() const
 {
 	return this->m_uiPrgHandle;
@@ -292,6 +390,12 @@ void ShaderProgram::SetUniform(const char* a_pccUniName, const vec4& a_vVector)
 {
 	GLint _loc = GetUniformLocation(a_pccUniName);
 	glUniform4fv(_loc, 1, (float*)&a_vVector);
+}
+
+void ShaderProgram::SetUniform(const char* a_pccUniName, const vec4& a_vVector, int a_iNumOfVec)
+{
+	GLint _loc = GetUniformLocation(a_pccUniName);
+	glUniform4fv(_loc, a_iNumOfVec, (float*)&a_vVector);
 }
 
 void ShaderProgram::SetUniform(const char* a_pccUniName, const mat3& a_mMatrix)

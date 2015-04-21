@@ -1,5 +1,5 @@
-#version 420 core
-#extension GL_ARB_tessellation_shader : enable
+#version 440 core
+precision mediump float;
 
 layout(quads, fractional_even_spacing, cw) in;
 
@@ -22,146 +22,177 @@ layout(location=1) out block {
     vec3 normal;
 } Out;
 
-uniform sampler2D Noise_Tex;
-uniform sampler2D Terrain_Tex1;
-uniform sampler2D Terrain_Tex2;
-uniform mat4 MV;
+uniform sampler2D Terrain_Tex;
+uniform mat4 Projection;
 uniform mat4 MVP;
+uniform mat4 MV;
 uniform vec3 TileSize;
-uniform float DeltaT;
+uniform vec3 Translate;
+uniform float NoiseFreq;
+uniform float InvNoiseSize;
+uniform float HeightScale;
 uniform int NoiseOctaves;
-uniform bool HighQl;
 
-//Noise value and the analytical derivatives. 
-//Ref: Inigo Quilez post: http://www.iquilezles.org/www/articles/morenoise/morenoise.htm.
-float Noised(vec3 pos)
+//Smooth interpolation curve
+vec2 Fade(vec2 t)
 {
-	vec2 p = floor(pos);
-	vec2 f = fract(pos);
-	vec2 u = f * f * (3.0 - 2.0 * f);
-	if (HighQl)
+    return t * t * t * (t * (t * 6.0 - 15.0) + 10.0); //(quintic)
+}
+
+//Derivative of fade function
+vec2 DerFade(vec2 t)
+{
+    return 30.0 * t * t * (t * (t - 2.0) + 1.0); //(quintic)
+}
+
+vec3 DerNoise(vec2 pos)
+{
+    vec2 i = floor(pos);
+    vec2 u = pos - i;
+
+    vec2 du = DerFade(u);
+    u = Fade(u);
+
+    // get neighbouring noise values
+    vec4 n = textureGather(Terrain_Tex, i * InvNoiseSize) * 2.0 - 1.0;
+
+    // rename components for convenience
+    float a = n.w;
+    float b = n.z;
+    float c = n.x;
+    float d = n.y;
+
+    float k0 = a;
+    float k1 = b - a;
+    float k2 = c - a;
+    float k3 = a - b - c + d;
+
+    vec3 r;
+    // noise derivative
+    r.xy = (vec2(k1, k2) + k3 * u.yx) * du;
+    // noise value
+    r.z = k0 + k1 * u.x + k2 * u.y + k3 * u.x * u.y;
+    return r;
+}
+
+// rotate octaves to avoid axis-aligned artifacts
+const mat2 _rotateMat = mat2(1.6, -1.2, 1.2, 1.6);
+
+float FbmGrad(vec2 pos, int octaves = 4, float lacunarity = 2.0, float gain = 0.5)
+{
+	float amp = 0.5;
+	vec2 d = vec2(0.0);
+	float sum = 0.0;
+	for (int i = 0; i < octaves; ++i)
 	{
-		vec2 uv = p.xy + vec2(37.0, 17.0) * p.z) + f.xy;
-		vec2 rg = texture2D(Noise_Tex, (uv + 0.5) / 256.0, -100.0).xy;
+		vec3 n = DerNoise(pos);
+		d += n.xy;
+		sum += n.z * amp / (1.0 + dot(d, d)); //Sum scaled by the gradient.
+		amp *= gain;
+		pos = _rotateMat * pos;
 	}
-	else
-	{
-		vec2 uv = texture2D(Noise_Tex, (p + vec2(0.5, 0.5)) / 256.0, -100.0).yx;
-		vec2 rg1 = texture2D(Noise_Tex, (p + vec2(1.5, 0.5)) / 256.0, -100.0).yx;
-		vec2 rg2 = texture2D(Noise_Tex, (p + vec2(0.5, 1.5)) / 256.0, -100.0).yx;
-		vec2 rg3 = texture2D(Noise_Tex, (p + vec2(1.5, 1.5)) / 256.0, -100.0).yx;
-		vec2 rg4 = texture2D(Noise_Tex, (p + vec2(1.5, 1.5)) / 256.0, -100.0).yx;
-		vec2 rg = mix(mix(rg1, rg2, f.x), mix(rg3, rg4, f.x), f.y);
-	}
-
-	return mix(rg.x, rg.y, f.z);
+	return sum;
 }
 
-const mat3 biasM = mat3( 0.00,  0.80,  0.60,
-						-0.80,  0.36, -0.48,
-						-0.60, -0.48,  0.64);
-
-float Displacement(vec3 pos)
+float Terrain(vec2 pos)
 {
-	float f;
-	f = 0.05000 * Noised(pos);
-	pos = biasM * pos * 2.02;
-	f += 0.2500 * Noised(pos);
-	pos = biasM * pos * 2.03;
-	f += 0.1500 * Noised(pos);
-	pos = biasM * pos * 2.01;
-	if (!HighQl)
-	{
-		f += 0.0625 * Noised(pos);
-	}
-	return f;
+	pos += Translate.xz;
+	pos *= NoiseFreq;
+
+	float h = FbmGrad(pos, NoiseOctaves) + 0.2;
+
+	h *= HeightScale;
+
+	const float _waterLevl = 0.05;
+
+	float land = smoothstep(_waterLevl, _waterLevl + 0.2, h);
+
+	h *= 0.1 + 0.9 * land;
+
+	return h;
 }
 
-vec4 TexCube(sampler2D samp, vec3 pos, vec3 norm)
-{
-	vec4 x - texture2D(samp, pos.yz);
-	vec4 y - texture2D(samp, pos.yz);
-	vec4 z - texture2D(samp, pos.yz);
-
-	return (x * abs(norm.x) + y * abs(norm.y) + z * abs(norm.z)) / (abs(norm.x) + abs(norm.y) + abs(norm.z));
-}
-
-vec4 Texture2DGG(sampler2D samp, vec2 uv, float bias)
-{
-    uv = uv * 1024.0 - 0.5;
-    vec2 iuv = floor(uv); 
-    vec2 f = fract(uv);
-	vec4 rg1 = texture2D(samp, (iuv+ vec2(0.5,0.5)) / 1024.0, bias );
-	vec4 rg2 = texture2D(samp, (iuv+ vec2(1.5,0.5)) / 1024.0, bias );
-	vec4 rg3 = texture2D(samp, (iuv+ vec2(0.5,1.5)) / 1024.0, bias );
-	vec4 rg4 = texture2D(samp, (iuv+ vec2(1.5,1.5)) / 1024.0, bias );
-	return mix( mix(rg1, rg2, f.x), mix(rg3, rg4, f.x), f.y );	
-}
-
-float Terrain(vec2 qu)
-{
-	float th = smoothstep( 0.0, 0.7, texture2D(Terrain_Tex1, 0.001 * qu, -100.0 ).x );
-    float rr = smoothstep( 0.1, 0.5, texture2D(Terrain_Tex2, 2.0*0.03 * qu, -100.0 ).y );
-	float h = 1.9;
-	if(!HighQl)
-	{
-		h += (1.0 - 0.6 * rr) * (1.5 - 1.0 * th) * 0.2 * (1.0 - texture2D(Terrain_Tex1, 0.03 * qu, -100.0 ).x);
-	}
-	h += th * 7.0;
-    h += 0.3 * rr;
-    return -h;
-}
-
-float Terrain2(vec2 qu)
-{
-	float th = smoothstep( 0.0, 0.7, texture2D(Terrain_Tex1, 0.001 * qu, -100.0 ).x );
-    float rr = smoothstep( 0.1, 0.5, texture2D(Terrain_Tex2, 2.0*0.03 * qu, -100.0 ).y );
-	float h = 1.9;
-	h += th * 7.0;
-    h += 0.3 * rr;
-    return -h;
-}
-
-vec4 Map(vec3 pos)
-{
-	float h = Terrain(pos.xz);
-	float dist = Displacement(0.25 * pos * vec3(1.0, 4.0, 1.0));
-	dist *= 3.0;
-	return vec4((dist + pos.y - h) * 0.25, pos.x, h, 0.0);
-}
-
-vec4 Intersect(vec3 ro, vec3 rd, float tMax)
-{
-	float t = 1.0;
-	vec3 res = vec3(0.0);
-	for (int i = 0; i < 256; ++if)
-	{
-		vec4 temp = Map(ro + rd * t);
-		res = temp.ywz;
-		t += temp.x;
-		if (temp.x < (0.001 * t) || t > tMax)
-		{
-			break;
-		}
-	}
-}
-
-vec3 CalcNormal(vec3 pos, float t)
-{
-	vec2 eps = vec2(0.01, 0.0);
-
-	return normalize(vec3(
-	Map(pos + eps.xyy).x - map(pos - eps.xyy).x,
-	Map(pos + eps.yxy).x - map(pos - eps.yxy).x,
-	Map(pos + eps.yyx).x - map(pos - eps.yyx).x ) );
-}
+//const mat3 _biasMat = mat3(0.0, 0.8, 0.6,
+//						  -0.8, 0.36, -0.48
+//						  -0.6, -0.48, 0.64);
+//
+//float Displacement(vec3 pos)
+//{
+//	pos += vec3(1.0, 0.0, 0.8);
+//
+//	float f;
+//	f = 0.5000 * DerNoise(pos.xz);
+//	pos = _biasMat * pos * 2.02;
+//	f += 0.2500 * DerNoise(pos.xz);
+//	pos = _biasMat * pos * 2.03;
+//	f += 0.1250 * DerNoise(pos.xz);
+//	pos = _biasMat * pos * 2.01;
+//	f += 0.0625 * DerNoise(pos.xz);
+//
+//	float n = DerNoise(pos.xz * 3.5);
+//
+//	f += 0.03 * n * n;
+//
+//	return f;
+//}
+//
+//float MapTerrain(vec3 pos)
+//{
+//	return pos.y * 0.1 + (Displacement(pos * vec3(0.8, 1.0, 0.8)) - 0.4) * (1.0 - smoothstep(1.0, 3.0, pos.y));
+//}
+//
+//float RayMarchTerrain(vec3 ro, vec3 rd)
+//{
+//	float maxD = 30.0;
+//	float t = 0.1;
+//
+//	for (int i = 0; i < 160; ++i)
+//	{
+//		float h = MapTerrain(ro + rd * t);
+//
+//		if (h < (0.001 * t) || t > maxD)
+//		{
+//			break;
+//		}
+//
+//		t += h;
+//	}
+//
+//	if (t > maxD)
+//	{
+//		t = -1.0;
+//	}
+//
+//	return t;
+//}
 
 void main()
 {
 	vec3 pos = gl_in[0].gl_Position.xyz;
 	pos.xz += gl_TessCoord.xy * TileSize.xz;
+	//
+	float h = Terrain(pos.xz);
+	vec3 no = vec3(0, 1, 0);
+	pos.y = h;
+	//
+	vec2 triangleSize = TileSize.xz / In[0].tessLevelInner;
+	vec3 pos_dx = pos.xyz + vec3(triangleSize.x, 0.0, 0.0);
+	vec3 pos_dz = pos.xyz + vec3(0.0, 0.0, triangleSize.y);
+	pos_dx.y = Terrain(pos_dx.xz);
+	pos_dz.y = Terrain(pos_dz.xz);
+	no = normalize(cross(pos_dz - pos.xyz, pos_dx - pos.xyz));
+	//if(NeedTex)
+	//{
+	//	vec2 uv = In[0].texCoord + (vec2(1.0 / GridW, 1.0 / GridH) * gl_TessCoord.xy);
+	//	vec4 t = texture2D(Terrain_Tex, uv);
+	//	float h2 = t.w;
+	//	pos.y = t.w;
+	//	vec3 no2 = t.xyz; 
+	//}
+	//
+	Out.normal = no;
+	Out.vertex = pos;
+	Out.vertexEye = vec3(MV * vec4(pos, 1.0)); //View space.
 
-	//Here, ray marching and plane intersecting happen here.
-	//Once passed onto the final stage (terrain frag), light, shadow ecc need to be calculated.
-	//In this passage i need to create the terrain in it's completness... what a fucking easy task... 
+	gl_Position = MVP * vec4(pos, 1.0);
 }

@@ -50,13 +50,13 @@ void Dof::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccWinNam
 
 	static const char* const _objNames[] =
 	{
-		"./models/rigged/Husk.fbx",
+		"./models/rigged/Pyro/pyro.fbx",
 		"./models/stanford/buddha.fbx",
 		"./models/stanford/bunny.fbx",
 	};
 	int _choosedMesh = glm::linearRand(0, 3);
 
-	StartThreding(_objNames[0]);
+	StartThreding(_objNames[1]);
 
 	GenBuffers();
 }
