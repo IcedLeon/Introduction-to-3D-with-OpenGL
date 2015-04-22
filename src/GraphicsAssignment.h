@@ -189,11 +189,12 @@ class GraphicsAssignment : public App::BaseApplication
 private:
 	FbxSubLoader m_oFbxLoader;
 	mat4 m_mRotationMat;
+	vec3 m_vLightDirection;
 	struct
 	{
 		mat4 Projection;
-		mat4 MV;
-		mat4 MVP;
+		mat4 View;
+		mat4 VP;
 		mat4 InvProj;
 		mat4 InvView;
 		vec4 Viewport;

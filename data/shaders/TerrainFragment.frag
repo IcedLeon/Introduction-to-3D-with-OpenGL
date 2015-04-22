@@ -43,7 +43,7 @@ vec3 ApplyFog(vec3 col, float dist, vec3 viewDir)
 {
     float fogAmount = exp(-dist * _fogExp);
     float sunAmount = max( dot(viewDir, LightDirWorld), 0.0);
-    sunAmount = pow(sunAmount, 32.0);
+    sunAmount = pow(sunAmount, 12.0);
     vec3 fogColour = mix(_fogColour, _sunColour, sunAmount);
     return mix(fogColour, col, fogAmount);
 }
@@ -135,13 +135,13 @@ vec3 ColourTerrain(vec3 vertex, vec3 vertexEye, vec3 normal)
 	vec3 n = normalize(normal);
 
 	float diffuse = 0.0;
-    diffuse += 0.2 * Diffuse( normalize(vec3( 0.0, 1.0, 0.0 )), n, -viewDir, 1.0 );
-    diffuse += 0.2 * Diffuse( normalize(vec3( 3.0, 1.0, 0.0 )), n, -viewDir, 1.0 );
-    diffuse += 0.2 * Diffuse( normalize(vec3(-3.0, 1.0, 0.0 )), n, -viewDir, 1.0 );
-    diffuse += 0.2 * Diffuse( normalize(vec3( 0.0, 1.0, 3.0 )), n, -viewDir, 1.0 );
-    diffuse += 0.2 * Diffuse( normalize(vec3( 0.0, 1.0,-3.0 )), n, -viewDir, 1.0 );
+    diffuse += 0.2 * Diffuse(-LightDirWorld, n, -viewDir, 1.0 );
+    diffuse += 0.2 * Diffuse(-LightDirWorld, n, -viewDir, 1.0 );
+    diffuse += 0.2 * Diffuse(-LightDirWorld, n, -viewDir, 1.0 );
+    diffuse += 0.2 * Diffuse(-LightDirWorld, n, -viewDir, 1.0 );
+    diffuse += 0.2 * Diffuse(-LightDirWorld, n, -viewDir, 1.0 );
 
-	//diffuse *= Saturate( (dot(n, -LightDirWorld) + wrap) / (1.0 + wrap));
+	//diffuse = Saturate( (dot(n, -LightDirWorld) + wrap) / (1.0 + wrap));
 	float specular = pow(Saturate(dot(h, n)), shininess);
 	
     grassColour = mix(grassColour * 0.25, grassColour * 1.5, noiseS);
@@ -163,19 +163,18 @@ vec3 ColourTerrain(vec3 vertex, vec3 vertexEye, vec3 normal)
 
     // fog
     float dist = length(vertexEye);
-    //finalColor = ApplyFog(finalColor, dist);
     finalColor = ApplyFog(finalColor, dist, viewDir);
         
-	finalColor = pow(finalColor, vec4(1.0 / 2.2).xyz );
+	finalColor = pow(finalColor, vec4(1.0 / 2.2).xyz);
 	//Vignetting
 	vec2 q = gl_FragCoord.xy / Viewport.zw;
 
-	//finalColor *= 0.5 + 0.5 * pow(16.0 * q.x * q.y * (1.0 - q.x) * (1.0 - q.y), 0.3);
+	finalColor *= 0.5 + 0.5 * pow(16.0 * q.x * q.y * (1.0 - q.x) * (1.0 - q.y), 0.3);
 
     return finalColor;
 }
 
 void main()
 {
-	Frag_Colour = vec4(ColourTerrain(In.vertex.xyz, In.vertexEye.xyz, In.normal), 1.0); //Note: per pixel.
+	Frag_Colour = vec4(ColourTerrain(In.vertex.xyz, In.vertexEye.xyz, In.normal), 0.0); //Note: per pixel.
 }

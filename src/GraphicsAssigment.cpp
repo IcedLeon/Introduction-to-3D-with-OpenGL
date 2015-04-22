@@ -253,27 +253,27 @@ void GraphicsAssignment::InitOneTimeUniform()
 	/* Height scale */
 	UniformTess.HeightScale		= 1.5f;
 	/* Octaves */
-	UniformTess.NoiseOctaves	= 8;
+	UniformTess.NoiseOctaves	= 18;
 	/* Triangle size */
 	UniformTess.TriSize			= 5.0f;
 	/* Culling */
-	UniformTess.Cull			= true;
+	UniformTess.Cull			= false;
 	/* Level of detail */
 	UniformTess.LOD				= true;
 	/* Grid origin */
 	UniformTess.GridOrigin		= vec3(-28.0f, 0.0f, -28.0f);
 	/* Grid width */
-	UniformTess.GridW			= 64;
+	UniformTess.GridW			= 84;
 	/* Grid Height */
-	UniformTess.GridH			= 64;
+	UniformTess.GridH			= 84;
 	/* Tile size */
 	UniformTess.TileSize		= vec3(1.0f, 0.0f, 1.0f);
 	/* Half a tile */
 	vec3 _halfTileSize			= vec3(UniformTess.TileSize.x, UniformTess.HeightScale, UniformTess.TileSize.z) * 0.5;
 	UniformTess.TileBoundSphereR = glm::length(_halfTileSize);
 	/* Light direction */
-	UniformTess.LightDir		= vec3(-1.0f, -0.25f, 1.0f);
-	UniformTess.LightDir		= normalize(UniformTess.LightDir);
+	m_vLightDirection			= vec3(-1.0f, -0.25f, 1.0f);
+	m_vLightDirection			= normalize(m_vLightDirection);
 	/* Projection */
 	DATA.TRANSFORM.m_mProjection = DATA.m_oCurrCamera->GetProjectionTransform(APPINFO.m_viWinSize.xy(), 1.0f, 10000.0f);
 	UniformTess.Projection		 = DATA.TRANSFORM.m_mProjection;
@@ -346,7 +346,7 @@ void GraphicsAssignment::SetTerrainUniform()
 	{
 		/*Mat4*/
 		"Projection", 
-		"MV", "MVP",
+		"View", "VP",
 		/*vec4*/
 		"Viewport", "FrustumPlanes", "EyePosWorld",
 		/*vec3*/
@@ -371,10 +371,10 @@ void GraphicsAssignment::SetTerrainUniform()
 			Program.m_oTerrain.SetUniform(_uniformNames[i], UniformTess.Projection);
 			break;
 		case 1:
-			Program.m_oTerrain.SetUniform(_uniformNames[i], UniformTess.MV);
+			Program.m_oTerrain.SetUniform(_uniformNames[i], UniformTess.View);
 			break;
 		case 2:
-			Program.m_oTerrain.SetUniform(_uniformNames[i], UniformTess.MVP);
+			Program.m_oTerrain.SetUniform(_uniformNames[i], UniformTess.VP);
 			break;
 		case 3:
 			Program.m_oTerrain.SetUniform(_uniformNames[i], UniformTess.Viewport);
@@ -740,7 +740,7 @@ void GraphicsAssignment::Init(BaseApplication* a_oCurrApp, vec3 a_vCamPos, ivec2
 	/* Init related function for the Rendering */
 	InitRendering();
 
-	m_oFbxLoader.LoadFileFromSrc("./models/rigged/Demolition/demolition.fbx");
+	//m_oFbxLoader.LoadFileFromSrc("./models/rigged/Demolition/demolition.fbx");
 }
 
 void GraphicsAssignment::Render() 
@@ -759,7 +759,7 @@ void GraphicsAssignment::Render()
 	glBeginQuery(GL_PRIMITIVES_GENERATED, m_uiGPUQuery);
 	/* Draw terrain */
 	DrawTerrain();
-	m_oFbxLoader.Draw();
+	//m_oFbxLoader.Draw();
 	/* End Query */
 	glEndQuery(GL_PRIMITIVES_GENERATED);
 	/* Skybox */
@@ -780,33 +780,34 @@ void GraphicsAssignment::Update(float a_fDeltaT)
 	/* Model */
 	DATA.TRANSFORM.m_mWorld = DATA.m_oCurrCamera->GetWorldTransform();
 	/* ModelView */
-	UniformTess.MV = DATA.TRANSFORM.m_mView;// *DATA.TRANSFORM.m_mWorld;
+	UniformTess.View = DATA.TRANSFORM.m_mView;
 	/* MVP */
-	UniformTess.MVP = DATA.TRANSFORM.m_mProjection * DATA.TRANSFORM.m_mView;// *DATA.TRANSFORM.m_mWorld * glm::translate(vec3(1.0, -1.2, -1.0)) * m_mRotationMat; //here
+	UniformTess.VP = DATA.TRANSFORM.m_mProjection * DATA.TRANSFORM.m_mView;// *glm::translate(vec3(1.0, -1.2, -1.0));// *m_mRotationMat; //here
 	/* Inverse Projection */
 	UniformTess.InvProj = glm::inverse(DATA.TRANSFORM.m_mProjection);
 	/* Inverse View */
-	UniformTess.InvView = glm::inverse(UniformTess.MV);
+	UniformTess.InvView = DATA.m_oCurrCamera->GetWorldTransform();
 	/* Frustum planes */
-	FrustumPlanes(UniformTess.MV, DATA.TRANSFORM.m_mProjection, UniformTess.FrustumPlanes);
+	FrustumPlanes(UniformTess.View, DATA.TRANSFORM.m_mProjection, UniformTess.FrustumPlanes);
 	/* Restore viewport */
 	glViewport(0, 0, APPINFO.m_viWinSize.x, APPINFO.m_viWinSize.y);
 	/* Viewport */
 	UniformTess.Viewport = vec4(0, 0, APPINFO.m_viWinSize.x, APPINFO.m_viWinSize.y);
 	/* Eye positions */
-	UniformTess.EyePosWorld = UniformTess.MV * vec4(-10.0f, -10.0f, -10.0f, 1.0f);
+	UniformTess.EyePosWorld = UniformTess.InvView * vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	/* Light direction world */
-	UniformTess.LightDirWorld = UniformTess.LightDir;
+	UniformTess.LightDirWorld = m_vLightDirection;
 	/* Light direction */
-	UniformTess.LightDir = vec3(UniformTess.MV * vec4(normalize(UniformTess.LightDir), 0.0)); //To eye space
+	UniformTess.LightDir = vec3(UniformTess.View * vec4(normalize(m_vLightDirection), 0.0)); //To eye space
 	/* Time*/
 	UniformTess.Time = (float)DATA.TIME.m_dDeltaT;
+
 	//UpdateTerrainTex();
 	SettingProgramsUniform();
 
 	OnKey();
 
-	m_oFbxLoader.UpdateMesh(a_fDeltaT);
+	//m_oFbxLoader.UpdateMesh(a_fDeltaT);
 }
 
 void GraphicsAssignment::OnKey()
@@ -833,24 +834,20 @@ void GraphicsAssignment::OnKey()
 		DATA.m_oCurrCamera->KeyboardInput(RIGHT, (float)DATA.TIME.m_dDeltaT);
 		UniformTess.Translate.x += (float)DATA.TIME.m_dDeltaT * 2.0f;
 	}
-	if (m_bKeys[GLFW_KEY_TAB])
-	{
-		m_bWireFrame = true;
-	}
+	//if (m_bKeys[GLFW_KEY_TAB])
+	//{
+	//	m_bWireFrame = true;
+	//}
 	if (m_bKeys[GLFW_KEY_R])
 	{
 		LoadShaders();
 	}
-	if (m_bKeys[GLFW_MOUSE_BUTTON_LEFT])
-	{
-		m_mRotationMat *= glm::rotate(0.002f, vec3(0, 1, 0));
-	}
 	///* Wire mode off */
-	//if (m_bKeys[GLFW_KEY_TAB])
-	//	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	///* Wire mode on */
-	//if (m_bKeys[GLFW_KEY_LEFT_SHIFT])
-	//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	if (m_bKeys[GLFW_KEY_TAB])
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	/* Wire mode on */
+	if (m_bKeys[GLFW_KEY_LEFT_SHIFT])
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void GraphicsAssignment::OnMouseButton(GLint a_iButton)

@@ -1,39 +1,6 @@
 #version 440 core
 precision mediump float;
 
-//layout(std140, binding = 1) uniform UniformTess
-//{
-//	mat4 Projection;
-//	mat4 MV;
-//	mat4 MVP;
-//	mat4 InvProj;
-//	mat4 InvView;
-//	vec4 EyePosWorld;
-//	vec4 Viewport;
-//	vec4 FrustumPlanes[6];
-//	vec3 TileSize;
-//	vec3 GridOrigin;
-//	vec3 LightDir;
-//	vec3 LightDirWorld;
-//	vec2 Translate;
-//	float Time;
-//	float TileBoundSphereR;
-//	float InvFocalLen;
-//	float InnerTessFactor;
-//	float OuterTessFactor;
-//	float NoiseFreq;
-//	float InvNoiseSize;
-//	float InvNoise3DSize;
-//	float HeightScale;
-//	float TriSize;
-//	int NoiseOctaves;
-//	int GridW;
-//	int GridH;
-//	bool SmoothNormal;
-//	bool Cull;
-//	bool LOD;
-//};
-
 in block
 {
 	vec4 position;
@@ -47,11 +14,11 @@ const vec3 _fogColour	= vec3(0.8, 0.8, 1.0);
 const vec3 _cloudColour = vec3(0.92);
 const vec3 _sunColour	= vec3(1.0, 1.0, 0.25);
 
-const float _skyHeight = 5.0;
-const float _skyTop = 6.0;
+const float _skyHeight = 10.0;
+const float _skyTop = 12.0;
 const float _cloudStepSize = 1.0;
-const float _cloudDensity = 0.35;
-const int _cloudSteps = 8;
+const float _cloudDensity = 0.55;
+const int _cloudSteps = 10;
 
 uniform sampler3D mediump Rand_Tex3D;
 uniform vec4 EyePosWorld;
@@ -72,7 +39,7 @@ float Turbulence3D(vec3 pos, int octaves = 4, float lacunarity = 2.0, float gain
     float amp = 0.5;
     for(int i = 0; i < octaves; ++i) 
 	{
-        sum += abs(Noise3D(pos))*amp;
+        sum += abs(Noise3D(pos)) * amp;
         pos *= lacunarity;
         amp *= gain;
     }

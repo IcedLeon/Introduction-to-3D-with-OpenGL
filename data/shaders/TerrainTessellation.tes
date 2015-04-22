@@ -24,8 +24,8 @@ layout(location=1) out block {
 
 uniform sampler2D Terrain_Tex;
 uniform mat4 Projection;
-uniform mat4 MVP;
-uniform mat4 MV;
+uniform mat4 VP;
+uniform mat4 View;
 uniform vec3 TileSize;
 uniform vec3 Translate;
 uniform float NoiseFreq;
@@ -192,7 +192,7 @@ void main()
 	//
 	Out.normal = no;
 	Out.vertex = pos;
-	Out.vertexEye = vec3(MV * vec4(pos, 1.0)); //View space.
+	Out.vertexEye = vec3(View * vec4(pos, 1.0)); //View space.
 
-	gl_Position = MVP * vec4(pos, 1.0);
+	gl_Position = VP * vec4(pos, 1.0);
 }

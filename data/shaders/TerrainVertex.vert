@@ -14,7 +14,6 @@ layout (location = 1) out block {
     mediump vec2 Tex_Coord;
 } Out;
 
-uniform mat4 MVP;
 uniform vec3 GridOrigin;
 uniform vec3 TileSize;
 uniform int GridW;
