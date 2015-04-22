@@ -5,7 +5,7 @@ GraphicsAssignment::GraphicsAssignment() : BaseApplication(),
 										   //m_uiUBO(NULL),
 										   m_uiVBO(NULL),		
 										   m_uiNoiseTex(NULL),
-										   m_uiTerrainTex1(NULL),
+										   m_uiTerrainTex(NULL),
 										   m_uiTerrainTex2(NULL),		
 										   m_oTerrainFBO(NULL),
 										   m_uiTerrainVBO(NULL),
@@ -211,10 +211,11 @@ void GraphicsAssignment::LoadShaders()
 	_shrSource.clear();
 	/* Assign some extra uniform to the programs */
 	/* Note to myself, while assign an uniform doesnt seams like a diffucult task, and it's not,
-	the program will fail if the program is not in use (glUseProgram func). So before initialize any uniform
+	the program will fail if the program is not in use (glUseProgram func) you DUMMY!!!. So before initialize any uniform
 	remember to activete the desired shader program.!!!*/
 	Program.m_oTerrain.Use();
 	Program.m_oTerrain.SetUniform("Noise_Tex", 0);
+	//Program.m_oTerrain.SetUniform("Terrain_Tex", 1);
 	Program.m_oTerrain.Disable();
 	Program.m_oGenTerrainProg.Use();
 	Program.m_oGenTerrainProg.SetUniform("Noise_Tex", 0);
@@ -544,6 +545,7 @@ void GraphicsAssignment::InitRendering(void)
 	int _noise3DSize = 64;
 	/* 2D noise texture */
 	m_uiNoiseTex = CreateNoiseTexture2D(_noiseSize, _noiseSize, GL_R16F);
+	m_uiTerrainTex = TEXLOADER::LoadTexture("./textures/Terrain_1.tga");
 	/* 3D noise texture */
 	m_uiNoise3DTex = CreateNoiseTexture4f3D(_noise3DSize, _noise3DSize, _noise3DSize, GL_RGBA16F);
 	/* Setting the inverse of the noise to pass into the UBO later */
@@ -632,8 +634,8 @@ void GraphicsAssignment::FrustumPlanes(mat4& a_mView, mat4& a_mProj, vec4* a_vPl
 	// normalize planes
 	for (int i = 0; i < 6; ++i) 
 	{
-		float l = length(vec3(a_vPlane[i]));
-		a_vPlane[i] = a_vPlane[i] / l;
+		//float l = length(a_vPlane[i]);
+		a_vPlane[i] = normalize(a_vPlane[i]);// / l;
 	}
 }
 
@@ -686,7 +688,7 @@ void GraphicsAssignment::DrawTerrain()
 	glBindTexture(GL_TEXTURE_2D, m_uiNoiseTex);
 
 	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, m_uiNoise3DTex);
+	//glBindTexture(GL_TEXTURE_2D, m_uiTerrainTex);
 
 	glPatchParameteri(GL_PATCH_VERTICES, 1);
 

@@ -45,6 +45,29 @@ vec2 DerFade(vec2 t)
     return 30.0 * t * t * (t * (t - 2.0) + 1.0); //(quintic)
 }
 
+//vec3 Noised(vec2 pos)
+//{
+//	vec2 p = floor(pos);
+//	vec2 f = fract(pos);
+//	vec2 u = f * f * (3.0 - 2.0 * f);
+//	//if (HighQl)
+//	//{
+//	//	vec2 uv = p.xy + vec2(37.0, 17.0) * p.z) + f.xy;
+//	//	vec2 rg = texture(Noise_Tex, (uv + 0.5) / 256.0, -100.0).xy;
+//	//}
+//	//else
+//	//{
+//		vec2 uv = texture(Noise_Tex, (p + vec2(0.5, 0.5)) / 256.0, -100.0).yx;
+//		vec2 rg1 = texture(Noise_Tex, (p + vec2(1.5, 0.5)) / 256.0, -100.0).yx;
+//		vec2 rg2 = texture(Noise_Tex, (p + vec2(0.5, 1.5)) / 256.0, -100.0).yx;
+//		vec2 rg3 = texture(Noise_Tex, (p + vec2(1.5, 1.5)) / 256.0, -100.0).yx;
+//		vec2 rg4 = texture(Noise_Tex, (p + vec2(1.5, 1.5)) / 256.0, -100.0).yx;
+//		vec2 rg = mix(mix(rg1, rg2, f.x), mix(rg3, rg4, f.x), f.y);
+//	//}
+//
+//	return vec3(rg.x, rg.y, f.y);
+//}
+
 vec3 DerNoise(vec2 pos)
 {
     vec2 i = floor(pos);
@@ -189,7 +212,7 @@ void main()
 	//	pos.y = t.w;
 	//	vec3 no2 = t.xyz; 
 	//}
-	//
+	
 	Out.normal = no;
 	Out.vertex = pos;
 	Out.vertexEye = vec3(View * vec4(pos, 1.0)); //View space.

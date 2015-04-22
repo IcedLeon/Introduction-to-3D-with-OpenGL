@@ -4,7 +4,7 @@ int main()
 {	
 	GraphicsAssignment* _app = new GraphicsAssignment();
 
-	_app->Init(_app, vec3(10, 10, 10), ivec2(1920, 1080), "GraphicsAssignment", false);
+	_app->Init(_app, vec3(5, 5, 5), ivec2(1920, 1080), "GraphicsAssignment", false);
 	
 	_app->RunApp();
 	

@@ -238,7 +238,7 @@ private:
 
 	GLuint m_uiNoiseTex;
 	GLuint m_uiNoise3DTex;
-	GLuint m_uiTerrainTex1;
+	GLuint m_uiTerrainTex;
 	GLuint m_uiTerrainTex2;
 
 	SimpleFBO* m_oTerrainFBO;
