@@ -12,7 +12,7 @@ layout (location = 0) out vec4 Frag_Colour;
 const vec3 _skyColour	= vec3(0.7, 0.8, 1.0) * 0.7;
 const vec3 _fogColour	= vec3(0.8, 0.8, 1.0);
 const vec3 _cloudColour = vec3(0.92);
-const vec3 _sunColour	= vec3(1.0, 1.0, 0.25);
+const vec3 _sunColour	= vec3(0.7, 0.7, 0.7);
 
 const float _skyHeight = 10.0;
 const float _skyTop = 12.0;

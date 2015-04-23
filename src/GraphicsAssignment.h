@@ -229,6 +229,7 @@ private:
 		ShaderProgram m_oTerrainWireFrag;
 		ShaderProgram m_oSkyProg;
 		ShaderProgram m_oGenTerrainProg;
+		ShaderProgram m_oMeshProg;
 	} Program;
 
 	GLuint m_uiUBO; //Unifrom buffer.

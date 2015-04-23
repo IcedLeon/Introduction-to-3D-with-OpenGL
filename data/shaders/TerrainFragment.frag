@@ -120,14 +120,14 @@ vec3 ColourTerrain(vec3 vertex, vec3 vertexEye, vec3 normal)
 	vec3 viewDir = normalize(EyePosWorld.xyz - vertex);
 	vec3 h = normalize(-LightDirWorld + viewDir);
 	vec3 n = normalize(normal);
-	float sun = pow(max( dot(viewDir, LightDirWorld), 0.0), 12.0);
-	float shad = 0.0;
-	vec3 finalShad;
-	if (sun > 0.01)
-	{
-		shad = Softshadow(vertex, LightDirWorld, h.x, 0.01, 32.0);
-		finalShad = vec3(shad);
-	}
+	//float sun = pow(max( dot(viewDir, LightDirWorld), 0.0), 12.0);
+	//float shad = 0.0;
+	//vec3 finalShad;
+	//if (sun > 0.01)
+	//{
+	//	shad = Softshadow(vertex, LightDirWorld, h.x, 0.01, 32.0);
+	//	finalShad = vec3(shad);
+	//}
 
 	float diffuse = 0.0;
     diffuse += 0.2 * Diffuse(-LightDirWorld, n, -viewDir, 1.0 );
@@ -156,7 +156,7 @@ vec3 ColourTerrain(vec3 vertex, vec3 vertexEye, vec3 normal)
     vec3 finalColor = ambientColour * matColor + diffuse * matColor * 
 	_lightColour + specular * _lightColour * isWater;
 
-	//finalColor += sun * vec3(1.64, 1.27, 0.99);// * pow(finalShad, vec3(1.0, 1.2, 1.5));
+	//finalColor += sun * vec3(1.64, 1.27, 0.99) * pow(finalShad, vec3(1.0, 1.2, 1.5));
     // fog
     float dist = length(vertexEye);
     finalColor = ApplyFog(finalColor, dist, viewDir);

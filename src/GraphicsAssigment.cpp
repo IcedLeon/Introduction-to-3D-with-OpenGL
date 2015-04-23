@@ -170,6 +170,9 @@ void GraphicsAssignment::LoadShaders()
 #define TERRAIN_GEN_VERT "./shaders/TerrainGeneration.vert"
 #define TERRAIN_GEN_FRAG "./shaders/TerrainGeneration.frag"
 #define TERRAIN_FRAGMENT "./shaders/TerrainFragment.frag"
+#define MESH_VERTEX "./shaders/ModelVertex.vert"
+#define MESH_FRAGMENT "./shaders/ModelFragment.frag"
+
 	vector<const char*> _shrSource;
 	//m_uiTerrainTex1 = TEXLOADER::LoadTexture("./textures/Terrain_1.tga");
 	//m_uiTerrainTex2 = TEXLOADER::LoadTexture("./textures/Terrain_2.tga");
@@ -209,20 +212,33 @@ void GraphicsAssignment::LoadShaders()
 	_shrSource.push_back(TERRAIN_GEN_FRAG);
 	Program.m_oGenTerrainProg.CreateProgram(_shrSource);
 	_shrSource.clear();
+
+	printf("Compiling mesh program...\n");
+	_shrSource.push_back(MESH_VERTEX);
+	_shrSource.push_back(MESH_FRAGMENT);
+	Program.m_oMeshProg.CreateProgram(_shrSource);
+	_shrSource.clear();
 	/* Assign some extra uniform to the programs */
 	/* Note to myself, while assign an uniform doesnt seams like a diffucult task, and it's not,
 	the program will fail if the program is not in use (glUseProgram func) you DUMMY!!!. So before initialize any uniform
 	remember to activete the desired shader program.!!!*/
 	Program.m_oTerrain.Use();
 	Program.m_oTerrain.SetUniform("Noise_Tex", 0);
-	//Program.m_oTerrain.SetUniform("Terrain_Tex", 1);
 	Program.m_oTerrain.Disable();
+
 	Program.m_oGenTerrainProg.Use();
 	Program.m_oGenTerrainProg.SetUniform("Noise_Tex", 0);
 	Program.m_oGenTerrainProg.Disable();
+
 	Program.m_oSkyProg.Use();
 	Program.m_oSkyProg.SetUniform("Rand_Tex3D", 0);
 	Program.m_oSkyProg.Disable();
+
+	Program.m_oMeshProg.Use();
+	Program.m_oMeshProg.SetUniform("Diffuse_Tex", 0);
+	Program.m_oMeshProg.SetUniform("Normal_Tex", 1);
+	Program.m_oMeshProg.SetUniform("Specular_Tex", 2);
+	Program.m_oMeshProg.Disable();
 }
 
 void GraphicsAssignment::InitTerrain()
@@ -602,8 +618,6 @@ void GraphicsAssignment::UpdateTerrainTex()
 	Program.m_oGenTerrainProg.Use();
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_uiNoiseTex);
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, m_uiTerrainTex2);
 
 	DrawSimpleQuad(0, 8);
 
@@ -686,9 +700,6 @@ void GraphicsAssignment::DrawTerrain()
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_uiNoiseTex);
-
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, m_uiTerrainTex);
 
 	glPatchParameteri(GL_PATCH_VERTICES, 1);
 
@@ -784,7 +795,7 @@ void GraphicsAssignment::Update(float a_fDeltaT)
 	/* ModelView */
 	UniformTess.View = DATA.TRANSFORM.m_mView;
 	/* MVP */
-	UniformTess.VP = DATA.TRANSFORM.m_mProjection * DATA.TRANSFORM.m_mView;// *glm::translate(vec3(1.0, -1.2, -1.0));// *m_mRotationMat; //here
+	UniformTess.VP = DATA.TRANSFORM.m_mProjection * DATA.TRANSFORM.m_mView;
 	/* Inverse Projection */
 	UniformTess.InvProj = glm::inverse(DATA.TRANSFORM.m_mProjection);
 	/* Inverse View */
@@ -796,7 +807,7 @@ void GraphicsAssignment::Update(float a_fDeltaT)
 	/* Viewport */
 	UniformTess.Viewport = vec4(0, 0, APPINFO.m_viWinSize.x, APPINFO.m_viWinSize.y);
 	/* Eye positions */
-	UniformTess.EyePosWorld = UniformTess.InvView * vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	UniformTess.EyePosWorld = UniformTess.InvView * vec4(0.0f, 0.0f, 0.0f, 1.0f); //<--Simply transform it to vector.
 	/* Light direction world */
 	UniformTess.LightDirWorld = m_vLightDirection;
 	/* Light direction */

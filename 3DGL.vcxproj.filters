@@ -482,6 +482,9 @@
     <None Include="data\shaders\ModelVertex.vert">
       <Filter>Shaders\Engine Shaders\Procidural Gen\Model</Filter>
     </None>
+    <None Include="data\shaders\ModelFragment.frag">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Model</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">

@@ -206,6 +206,7 @@
     <None Include="data\shaders\GPUParticleVertex.glsl" />
     <None Include="data\shaders\LightingFragment.glsl" />
     <None Include="data\shaders\LightingVertex.glsl" />
+    <None Include="data\shaders\ModelFragment.frag" />
     <None Include="data\shaders\ModelVertex.vert" />
     <None Include="data\shaders\ParticleEffectFragment.glsl" />
     <None Include="data\shaders\ParticleEffectVertex.glsl" />
