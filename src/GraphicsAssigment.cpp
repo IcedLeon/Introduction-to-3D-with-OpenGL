@@ -252,7 +252,7 @@ void GraphicsAssignment::InitOneTimeUniform()
 	/* Noise frequency */
 	UniformTess.NoiseFreq		= 0.25f;
 	/* Height scale */
-	UniformTess.HeightScale		= 1.5f;
+	UniformTess.HeightScale		= 2.5f;
 	/* Octaves */
 	UniformTess.NoiseOctaves	= 18;
 	/* Triangle size */
@@ -545,7 +545,7 @@ void GraphicsAssignment::InitRendering(void)
 	int _noise3DSize = 64;
 	/* 2D noise texture */
 	m_uiNoiseTex = CreateNoiseTexture2D(_noiseSize, _noiseSize, GL_R16F);
-	m_uiTerrainTex = TEXLOADER::LoadTexture("./textures/Terrain_1.tga");
+	//m_uiTerrainTex = TEXLOADER::LoadTexture("./textures/Terrain_1.tga");
 	/* 3D noise texture */
 	m_uiNoise3DTex = CreateNoiseTexture4f3D(_noise3DSize, _noise3DSize, _noise3DSize, GL_RGBA16F);
 	/* Setting the inverse of the noise to pass into the UBO later */

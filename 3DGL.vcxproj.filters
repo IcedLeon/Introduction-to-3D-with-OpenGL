@@ -479,6 +479,9 @@
     <None Include="data\shaders\TerrainWire.vert">
       <Filter>Shaders\Engine Shaders\Procidural Gen\Terrain</Filter>
     </None>
+    <None Include="data\shaders\ModelVertex.vert">
+      <Filter>Shaders\Engine Shaders\Procidural Gen\Model</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
@@ -693,6 +696,9 @@
     </Filter>
     <Filter Include="Shaders\Engine Shaders\Procidural Gen\Terrain">
       <UniqueIdentifier>{29e3bdf8-2f39-4cc9-9300-946a5051eac3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Engine Shaders\Procidural Gen\Model">
+      <UniqueIdentifier>{b336ae49-ed8a-428f-a11c-22237dad577f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

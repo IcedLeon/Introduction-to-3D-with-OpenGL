@@ -30,7 +30,7 @@ const vec3 _sunColour = vec3(0.7, 0.7, 0.7);
 const vec3 _lightColour = vec3(1.0, 1.0, 0.7) * 1.5;
 const vec3 _fogColour = vec3(0.7, 0.8, 1.0) * 0.7;
 
-const float _fogExp = 0.02;
+const float _fogExp = 0.078;
 
 vec3 ApplayFog(vec3 col, float dist)
 {
@@ -86,19 +86,28 @@ float Diffuse(vec3 l, vec3 n, vec3 v, float r )
 
 vec3 ColourTerrain(vec3 vertex, vec3 vertexEye, vec3 normal)
 {
-	const float shininess = 100.0f;
+	const float shininess = 70.0f;
 	const vec3 ambientColour = vec3(0.05, 0.05, 0.15);
 	const float wrap = 0.3;
-
-	vec3 rockColour = vec3(0.4, 0.4, 0.4);
-	vec3 snowColour = vec3(0.9, 0.9, 1.0);
-	vec3 grassColour = vec3(77.0 / 255.0, 100.0 / 255.0, 42.0 / 255.0);
-	vec3 brownColour = vec3(82.0 / 255.0, 70.0 / 255.0, 30.0 / 255.0);
-	vec3 waterColour = vec3(0.2, 0.4, 0.5);
-	vec3 treeColour = vec3(0.0, 0.2, 0.0);
-
+	
 	vec3 noisePos = vertex.xyz;
 	float noiseS = Noise(noisePos.xz) * 0.5 + 0.5;
+
+	vec3 rockColour = vec3(0.7451, 0.451, 0.2118);
+
+	vec3 snowColour = vec3(0.94, 0.98, 1.0);
+
+	vec3 grassColour = vec3(0.3961, 0.7451, 0.2118);
+	//grassColour = mix(rockColour, grassColour, LinearStep(0.6, 0.8, normal.y));
+	//grassColour *= smoothstep(0.0, 1.5, grassColour);
+
+	vec3 brownColour = vec3(0.32156862745, 0.2745098039215, 0.11764705882);
+	//brownColour = mix(rockColour, brownColour, LinearStep(0.6, 0.8, normal.y));
+	//brownColour *= smoothstep(0.0, 1.5, brownColour);
+
+	vec3 waterColour = vec3(0.2, 0.4, 0.5);
+
+	vec3 treeColour = vec3(0.0, 0.2, 0.0);
 
 	float height = vertex.y;
 
@@ -130,8 +139,8 @@ vec3 ColourTerrain(vec3 vertex, vec3 vertexEye, vec3 normal)
 	//diffuse = Saturate( (dot(n, -LightDirWorld) + wrap) / (1.0 + wrap));
 	float specular = pow(Saturate(dot(h, n)), shininess);
 	
-    grassColour = mix(grassColour * 0.25, grassColour * 1.5, noiseS);
-    brownColour = mix(brownColour * 0.035, brownColour * 1.5, noiseS);
+    grassColour = mix(grassColour * 0.25, grassColour * 1.1, noiseS);
+    brownColour = mix(brownColour * 0.35, brownColour * 1.5, noiseS);
 	
     //Choose material color based on height and normal
 
@@ -156,9 +165,9 @@ vec3 ColourTerrain(vec3 vertex, vec3 vertexEye, vec3 normal)
 	//Contrast
 	finalColor = finalColor * 0.3 + 0.7 * finalColor * finalColor *(3.0 - 2.0 * finalColor);
 	//Desaturation
-	finalColor = mix(finalColor, vec3(finalColor.x + finalColor.y + finalColor.z) * 0.33, 0.2);
+	finalColor = mix(finalColor, vec3(finalColor.x + finalColor.y + finalColor.z) * 0.13, 0.2);
 	//Tint
-	finalColor *= 1.3 * vec3(1.06, 1.1, 1.0);
+	finalColor *= 0.83 * vec3(1.06, 1.1, 1.0);
 	//Vignetting
 	vec2 q = gl_FragCoord.xy / Viewport.zw;
 	finalColor *= 0.5 + 0.5 * pow(16.0 * q.x * q.y * (1.0 - q.x) * (1.0 - q.y), 0.3);
