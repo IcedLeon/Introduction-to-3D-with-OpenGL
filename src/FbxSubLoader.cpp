@@ -1,5 +1,7 @@
 #include "FbxSubLoader.h"
 #include "gl_core_4_4.h"
+#include "ShaderProgram.h"
+#include "TextureLoader.h"
 
 FbxSubLoader::FbxSubLoader() : m_oMeshFile(nullptr) { }
 
@@ -84,13 +86,16 @@ void FbxSubLoader::LoadFileFromSrc(const char* a_pccFileName)
 
 	FBXMeshNode* _currNode;
 
+	m_oMeshContainer.resize(_meshCount);
+
 	for (unsigned int meshIdx = 0; meshIdx < _meshCount; ++meshIdx)
 	{ 
 		_currNode = m_oMeshFile->getMeshByIndex(meshIdx);
 
 		_newMeshData->SetModelTrans(_currNode->m_globalTransform);
-
+		//m_oMeshContainer[meshIdx]->MESH_DATA.m_mMeshTrans = _currNode->m_globalTransform;
 		_newMeshData->SetIndicesCount(_currNode->m_indices.size());
+		//m_oMeshContainer[meshIdx]->SetIndicesCount(_currNode->m_indices.size());
 
 		glGenVertexArrays(1, &_newMeshData->MESH_DATA.m_uiVAO);
 
@@ -111,10 +116,12 @@ void FbxSubLoader::LoadFileFromSrc(const char* a_pccFileName)
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::NormalOffset);
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::IndicesOffset);
+		glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::TangentOffset);
 		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::WeightsOffset);
+		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::IndicesOffset);
 		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::WeightsOffset);
+		glEnableVertexAttribArray(4);
 		glVertexAttribPointer(8, 2, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::TexCoord1Offset);
 		glEnableVertexAttribArray(8);
 
@@ -122,10 +129,13 @@ void FbxSubLoader::LoadFileFromSrc(const char* a_pccFileName)
 
 		glBindBuffer(GL_ARRAY_BUFFER, NULL);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
+		m_oMeshContainer[meshIdx] = *_newMeshData;
 	}
+	m_uiDiffuse = TEXLOADER::LoadTexture("./models/rigged/Pyro/Pyro_D.tga");
+	m_uiNormal = TEXLOADER::LoadTexture("./models/rigged/Pyro/Pyro_N.tga");
+	m_uiSpecular = TEXLOADER::LoadTexture("./models/rigged/Pyro/Pyro_S.tga");
 	std::string _ID = ExtractNameOutOfFilePath(*a_pccFileName);
 	SetModel(_ID, *_newMeshData);
-	m_oMeshContainer.push_back(_newMeshData);
 	delete _newMeshData;
 }
 
@@ -191,30 +201,47 @@ void FbxSubLoader::UpdateSkely()
 	}
 }
 
-void FbxSubLoader::UpdateMesh(float a_fDeltaT)
+void FbxSubLoader::UpdateMesh(ShaderProgram& a_uiProg, float a_fDeltaT)
 {
 	m_fTimer += a_fDeltaT;
 
 	float _freq = sinf(m_fTimer) * 0.5f + 0.5f;
 
 	m_oSkely = m_oMeshFile->getSkeletonByIndex(0);
-	UpdateSkely();
+	a_uiProg.Use();
+	//UpdateSkely();
+	m_oSkely->updateBones();
+	a_uiProg.SetUniform("Bones", *m_oSkely->m_bones, m_oSkely->m_boneCount);
+	a_uiProg.Disable();
 
 	m_oAnimatron = m_oMeshFile->getAnimationByIndex(0);
 
 	EvaluateSkely(m_fTimer);
+	//m_oSkely->evaluate(m_oAnimatron, a_fDeltaT);
 }
 
-void FbxSubLoader::Draw()
+void FbxSubLoader::Draw(ShaderProgram& a_uiProg)
 {
+	a_uiProg.Use();
 	for (unsigned int i = 0; i < m_oMeshContainer.size(); ++i)
 	{
 		FBXMeshNode* _currMesh = m_oMeshFile->getMeshByIndex(i);
-		m_oMeshContainer[i]->MESH_DATA.m_mMeshTrans = _currMesh->m_globalTransform;
-
+		m_oMeshContainer[i].MESH_DATA.m_mMeshTrans = _currMesh->m_globalTransform;
+		a_uiProg.SetUniform("Model", m_oMeshContainer[i].MESH_DATA.m_mMeshTrans);
 		FBXMaterial* _currMeshMat = _currMesh->m_material;
 
-		//glActiveTexture(GL_TEXTURE0);
-		//glBindTexture(GL_TEXTURE_2D, _currMeshMat->textures[FBXMaterial::DiffuseTexture]->handle);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, _currMeshMat->textures[FBXMaterial::DiffuseTexture]->handle);
+		
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, _currMeshMat->textures[FBXMaterial::NormalTexture]->handle);
+		
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, _currMeshMat->textures[FBXMaterial::SpecularTexture]->handle);
+
+		glBindVertexArray(m_oMeshContainer[i].GetVAO());
+		glDrawElements(GL_TRIANGLES, m_oMeshContainer[i].GetIndicesCount(), GL_UNSIGNED_INT, NULL);
+		glBindVertexArray(0);	
 	}
+	a_uiProg.Disable();
 }

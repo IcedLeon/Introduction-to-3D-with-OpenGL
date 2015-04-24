@@ -22,11 +22,20 @@ uniform mat4 VP;
 uniform mat4 Model;
 uniform mat4 Bones[MAX_BONES];
 
+//void main()
+//{
+//	ivec4 indices = ivec4(bone_index);
+//	
+//	Out.uvCoord = texCoord;
+//	Out.normal	= normal;
+//	Out.tan = tan
+//}
+
 void main()
 {
 	Out.uvCoord = texCoord;
 
-	ivec4 indices = ivec4(bone_index.xyzw);
+	ivec4 indices = ivec4(bone_index);
 
 	vec4 Pos = vec4(0.0);
 	vec4 Tan = vec4(0.0);

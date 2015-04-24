@@ -97,16 +97,16 @@ namespace TEXLOADER
 					if (_idLenght > NULL)
 						_inFile.ignore(_idLenght);
 					//At this point the color map would be here, but we assume no color map (check answer again, keep fogetting why I should assume that...)
-					printf("FileName: %s\n,"
-						"Width and Height: (%d x %d)\n,"
-						"BPP: %d\n, "
+					printf("FileName: %s\n"
+						"Width and Height: (%d x %d)\n"
+						"BPP: %d\n "
 						"OriginX and OriginY: (%d x %d)\n",
 						a_pccFileName,
 						a_iWidth, a_iHeight,
 						_bpp,
 						_originX, _originY);
 					//Read the pixel data
-					if (a_iWidth != NULL || a_iHeight != NULL)
+					if (a_iWidth == NULL || a_iHeight == NULL)
 						printf("<WARNING>: Width: %d or Height: %d of this .tga file is equal to zero. \n", a_iWidth, a_iHeight);
 					GLubyte* _pixel = new GLubyte[a_iWidth * a_iHeight * 4];
 					//24 bpp -- Blue, Green, Red
@@ -164,7 +164,8 @@ namespace TEXLOADER
 					LITTLE_ENDIAN::WriteShort(_ofFile, a_iHeight);	//Image height.
 					_ofFile.put(32);								//Bits per pixel (32).
 					_ofFile.put(8);									//Image descriptor (8 => 32bpp).
-					if (a_iWidth != NULL || a_iHeight != NULL)
+
+					if (a_iWidth == NULL || a_iHeight == NULL)
 						printf("<WARNING>: Width: %d or Height: %d of this .tga file is equal to zero. \n", a_iWidth, a_iHeight);
 					int _imageSize = a_iWidth * a_iHeight;
 					for (int i = 0; i < _imageSize; ++i)

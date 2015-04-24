@@ -333,9 +333,6 @@ void Cube::GenCube()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
 
 	delete[] _vertexData;
-	delete[] _normalData;
-	delete[] _texData;
-	delete[] _indices;
 }
 
 void Cube::Render() const

@@ -14,6 +14,7 @@ out vec4 Frag_Colour;
 uniform sampler2D Diffuse_Tex;
 uniform sampler2D Normal_Tex;
 uniform sampler2D Specular_Tex;
+uniform mat4 Model;
 uniform vec4 EyePosWorld;
 uniform vec3 LightDirWorld;
 uniform vec3 Material;
@@ -42,13 +43,13 @@ void main()
 	//Ambient
 	vec3 ambient = materialCol * shininess;
 	//Diffuse
-	vec3 L = normalize(LightDirWorld - In.pos.xyz);
-	N = normalize(TBN * adjustedNorm);
+	vec3 L = normalize(-LightDirWorld);
+	//N = normalize(TBN * adjustedNorm);
 	float diff = max(dot(L, N), 0.0);
 	vec3 diffuse = materialCol * diff;
 	//Specular
 	vec3 viewDir = normalize(EyePosWorld.xyz - In.pos.xyz);
-	vec3 reflectDir = reflect(-LightDirWorld, N);
+	vec3 reflectDir = reflect(LightDirWorld, N);
 	float specPwr = 0.0;
 
 	vec3 halfDir = normalize(LightDirWorld + viewDir);

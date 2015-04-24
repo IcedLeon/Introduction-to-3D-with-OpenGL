@@ -14,11 +14,11 @@ int main()
 }
 
 /*Other exercise main*/
-//#include "Dof.h"
+//#include "FBXAnimationProject.h"
 //
 //int main()
 //{
-//	Dof _app;
+//	FBXAnimationP _app;
 //
 //	float _dt;
 //

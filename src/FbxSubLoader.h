@@ -69,6 +69,8 @@ public:
 
 typedef MeshDataDetail MeshDD;
 
+class ShaderProgram;
+
 class FbxSubLoader
 {
 private:
@@ -76,8 +78,12 @@ private:
 	FBXSkeleton* m_oSkely;
 	FBXAnimation* m_oAnimatron;
 	std::map<std::string, MeshDD*> m_oAllTheModels;
-	std::vector<MeshDD*> m_oMeshContainer;
+	std::vector<MeshDD> m_oMeshContainer;
 	float m_fTimer;
+
+	unsigned int m_uiDiffuse;
+	unsigned int m_uiNormal;
+	unsigned int m_uiSpecular;
 
 	bool IsModelExist(const std::string& a_sModelID) const;
 
@@ -95,8 +101,8 @@ public:
 	void EvaluateSkely(float a_fDeltaT);
 	void UpdateSkely();
 
-	void UpdateMesh(float a_fDeltaT);
-	void Draw();
+	void UpdateMesh(ShaderProgram& a_uiProg, float a_fDeltaT);
+	void Draw(ShaderProgram& a_uiProg);
 };
 
 #endif //!_FBXSUBLOADER_H_

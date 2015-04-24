@@ -374,6 +374,24 @@ bool ShaderProgram::IsLinked() const
 	return m_bLinked;
 }
 
+void ShaderProgram::SetUniform(const char* a_pccUniName, const mat3& a_mMatrix)
+{
+	GLint _loc = GetUniformLocation(a_pccUniName);
+	glUniformMatrix3fv(_loc, 1, GL_FALSE, value_ptr(a_mMatrix));
+}
+
+void ShaderProgram::SetUniform(const char* a_pccUniName, const mat4& a_mMatrix)
+{
+	GLint _loc = GetUniformLocation(a_pccUniName);
+	glUniformMatrix4fv(_loc, 1, GL_FALSE, value_ptr(a_mMatrix));
+}
+
+void ShaderProgram::SetUniform(const char* a_pccUniName, const mat4& a_mMatrix, int a_iNumOfMat)
+{
+	GLint _loc = GetUniformLocation(a_pccUniName);
+	glUniformMatrix4fv(_loc, a_iNumOfMat, GL_FALSE, value_ptr(a_mMatrix));
+}
+
 void ShaderProgram::SetUniform(const char* a_pccUniName, const vec2& a_vVector)
 {
 	GLint _loc = GetUniformLocation(a_pccUniName);
@@ -396,18 +414,6 @@ void ShaderProgram::SetUniform(const char* a_pccUniName, const vec4& a_vVector, 
 {
 	GLint _loc = GetUniformLocation(a_pccUniName);
 	glUniform4fv(_loc, a_iNumOfVec, (float*)&a_vVector);
-}
-
-void ShaderProgram::SetUniform(const char* a_pccUniName, const mat3& a_mMatrix)
-{
-	GLint _loc = GetUniformLocation(a_pccUniName);
-	glUniformMatrix3fv(_loc, 1, GL_FALSE, value_ptr(a_mMatrix));
-}
-
-void ShaderProgram::SetUniform(const char* a_pccUniName, const mat4& a_mMatrix)
-{
-	GLint _loc = GetUniformLocation(a_pccUniName);
-	glUniformMatrix4fv(_loc, 1, GL_FALSE, value_ptr(a_mMatrix));
 }
 
 void ShaderProgram::SetUniform(const char* a_pccUniName, float a_fX, float a_fY, float a_fZ, float a_fW)

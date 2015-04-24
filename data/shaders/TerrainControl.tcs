@@ -5,39 +5,6 @@
 //LOD (level of detail) and perform frustum culling.
 precision mediump float;
 
-//layout(std140, binding = 1) uniform UniformTess
-//{
-//	mat4 Projection;
-//	mat4 MV;
-//	mat4 MVP;
-//	mat4 InvProj;
-//	mat4 InvView;
-//	vec4 EyePosWorld;
-//	vec4 Viewport;
-//	vec4 FrustumPlanes[6];
-//	vec3 TileSize;
-//	vec3 GridOrigin;
-//	vec3 LightDir;
-//	vec3 LightDirWorld;
-//	vec2 Translate;
-//	float Time;
-//	float TileBoundSphereR;
-//	float InvFocalLen;
-//	float InnerTessFactor;
-//	float OuterTessFactor;
-//	float NoiseFreq;
-//	float InvNoiseSize;
-//	float InvNoise3DSize;
-//	float HeightScale;
-//	float TriSize;
-//	int NoiseOctaves;
-//	int GridW;
-//	int GridH;
-//	bool SmoothNormal;
-//	bool Cull;
-//	bool LOD;
-//};
-
 layout (vertices = 1) out;
 
 in gl_PerVertex

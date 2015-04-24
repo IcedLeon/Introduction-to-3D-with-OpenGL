@@ -1,5 +1,6 @@
 #include "GraphicsAssignment.h"
 #include "TextureLoader.h"
+#include "FbxSubLoader.h"
 
 GraphicsAssignment::GraphicsAssignment() : BaseApplication(),
 										   //m_uiUBO(NULL),
@@ -44,7 +45,6 @@ GraphicsAssignment::GraphicsAssignment() : BaseApplication(),
 
 GraphicsAssignment::~GraphicsAssignment()
 {
-	delete m_oTerrainFBO;
 }
 
 /*Private Method*/
@@ -294,6 +294,8 @@ void GraphicsAssignment::InitOneTimeUniform()
 	/* Projection */
 	DATA.TRANSFORM.m_mProjection = DATA.m_oCurrCamera->GetProjectionTransform(APPINFO.m_viWinSize.xy(), 1.0f, 10000.0f);
 	UniformTess.Projection		 = DATA.TRANSFORM.m_mProjection;
+
+	UniformTess.Albedo = vec3(1);
 }
 
 void GraphicsAssignment::SettingProgramsUniform()
@@ -313,6 +315,10 @@ void GraphicsAssignment::SettingProgramsUniform()
 	Program.m_oGenTerrainProg.Use();
 	SetGenerationUniform();
 	Program.m_oGenTerrainProg.Disable();
+
+	Program.m_oMeshProg.Use();
+	SetMeshUniform();
+	Program.m_oMeshProg.Disable();
 }
 
 void GraphicsAssignment::SetSkyUniform()
@@ -535,6 +541,40 @@ void GraphicsAssignment::SetWireframeUniform()
 	}
 }
 
+void GraphicsAssignment::SetMeshUniform()
+{
+	const char* _uniformNames[] =
+	{
+		/* Mat4*/
+		"VP",
+		/* Vec4 */
+		"EyePosWorld",
+		/* Vec3 */
+		"LightDirWorld", "Material"
+	};
+
+	for (unsigned int i = 0; i < 4; ++i)
+	{
+		switch (i)
+		{
+		case 0:
+			Program.m_oMeshProg.SetUniform(_uniformNames[i], UniformTess.VP);
+			break;
+		case 1:
+			Program.m_oMeshProg.SetUniform(_uniformNames[i], UniformTess.EyePosWorld);
+			break;
+		case 2:
+			Program.m_oMeshProg.SetUniform(_uniformNames[i], UniformTess.LightDirWorld);
+			break;
+		case 3:
+			Program.m_oMeshProg.SetUniform(_uniformNames[i], UniformTess.Albedo);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 void GraphicsAssignment::InitRendering(void)
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -561,7 +601,6 @@ void GraphicsAssignment::InitRendering(void)
 	int _noise3DSize = 64;
 	/* 2D noise texture */
 	m_uiNoiseTex = CreateNoiseTexture2D(_noiseSize, _noiseSize, GL_R16F);
-	//m_uiTerrainTex = TEXLOADER::LoadTexture("./textures/Terrain_1.tga");
 	/* 3D noise texture */
 	m_uiNoise3DTex = CreateNoiseTexture4f3D(_noise3DSize, _noise3DSize, _noise3DSize, GL_RGBA16F);
 	/* Setting the inverse of the noise to pass into the UBO later */
@@ -723,8 +762,9 @@ void GraphicsAssignment::DrawQuad(float a_fZ)
 		 1.0f,  1.0, a_fZ,
 	};
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);	
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, _vertexData);
+
 	glEnableVertexAttribArray(0);
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -752,8 +792,8 @@ void GraphicsAssignment::Init(BaseApplication* a_oCurrApp, vec3 a_vCamPos, ivec2
 	App::BaseApplication::Init(a_oCurrApp, a_vCamPos, a_vScreenSize, a_pccWinName, a_bFullScreen);
 	/* Init related function for the Rendering */
 	InitRendering();
-
-	//m_oFbxLoader.LoadFileFromSrc("./models/rigged/Demolition/demolition.fbx");
+	m_oFbxLoader = new FbxSubLoader();
+	m_oFbxLoader->LoadFileFromSrc("./models/rigged/Pyro/pyro.fbx");
 }
 
 void GraphicsAssignment::Render() 
@@ -772,12 +812,12 @@ void GraphicsAssignment::Render()
 	glBeginQuery(GL_PRIMITIVES_GENERATED, m_uiGPUQuery);
 	/* Draw terrain */
 	DrawTerrain();
-	//m_oFbxLoader.Draw();
 	/* End Query */
 	glEndQuery(GL_PRIMITIVES_GENERATED);
 	/* Skybox */
 	DrawSky();
 	glGetQueryObjectuiv(m_uiGPUQuery, GL_QUERY_RESULT, &m_uiNumOfPrim);
+	m_oFbxLoader->Draw(Program.m_oMeshProg);
 	//Print number of primitives
 	//UpdateTerrainTex();
 }
@@ -814,18 +854,16 @@ void GraphicsAssignment::Update(float a_fDeltaT)
 	UniformTess.LightDir = vec3(UniformTess.View * vec4(normalize(m_vLightDirection), 0.0)); //To eye space
 	/* Time*/
 	UniformTess.Time = (float)DATA.TIME.m_dDeltaT;
-
 	//UpdateTerrainTex();
 	SettingProgramsUniform();
-
+	/* Key updater */
 	OnKey();
-
-	//m_oFbxLoader.UpdateMesh(a_fDeltaT);
+	/* Mesh updater */
+	m_oFbxLoader->UpdateMesh(Program.m_oMeshProg, a_fDeltaT);
 }
 
 void GraphicsAssignment::OnKey()
 {
-	float* _fXX = 0, *_fYY = 0;
 	/* Camera controls */
 	if (m_bKeys[GLFW_KEY_W])
 	{
@@ -879,5 +917,6 @@ void GraphicsAssignment::OnMouseWheel(GLdouble a_dPosition)
 
 void GraphicsAssignment::Shutdown()
 {
-
+	delete m_oTerrainFBO;
+	delete m_oFbxLoader;
 }

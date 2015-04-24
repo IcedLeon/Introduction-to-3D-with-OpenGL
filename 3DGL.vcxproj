@@ -48,8 +48,8 @@
     <LibraryPath>./deps/glfw/lib-vc2013;./deps/fmod/lib;./deps/assimp/lib;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>./deps/glfw/include;./deps/glm;./deps/freetype/include;./deps/AntTweakBar/include;./deps/Leap/include;./deps/FBXLoader;./deps/fmod/include;./deps/assimp/include;$(IncludePath)</IncludePath>
-    <LibraryPath>./deps/Leap/lib;./deps/glfw/lib-vc2013;./deps/freetype/lib;./deps/AntTweakBar/lib;./deps/FBXLoader;./deps/fmod/lib;./deps/assimp/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>./deps/glfw/include;./deps/glm;./deps/freetype/include;./deps/AntTweakBar/include;./deps/Leap/include;./deps/FBXLoader;$(IncludePath)</IncludePath>
+    <LibraryPath>./deps/Leap/lib;./deps/glfw/lib-vc2013;./deps/freetype/lib;./deps/AntTweakBar/lib;./deps/FBXLoader;./deps/FBXLoader;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -70,13 +70,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;GLM_FORCE_PURE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>AntTweakBar.lib;opengl32.lib;glfw3.lib;freetype.lib;FBXLoader_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AntTweakBar.lib;opengl32.lib;glfw3.lib;freetype.lib;FBXLoader.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

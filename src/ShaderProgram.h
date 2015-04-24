@@ -75,6 +75,7 @@ public:
 	void SetUniform(const char* a_pccUniName, const vec4& a_vVector, int a_iNumOfVec);
 	void SetUniform(const char* a_pccUniName, const mat3& a_mMatrix);
 	void SetUniform(const char* a_pccUniName, const mat4& a_mMatrix);
+	void SetUniform(const char* a_pccUniName, const mat4& a_mMatrix, int a_iNumOfMat);
 	void SetUniform(const char* a_pccUniName, float a_fX, float a_fY, float a_fZ, float a_fW);
 	void SetUniform(const char* a_pccUniName, float a_fX, float a_fY, float a_fZ);
 	void SetUniform(const char* a_pccUniName, float a_fX, float a_fY);
