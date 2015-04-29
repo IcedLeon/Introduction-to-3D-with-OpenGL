@@ -1,6 +1,68 @@
 #include "BaseApplication.h"
 #include <GLFW\glfw3.h>
 
+/////////////////////////////////
+//			TweekBar			//
+/////////////////////////////////
+void Bar::InitTweek()
+{
+	//if (TwInit(TW_OPENGL, NULL))
+	//	printf("-- ANTTWEEKBAR INIT SUCCESSFULLY. \n");
+	//else
+	//	fprintf(stderr, "%s");
+}
+
+void Bar::CreateBar(const char* a_sNewBarName)
+{
+	m_mpTweekBar[a_sNewBarName] = TwNewBar(a_sNewBarName);
+}
+
+TwBar* Bar::GetMappedBar(const char* a_sBarName)
+{
+	//Checks if the bar has been mapped.
+	if (m_mpTweekBar.find(a_sBarName) != m_mpTweekBar.end())
+	{
+		return m_mpTweekBar[a_sBarName];
+	}
+	else
+	{
+		printf("ERROR: <COULD NOT FIND '%s' BAR FROM THE MAP. CHECK IF BAR HAS BEEN INIT BEFORE> \n", a_sBarName);
+		return nullptr;
+	}
+}
+
+void Bar::DrawTweek()
+{
+	TwDraw();
+}
+
+void Bar::CleanUpTweek()
+{
+	TwDeleteAllBars();
+	TwTerminate();
+}
+
+void Bar::ScaleTweek(int a_iWidth, int a_iHeight)
+{
+	TwWindowSize(a_iWidth, a_iHeight);
+}
+
+void Bar::AddTweakColor3f(const char* a_pccDivisor, const char* a_pccName, vec3 a_vCol, const char* a_pccDefinition)
+{
+	TwAddVarRW(m_mpTweekBar[a_pccDivisor], a_pccName, TW_TYPE_COLOR3F, &a_vCol, a_pccDefinition);
+}
+
+void Bar::AddTweakColor4f(const char* a_pccDivisor, const char* a_pccName, vec4 a_vCol, const char* a_pccDefinition)
+{
+	TwAddVarRW(m_mpTweekBar[a_pccDivisor], a_pccName, TW_TYPE_COLOR4F, &a_vCol, a_pccDefinition);
+}
+
+void Bar::AddTweakDir3f(const char* a_pccDivisor, const char* a_pccName, vec3 a_vDir, const char* a_pccDefinition)
+{
+	TwAddVarRW(m_mpTweekBar[a_pccDivisor], a_pccName, TW_TYPE_DIR3F, &a_vDir, a_pccDefinition);
+}
+
+
 namespace App
 {
 
@@ -13,6 +75,7 @@ namespace App
 	{
 		DATA.m_oWin						= nullptr;
 		DATA.m_oCurrCamera				= nullptr;
+		DATA.m_oTweeking				= nullptr;
 		DATA.TRANSFORM.m_mProjection	= M_IDENTITY;
 		DATA.TRANSFORM.m_mView			= M_IDENTITY;
 		DATA.TRANSFORM.m_mWorld			= M_IDENTITY;
@@ -29,6 +92,7 @@ namespace App
 	{
 		this->DATA.m_oWin					= a_Rhs.DATA.m_oWin;
 		this->DATA.m_oCurrCamera			= a_Rhs.DATA.m_oCurrCamera;
+		this->DATA.m_oTweeking				= a_Rhs.DATA.m_oTweeking;
 		this->DATA.m_oTotalCameras			= a_Rhs.DATA.m_oTotalCameras;
 		this->DATA.TRANSFORM.m_mProjection	= a_Rhs.DATA.TRANSFORM.m_mProjection;
 		this->DATA.TRANSFORM.m_mView		= a_Rhs.DATA.TRANSFORM.m_mView;
@@ -61,21 +125,20 @@ namespace App
 			m_bKeys[a_iKey] = true;
 		else if (a_iAction == GLFW_RELEASE)
 			m_bKeys[a_iKey] = false;
+		m_oApp->OnKey(a_iKey, a_iAction);
 	}
 
 	void BaseApplication::mouse_button_callback(GLFWwindow* a_oWindow, int a_iButton, int a_iAction, int a_iMode)
 	{
-		//TwEventMouseButtonGLFW(a_iButton, a_iAction);
 		if (a_iAction == GLFW_PRESS)
 			m_bKeys[a_iButton] = true;
 		else if (a_iAction == GLFW_RELEASE)
 			m_bKeys[a_iButton] = false;
+		m_oApp->OnMouseButton(a_iButton, a_iAction);
 	}
 
 	void BaseApplication::mouse_callback(GLFWwindow* a_oWindow, double a_iMouseX, double a_iMouseY)
 	{
-		//TwEventMousePosGLFW((int)a_iMouseX, (int)a_iMouseY);
-
 		glfwGetCursorPos(a_oWindow, &a_iMouseX, &a_iMouseY);
 
 		if (m_bKeys[GLFW_MOUSE_BUTTON_LEFT] == GLFW_PRESS)
@@ -91,13 +154,13 @@ namespace App
 
 	void BaseApplication::scroll_callback(GLFWwindow* a_oWindow, double a_fOffsetX, double a_fOffsetY)
 	{
-		//TwEventMouseWheelGLFW((int)a_fOffsetY);
 		m_oApp->DATA.m_oCurrCamera->MouseScrollZoom((float)a_fOffsetY);
+		m_oApp->OnMouseWheel(a_fOffsetY);
 	}
 
 	void BaseApplication::framebuffer_size_callback(GLFWwindow* a_oWindow, int a_iWidth, int a_iHeight)
 	{
-		//TwWindowSize(a_iWidth, a_iHeight);
+		TwWindowSize(a_iWidth, a_iHeight);
 		m_oApp->OnResize(a_iWidth, a_iHeight);
 		glfwGetFramebufferSize(a_oWindow, &a_iWidth, &a_iHeight);
 		glViewport(0, 0, a_iWidth, a_iHeight);
@@ -209,6 +272,7 @@ namespace App
 	void BaseApplication::Shutdown()
 	{
 		delete this->m_oApp->APPINFO.m_pccTitle;
+		this->m_oApp->DATA.m_oTweeking->CleanUpTweek();
 		glfwDestroyWindow(this->DATA.m_oWin);
 		glfwTerminate();
 		delete this->m_oApp;
@@ -642,6 +706,8 @@ namespace App
 				glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
 				glDebugMessageInsert(GL_DEBUG_SOURCE_APPLICATION, GL_DEBUG_TYPE_MARKER, 0, GL_DEBUG_SEVERITY_NOTIFICATION, -1, "START DEBUGGING\n");
 			}
+			this->DATA.m_oTweeking = new Bar();
+			this->DATA.m_oTweeking->InitTweek();
 			printf("-- GL DEBUG MESSAGE ENABLED. \n");
 			glfwSetCharModsCallback(this->m_oApp->DATA.m_oWin, on_char_callback);
 			printf("-- CHAR_CALLBACK ENABLED. \n");

@@ -23,6 +23,7 @@ Dof::Dof() : Application(),
 
 Dof::~Dof()
 {
+
 }
 
 void Dof::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)

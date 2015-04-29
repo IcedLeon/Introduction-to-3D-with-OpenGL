@@ -5,13 +5,10 @@
 GraphicsAssignment::GraphicsAssignment() : BaseApplication(),
 										   //m_uiUBO(NULL),
 										   m_uiVBO(NULL),		
-										   m_uiNoiseTex(NULL),
-										   m_uiTerrainTex(NULL),
-										   m_uiTerrainTex2(NULL),		
+										   m_uiNoiseTex(NULL),	
 										   m_oTerrainFBO(NULL),
 										   m_uiTerrainVBO(NULL),
-										   m_uiTerrainIBO(NULL),
-										   m_bWireFrame(false)
+										   m_uiTerrainIBO(NULL)
 {
 	UniformTess.InvProj = mat4(1);
 	UniformTess.InvView = mat4(1);
@@ -217,6 +214,7 @@ void GraphicsAssignment::LoadShaders()
 	_shrSource.push_back(MESH_VERTEX);
 	_shrSource.push_back(MESH_FRAGMENT);
 	Program.m_oMeshProg.CreateProgram(_shrSource);
+	Program.m_oMeshProg2.CreateProgram(_shrSource);
 	_shrSource.clear();
 	/* Assign some extra uniform to the programs */
 	/* Note to myself, while assign an uniform doesnt seams like a diffucult task, and it's not,
@@ -239,6 +237,12 @@ void GraphicsAssignment::LoadShaders()
 	Program.m_oMeshProg.SetUniform("Normal_Tex", 1);
 	Program.m_oMeshProg.SetUniform("Specular_Tex", 2);
 	Program.m_oMeshProg.Disable();
+
+	Program.m_oMeshProg2.Use();
+	Program.m_oMeshProg2.SetUniform("Diffuse_Tex", 0);
+	Program.m_oMeshProg2.SetUniform("Normal_Tex", 1);
+	Program.m_oMeshProg2.SetUniform("Specular_Tex", 2);
+	Program.m_oMeshProg2.Disable();
 }
 
 void GraphicsAssignment::InitTerrain()
@@ -294,8 +298,6 @@ void GraphicsAssignment::InitOneTimeUniform()
 	/* Projection */
 	DATA.TRANSFORM.m_mProjection = DATA.m_oCurrCamera->GetProjectionTransform(APPINFO.m_viWinSize.xy(), 1.0f, 10000.0f);
 	UniformTess.Projection		 = DATA.TRANSFORM.m_mProjection;
-
-	UniformTess.Albedo = vec3(1);
 }
 
 void GraphicsAssignment::SettingProgramsUniform()
@@ -319,6 +321,10 @@ void GraphicsAssignment::SettingProgramsUniform()
 	Program.m_oMeshProg.Use();
 	SetMeshUniform();
 	Program.m_oMeshProg.Disable();
+
+	Program.m_oMeshProg2.Use();
+	SetMeshUniform();
+	Program.m_oMeshProg2.Disable();
 }
 
 void GraphicsAssignment::SetSkyUniform()
@@ -550,10 +556,10 @@ void GraphicsAssignment::SetMeshUniform()
 		/* Vec4 */
 		"EyePosWorld",
 		/* Vec3 */
-		"LightDirWorld", "Material"
+		"LightDirWorld"
 	};
 
-	for (unsigned int i = 0; i < 4; ++i)
+	for (unsigned int i = 0; i < 3; ++i)
 	{
 		switch (i)
 		{
@@ -566,8 +572,36 @@ void GraphicsAssignment::SetMeshUniform()
 		case 2:
 			Program.m_oMeshProg.SetUniform(_uniformNames[i], UniformTess.LightDirWorld);
 			break;
-		case 3:
-			Program.m_oMeshProg.SetUniform(_uniformNames[i], UniformTess.Albedo);
+		default:
+			break;
+		}
+	}
+}
+
+void GraphicsAssignment::SetMeshUniform2()
+{
+	const char* _uniformNames[] =
+	{
+		/* Mat4*/
+		"VP",
+		/* Vec4 */
+		"EyePosWorld",
+		/* Vec3 */
+		"LightDirWorld"
+	};
+
+	for (unsigned int i = 0; i < 3; ++i)
+	{
+		switch (i)
+		{
+		case 0:
+			Program.m_oMeshProg2.SetUniform(_uniformNames[i], UniformTess.VP);
+			break;
+		case 1:
+			Program.m_oMeshProg2.SetUniform(_uniformNames[i], UniformTess.EyePosWorld);
+			break;
+		case 2:
+			Program.m_oMeshProg2.SetUniform(_uniformNames[i], UniformTess.LightDirWorld);
 			break;
 		default:
 			break;
@@ -721,21 +755,21 @@ void GraphicsAssignment::DrawTerrain()
 	//glUseProgramStages(Program.m_uiTerrainPipeline, GL_TESS_EVALUATION_SHADER_BIT, Program.m_oTerrainEvaluation.GetHandle());
 	//Program.m_oTerrain.Use();
 
-	if (m_bWireFrame)
-	{
-		//glUseProgramStages(Program.m_uiTerrainPipeline, GL_GEOMETRY_SHADER_BIT, Program.m_oTerrainWireGeometry.GetHandle());
+	Program.m_oTerrain.Use();
+	//if (m_bWireFrame)
+	//{
+	//	//glUseProgramStages(Program.m_uiTerrainPipeline, GL_GEOMETRY_SHADER_BIT, Program.m_oTerrainWireGeometry.GetHandle());
 		//
 		//glUseProgramStages(Program.m_uiTerrainPipeline, GL_FRAGMENT_SHADER_BIT, Program.m_oTerrainWireFrag.GetHandle());
-		Program.m_oTerrainWireFrag.Use();
-	}
-	else
-	{
-		Program.m_oTerrainWireFrag.Disable();	
-		Program.m_oTerrain.Use();
-		//glUseProgramStages(Program.m_uiTerrainPipeline, GL_GEOMETRY_SHADER_BIT, NULL);
+	//	Program.m_oTerrainWireFrag.Use();
+	//}
+	//else
+	//{
+	//	Program.m_oTerrainWireFrag.Disable();	
+	//	//glUseProgramStages(Program.m_uiTerrainPipeline, GL_GEOMETRY_SHADER_BIT, NULL);
 		//
 		//glUseProgramStages(Program.m_uiTerrainPipeline, GL_FRAGMENT_SHADER_BIT, Program.m_oTerrainFragment.GetHandle());
-	}
+	//}
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_uiNoiseTex);
@@ -748,7 +782,6 @@ void GraphicsAssignment::DrawTerrain()
 	Program.m_oTerrain.Disable();
 	glBindTexture(GL_TEXTURE_2D, NULL);
 	//glBindProgramPipeline(NULL);
-
 	glDisable(GL_CULL_FACE);
 }
 
@@ -786,17 +819,44 @@ void GraphicsAssignment::DrawSky()
 	glBindTexture(GL_TEXTURE_3D, NULL);
 }
 
+void GraphicsAssignment::InitBars()
+{
+#define MAIN_BAR "Terrain"
+	TwInit(TW_OPENGL, NULL);
+	m_oBar = TwNewBar(MAIN_BAR);
+	float _test = 13.0f;
+	TwAddVarRW(m_oBar, "LightDirWorld", TW_TYPE_FLOAT, &_test, "label='LOD'");
+	TwAddVarRW(m_oBar, "LightDirWorld2", TW_TYPE_FLOAT, &_test, "label='LOD'");
+	TwAddVarRW(m_oBar, "LightDirWorld3", TW_TYPE_FLOAT, &_test, "label='LOD'");
+	TwAddVarRW(m_oBar, "LightDirWorld4", TW_TYPE_FLOAT, &_test, "label='LOD'");
+	TwAddVarRW(m_oBar, "LightDirWorld5", TW_TYPE_FLOAT, &_test, "label='LOD'");
+}
+
 /*Public Method*/
 void GraphicsAssignment::Init(BaseApplication* a_oCurrApp, vec3 a_vCamPos, ivec2 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen)
 {
 	App::BaseApplication::Init(a_oCurrApp, a_vCamPos, a_vScreenSize, a_pccWinName, a_bFullScreen);
 	/* Init related function for the Rendering */
 	InitRendering();
+	/* Loading models */
 	m_oFbxLoader = new FbxSubLoader();
-	m_oFbxLoader->LoadFileFromSrc("./models/rigged/Pyro/pyro.fbx");
+
+	m_oFbxLoader2 = new FbxSubLoader();
+
+	const char* _fileNames[] = 
+	{
+		"./models/rigged/Pyro/pyro.fbx",
+		"./models/rigged/Enemytank/EnemyTank.fbx"
+	};
+
+	m_oFbxLoader->LoadFileFromSrc(_fileNames[0]);
+
+	m_oFbxLoader2->LoadFileFromSrc(_fileNames[1]);
+
+	InitBars();
 }
 
-void GraphicsAssignment::Render() 
+void GraphicsAssignment::Render()
 {
 	glClearColor(0.7f, 0.8f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -817,7 +877,13 @@ void GraphicsAssignment::Render()
 	/* Skybox */
 	DrawSky();
 	glGetQueryObjectuiv(m_uiGPUQuery, GL_QUERY_RESULT, &m_uiNumOfPrim);
-	m_oFbxLoader->Draw(Program.m_oMeshProg);
+
+	m_oFbxLoader->Draw(Program.m_oMeshProg, glm::translate(vec3(10.0, 220.0, 70.0)));
+
+	m_oFbxLoader2->Draw(Program.m_oMeshProg2, glm::translate(vec3(210.0, 220.0, 170.0)));
+
+	TwDraw();
+
 	//Print number of primitives
 	//UpdateTerrainTex();
 }
@@ -857,12 +923,13 @@ void GraphicsAssignment::Update(float a_fDeltaT)
 	//UpdateTerrainTex();
 	SettingProgramsUniform();
 	/* Key updater */
-	OnKey();
+	UpdateInput();
 	/* Mesh updater */
 	m_oFbxLoader->UpdateMesh(Program.m_oMeshProg, a_fDeltaT);
+	m_oFbxLoader2->UpdateMesh(Program.m_oMeshProg2, a_fDeltaT);
 }
 
-void GraphicsAssignment::OnKey()
+void GraphicsAssignment::UpdateInput()
 {
 	/* Camera controls */
 	if (m_bKeys[GLFW_KEY_W])
@@ -885,10 +952,6 @@ void GraphicsAssignment::OnKey()
 		DATA.m_oCurrCamera->KeyboardInput(RIGHT, (float)DATA.TIME.m_dDeltaT);
 		UniformTess.Translate.x += (float)DATA.TIME.m_dDeltaT * 2.0f;
 	}
-	//if (m_bKeys[GLFW_KEY_TAB])
-	//{
-	//	m_bWireFrame = true;
-	//}
 	if (m_bKeys[GLFW_KEY_R])
 	{
 		LoadShaders();
@@ -901,22 +964,29 @@ void GraphicsAssignment::OnKey()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
-void GraphicsAssignment::OnMouseButton(GLint a_iButton)
+void GraphicsAssignment::OnKey(GLint a_iKey, GLint a_iAction)
 {
+	TwEventKeyGLFW(a_iKey, a_iAction);
+}
+
+void GraphicsAssignment::OnMouseButton(GLint a_iButton, GLint a_iAction)
+{
+	TwEventMouseButtonGLFW(a_iButton, a_iAction);
 }
 
 void GraphicsAssignment::OnMouseMove(GLdouble a_dMouseX, GLdouble a_dMouseY)
 {
-
+	TwEventMousePosGLFW((int)a_dMouseX, (int)a_dMouseY);
 }
 
 void GraphicsAssignment::OnMouseWheel(GLdouble a_dPosition)
 {
-
+	TwEventMouseWheelGLFW((int)a_dPosition);
 }
 
 void GraphicsAssignment::Shutdown()
 {
 	delete m_oTerrainFBO;
 	delete m_oFbxLoader;
+	delete m_oFbxLoader2;
 }

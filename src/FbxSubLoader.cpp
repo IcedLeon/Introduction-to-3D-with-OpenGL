@@ -55,14 +55,14 @@ std::string FbxSubLoader::ExtractNameOutOfFilePath(const char& a_rccFilePath) co
 	return _outString;
 }
 
-void FbxSubLoader::SetModel(const std::string& a_sModelID, MeshDD& a_oData)
+void FbxSubLoader::SetModel(const std::string& a_sModelID, FBXFile& a_oData)
 {
 	m_oAllTheModels[a_sModelID] = &a_oData;
 }
 
-MeshDD* FbxSubLoader::GetModelByName(const std::string& a_sModelID) const
+FBXFile* FbxSubLoader::GetModelByName(const std::string& a_sModelID) const
 {
-	MeshDD* _result = nullptr;
+	FBXFile* _result = nullptr;
 	if (IsModelExist(a_sModelID))
 	{ 
 		_result = m_oAllTheModels.find(a_sModelID)->second;
@@ -86,7 +86,7 @@ void FbxSubLoader::LoadFileFromSrc(const char* a_pccFileName)
 
 	FBXMeshNode* _currNode;
 
-	m_oMeshContainer.resize(_meshCount);
+	m_oMeshContainer.resize(m_oMeshContainer.size() + _meshCount);
 
 	for (unsigned int meshIdx = 0; meshIdx < _meshCount; ++meshIdx)
 	{ 
@@ -131,12 +131,21 @@ void FbxSubLoader::LoadFileFromSrc(const char* a_pccFileName)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
 		m_oMeshContainer[meshIdx] = *_newMeshData;
 	}
-	m_uiDiffuse = TEXLOADER::LoadTexture("./models/rigged/Pyro/Pyro_D.tga");
-	m_uiNormal = TEXLOADER::LoadTexture("./models/rigged/Pyro/Pyro_N.tga");
-	m_uiSpecular = TEXLOADER::LoadTexture("./models/rigged/Pyro/Pyro_S.tga");
+	//vector<const char*>::iterator itr = a_lpccTextures.begin();
+	//for (itr; itr != a_lpccTextures.end(); ++itr)
+	//{
+	//	m_uiDiffuse = TEXLOADER::LoadTexture("./models/rigged/Pyro/Pyro_D.tga");
+	//	m_uiNormal = TEXLOADER::LoadTexture("./models/rigged/Pyro/Pyro_N.tga");
+	//	m_uiSpecular = TEXLOADER::LoadTexture("./models/rigged/Pyro/Pyro_S.tga");
+	//}
 	std::string _ID = ExtractNameOutOfFilePath(*a_pccFileName);
-	SetModel(_ID, *_newMeshData);
+	SetModel(_ID, *m_oMeshFile);
 	delete _newMeshData;
+}
+
+void FbxSubLoader::LoadFileFromSrc(const char* a_pccFileName, std::vector<const char*> a_lpccTextures)
+{
+
 }
 
 void FbxSubLoader::UnloadModel(const char* a_pccFileName)
@@ -144,7 +153,7 @@ void FbxSubLoader::UnloadModel(const char* a_pccFileName)
 	std::string _ID = ExtractNameOutOfFilePath(*a_pccFileName);
 	if (IsModelExist(_ID))
 	{
-		std::map<std::string, MeshDD*>::iterator _it;
+		std::map<std::string, FBXFile*>::iterator _it;
 		_it = m_oAllTheModels.find(_ID);
 		m_oAllTheModels.erase(_it);
 	}
@@ -199,49 +208,207 @@ void FbxSubLoader::UpdateSkely()
 			m_oSkely->m_bones[boneIdx] = m_oSkely->m_bones[_parentIdx] * m_oSkely->m_nodes[boneIdx]->m_localTransform;
 		}
 	}
+
+	for (unsigned int boneIdx = 0; boneIdx < m_oSkely->m_boneCount; ++boneIdx)
+	{
+		m_oSkely->m_bones[boneIdx] = m_oSkely->m_bones[boneIdx] * m_oSkely->m_bindPoses[boneIdx];
+	}
 }
 
 void FbxSubLoader::UpdateMesh(ShaderProgram& a_uiProg, float a_fDeltaT)
 {
-	m_fTimer += a_fDeltaT;
-
-	float _freq = sinf(m_fTimer) * 0.5f + 0.5f;
-
-	m_oSkely = m_oMeshFile->getSkeletonByIndex(0);
-	a_uiProg.Use();
-	//UpdateSkely();
-	m_oSkely->updateBones();
-	a_uiProg.SetUniform("Bones", *m_oSkely->m_bones, m_oSkely->m_boneCount);
-	a_uiProg.Disable();
-
-	m_oAnimatron = m_oMeshFile->getAnimationByIndex(0);
-
-	EvaluateSkely(m_fTimer);
-	//m_oSkely->evaluate(m_oAnimatron, a_fDeltaT);
-}
-
-void FbxSubLoader::Draw(ShaderProgram& a_uiProg)
-{
-	a_uiProg.Use();
-	for (unsigned int i = 0; i < m_oMeshContainer.size(); ++i)
+	
+	std::map<std::string, FBXFile*>::iterator itr = m_oAllTheModels.begin();
+	
+	for (itr; itr != m_oAllTheModels.end(); ++itr)
 	{
-		FBXMeshNode* _currMesh = m_oMeshFile->getMeshByIndex(i);
-		m_oMeshContainer[i].MESH_DATA.m_mMeshTrans = _currMesh->m_globalTransform;
-		a_uiProg.SetUniform("Model", m_oMeshContainer[i].MESH_DATA.m_mMeshTrans);
-		FBXMaterial* _currMeshMat = _currMesh->m_material;
+		m_oMeshFile = itr->second;
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, _currMeshMat->textures[FBXMaterial::DiffuseTexture]->handle);
-		
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, _currMeshMat->textures[FBXMaterial::NormalTexture]->handle);
-		
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, _currMeshMat->textures[FBXMaterial::SpecularTexture]->handle);
+		m_fTimer += a_fDeltaT;
 
-		glBindVertexArray(m_oMeshContainer[i].GetVAO());
-		glDrawElements(GL_TRIANGLES, m_oMeshContainer[i].GetIndicesCount(), GL_UNSIGNED_INT, NULL);
-		glBindVertexArray(0);	
+		float _freq = sinf(m_fTimer) * 0.5f + 0.5f;
+
+		m_oSkely = m_oMeshFile->getSkeletonByIndex(0);
+		a_uiProg.Use();
+
+		UpdateSkely();
+
+		a_uiProg.SetUniform("Bones", *m_oSkely->m_bones, m_oSkely->m_boneCount);
+
+		a_uiProg.Disable();
+
+		m_oAnimatron = m_oMeshFile->getAnimationByIndex(0);
+
+		EvaluateSkely(m_fTimer);
 	}
-	a_uiProg.Disable();
 }
+
+void FbxSubLoader::Draw(ShaderProgram& a_uiProg, glm::mat4 a_mTranslate)
+{
+	std::map<std::string, FBXFile*>::iterator itr = m_oAllTheModels.begin();
+
+	for (itr; itr != m_oAllTheModels.end(); ++itr)
+	{
+		m_oMeshFile = itr->second;
+		a_uiProg.Use();
+		for (unsigned int i = 0; i < m_oMeshContainer.size(); ++i)
+		{
+			FBXMeshNode* _currMesh = m_oMeshFile->getMeshByIndex(i);
+
+			m_oMeshContainer[i].MESH_DATA.m_mMeshTrans = _currMesh->m_globalTransform * a_mTranslate * glm::scale(vec3(0.2, 0.2, 0.2));
+			a_uiProg.SetUniform("Model", m_oMeshContainer[i].MESH_DATA.m_mMeshTrans);
+			FBXMaterial* _currMeshMat = _currMesh->m_material;
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, _currMeshMat->textures[FBXMaterial::DiffuseTexture]->handle);
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, _currMeshMat->textures[FBXMaterial::NormalTexture]->handle);
+
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, _currMeshMat->textures[FBXMaterial::SpecularTexture]->handle);
+
+			glBindVertexArray(m_oMeshContainer[i].GetVAO());
+			glDrawElements(GL_TRIANGLES, m_oMeshContainer[i].GetIndicesCount(), GL_UNSIGNED_INT, NULL);
+			glBindVertexArray(0);
+		}
+		a_uiProg.Disable();
+	}
+}
+
+//void FbxSubLoader::TestMultymap(const char* a_pccTestName)
+//{
+//	FBXFile* _meshFile = new FBXFile();
+//
+//	_meshFile->load(a_pccTestName);
+//	_meshFile->initialiseOpenGLTextures();
+//
+//	unsigned int _meshCount = _meshFile->getMeshCount();
+//
+//	MeshDD* _newMeshData = new MeshDD();
+//
+//	FBXMeshNode* _currNode;
+//
+//	std::vector<MeshDD> _tempCont;
+//
+//	_tempCont.resize(_meshCount);
+//
+//	for (unsigned int meshIdx = 0; meshIdx < _meshCount; ++meshIdx)
+//	{
+//		_currNode = _meshFile->getMeshByIndex(meshIdx);
+//
+//		_newMeshData->SetModelTrans(_currNode->m_globalTransform);
+//		//m_oMeshContainer[meshIdx]->MESH_DATA.m_mMeshTrans = _currNode->m_globalTransform;
+//		_newMeshData->SetIndicesCount(_currNode->m_indices.size());
+//		//m_oMeshContainer[meshIdx]->SetIndicesCount(_currNode->m_indices.size());
+//
+//		glGenVertexArrays(1, &_newMeshData->MESH_DATA.m_uiVAO);
+//
+//		glGenBuffers(1, &_newMeshData->MESH_DATA.m_uiVBO);
+//		glGenBuffers(1, &_newMeshData->MESH_DATA.m_uiIBO);
+//
+//		glBindVertexArray(_newMeshData->MESH_DATA.m_uiVAO);
+//
+//		glBindBuffer(GL_ARRAY_BUFFER, _newMeshData->MESH_DATA.m_uiVBO);
+//		glBufferData(GL_ARRAY_BUFFER, sizeof(FBXVertex) * _currNode->m_vertices.size(),
+//			_currNode->m_vertices.data(), GL_STATIC_DRAW);
+//
+//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _newMeshData->MESH_DATA.m_uiIBO);
+//		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * _currNode->m_indices.size(),
+//			_currNode->m_indices.data(), GL_STATIC_DRAW);
+//
+//		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::PositionOffset);
+//		glEnableVertexAttribArray(0);
+//		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::NormalOffset);
+//		glEnableVertexAttribArray(1);
+//		glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::TangentOffset);
+//		glEnableVertexAttribArray(2);
+//		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::IndicesOffset);
+//		glEnableVertexAttribArray(3);
+//		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::WeightsOffset);
+//		glEnableVertexAttribArray(4);
+//		glVertexAttribPointer(8, 2, GL_FLOAT, GL_FALSE, sizeof(FBXVertex), (void*)FBXVertex::TexCoord1Offset);
+//		glEnableVertexAttribArray(8);
+//
+//		glBindVertexArray(NULL);
+//
+//		glBindBuffer(GL_ARRAY_BUFFER, NULL);
+//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL);
+//		_tempCont[meshIdx] = *_newMeshData;
+//	}
+//
+//	std::string _ID = ExtractNameOutOfFilePath(*a_pccTestName);
+//
+//	m_oMultyMap.insert(std::make_pair(_ID, std::map<FBXFile*, std::vector<MeshDD>>()));
+//	m_oMultyMap[_ID].insert(std::make_pair(_meshFile, _tempCont));
+//
+//	delete _newMeshData;
+//}
+//
+//void FbxSubLoader::UpdateMulty(ShaderProgram& a_uiProg, float a_fDeltaT)
+//{
+//	FBXFile* _meshFile = new FBXFile();
+//
+//	for (std::map<std::string, std::map<FBXFile*, std::vector<MeshDD>>>::iterator itr = m_oMultyMap.begin();
+//		itr != m_oMultyMap.end(); ++itr)
+//	{
+//		for (std::map<FBXFile*, std::vector<MeshDD>>::iterator itr2 = itr->second.begin();
+//			itr2 != itr->second.end(); ++itr2)
+//		{
+//
+//			_meshFile = itr2->first;
+//
+//			m_fTimer += a_fDeltaT;
+//
+//			float _freq = sinf(m_fTimer) * 0.5f + 0.5f;
+//
+//			m_oSkely = _meshFile->getSkeletonByIndex(0);
+//			a_uiProg.Use();
+//			//UpdateSkely();
+//			m_oSkely->updateBones();
+//			a_uiProg.SetUniform("Bones", *m_oSkely->m_bones, m_oSkely->m_boneCount);
+//			a_uiProg.Disable();
+//
+//			m_oAnimatron = _meshFile->getAnimationByIndex(0);
+//
+//			EvaluateSkely(m_fTimer);
+//		}
+//	}
+//}
+//
+//void FbxSubLoader::DrawTestMulty(ShaderProgram& a_uiProg, glm::mat4 a_mTranslate)
+//{
+//	FBXFile* _meshFile = new FBXFile();
+//	for (std::map<std::string, std::map<FBXFile*, std::vector<MeshDD>>>::iterator itr = m_oMultyMap.begin();
+//		itr != m_oMultyMap.end(); ++itr)
+//	{
+//		for (std::map<FBXFile*, std::vector<MeshDD>>::iterator itr2 = itr->second.begin();
+//			itr2 != itr->second.end(); ++itr2)
+//		{
+//			a_uiProg.Use();
+//			_meshFile = itr2->first;
+//			for (unsigned int i = 0; i < (*itr2).second.size(); ++i)
+//			{
+//				FBXMeshNode* _currMesh = _meshFile->getMeshByIndex(i);
+//
+//				(*itr2).second[i].MESH_DATA.m_mMeshTrans = _currMesh->m_globalTransform * a_mTranslate * glm::scale(vec3(0.2, 0.2, 0.2));
+//				a_uiProg.SetUniform("Model", (*itr2).second[i].MESH_DATA.m_mMeshTrans);
+//				FBXMaterial* _currMeshMat = _currMesh->m_material;
+//
+//				glActiveTexture(GL_TEXTURE0);
+//				glBindTexture(GL_TEXTURE_2D, _currMeshMat->textures[FBXMaterial::DiffuseTexture]->handle);
+//
+//				glActiveTexture(GL_TEXTURE1);
+//				glBindTexture(GL_TEXTURE_2D, _currMeshMat->textures[FBXMaterial::NormalTexture]->handle);
+//
+//				glActiveTexture(GL_TEXTURE2);
+//				glBindTexture(GL_TEXTURE_2D, _currMeshMat->textures[FBXMaterial::SpecularTexture]->handle);
+//
+//				glBindVertexArray((*itr2).second[i].GetVAO());
+//				glDrawElements(GL_TRIANGLES, (*itr2).second[i].GetIndicesCount(), GL_UNSIGNED_INT, NULL);
+//				glBindVertexArray(0);
+//			}
+//			a_uiProg.Disable();
+//		}
+//	}
+//}

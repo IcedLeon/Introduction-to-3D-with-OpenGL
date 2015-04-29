@@ -77,8 +77,9 @@ private:
 	FBXFile* m_oMeshFile;
 	FBXSkeleton* m_oSkely;
 	FBXAnimation* m_oAnimatron;
-	std::map<std::string, MeshDD*> m_oAllTheModels;
+	std::map<std::string, FBXFile*> m_oAllTheModels;
 	std::vector<MeshDD> m_oMeshContainer;
+	//std::map<std::string, std::map<FBXFile*, std::vector<MeshDD>>> m_oMultyMap;
 	float m_fTimer;
 
 	unsigned int m_uiDiffuse;
@@ -89,20 +90,26 @@ private:
 
 	std::string ExtractNameOutOfFilePath(const char& a_rccFilePath) const;
 
-	void SetModel(const std::string& a_sModelID, MeshDD& a_oData);
+	void SetModel(const std::string& a_sModelID, FBXFile& a_oData);
 
 public:
 	FbxSubLoader();
 	~FbxSubLoader();
 	
-	MeshDD* GetModelByName(const std::string& a_sModelID) const;
+	FBXFile* GetModelByName(const std::string& a_sModelID) const;
+
 	void LoadFileFromSrc(const char* a_pccFileName);
+	void LoadFileFromSrc(const char* a_pccFileName, std::vector<const char*> a_lpccTextures);
 	void UnloadModel(const char* a_pccFileName);
 	void EvaluateSkely(float a_fDeltaT);
 	void UpdateSkely();
 
 	void UpdateMesh(ShaderProgram& a_uiProg, float a_fDeltaT);
-	void Draw(ShaderProgram& a_uiProg);
+	void Draw(ShaderProgram& a_uiProg, glm::mat4 a_mTranslate);
+
+	//void TestMultymap(const char* a_pccTestName);
+	//void UpdateMulty(ShaderProgram& a_uiProg, float a_fDeltaT);
+	//void DrawTestMulty(ShaderProgram& a_uiProg, glm::mat4 a_mTranslate);
 };
 
 #endif //!_FBXSUBLOADER_H_
