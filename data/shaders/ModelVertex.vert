@@ -37,19 +37,19 @@ void main()
 	Pos += Bones[indices.z] * position * bone_weights.z;
 	Pos.w = 1;
 	
-	//Tan += Bones[indices.x] * tangent * bone_weights.x;
-	//Tan += Bones[indices.y] * tangent * bone_weights.y;
-	//Tan += Bones[indices.z] * tangent * bone_weights.z;
-	//Tan.w = 1;
-	//
-	//Nor += Bones[indices.x] * normal * bone_weights.x;
-	//Nor += Bones[indices.y] * normal * bone_weights.y;
-	//Nor += Bones[indices.z] * normal * bone_weights.z;
-	//Nor.w = 1;
+	Tan += Bones[indices.x] * tangent * bone_weights.x;
+	Tan += Bones[indices.y] * tangent * bone_weights.y;
+	Tan += Bones[indices.z] * tangent * bone_weights.z;
+	Tan.w = 0;
+	
+	Nor += Bones[indices.x] * normal * bone_weights.x;
+	Nor += Bones[indices.y] * normal * bone_weights.y;
+	Nor += Bones[indices.z] * normal * bone_weights.z;
+	Nor.w = 0;
 
-	Out.biTan	= vec4(cross(normal.xyz, tangent.xyz), 1.0);
-	Out.norm	= (Model * normal);
-	Out.tan		= (Model * tangent);
+	Out.biTan	= vec4(cross(Nor.xyz, Tan.xyz), 0.0);
+	Out.norm	= (Model * Nor);
+	Out.tan		= (Model * Tan);
 
 	gl_Position = VP * Model * Pos;
 	Out.pos		= gl_Position;

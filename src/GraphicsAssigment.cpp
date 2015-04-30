@@ -824,12 +824,12 @@ void GraphicsAssignment::InitBars()
 #define MAIN_BAR "Terrain"
 	TwInit(TW_OPENGL, NULL);
 	m_oBar = TwNewBar(MAIN_BAR);
-	float _test = 13.0f;
-	TwAddVarRW(m_oBar, "LightDirWorld", TW_TYPE_FLOAT, &_test, "label='LOD'");
-	TwAddVarRW(m_oBar, "LightDirWorld2", TW_TYPE_FLOAT, &_test, "label='LOD'");
-	TwAddVarRW(m_oBar, "LightDirWorld3", TW_TYPE_FLOAT, &_test, "label='LOD'");
-	TwAddVarRW(m_oBar, "LightDirWorld4", TW_TYPE_FLOAT, &_test, "label='LOD'");
-	TwAddVarRW(m_oBar, "LightDirWorld5", TW_TYPE_FLOAT, &_test, "label='LOD'");
+	TwAddVarRW(m_oBar, "LightDirWorld", TW_TYPE_DIR3F, &m_vLightDirection, "label='LightDir'");
+	TwAddVarRW(m_oBar, "Octaves", TW_TYPE_INT32, &UniformTess.NoiseOctaves, "label='Octaves'");
+	TwAddVarRW(m_oBar, "Grid width", TW_TYPE_INT32, &UniformTess.GridW, "label='Width'");
+	TwAddVarRW(m_oBar, "Grid height", TW_TYPE_INT32, &UniformTess.GridH, "label='Height'");
+	TwAddVarRW(m_oBar, "Height scale", TW_TYPE_FLOAT, &UniformTess.HeightScale, "label='Height scale'");
+	TwAddVarRW(m_oBar, "Noise frq", TW_TYPE_FLOAT, &UniformTess.NoiseFreq, "label='Noise frq'");
 }
 
 /*Public Method*/
@@ -915,7 +915,7 @@ void GraphicsAssignment::Update(float a_fDeltaT)
 	/* Eye positions */
 	UniformTess.EyePosWorld = UniformTess.InvView * vec4(0.0f, 0.0f, 0.0f, 1.0f); //<--Simply transform it to vector.
 	/* Light direction world */
-	UniformTess.LightDirWorld = m_vLightDirection;
+	UniformTess.LightDirWorld = normalize(m_vLightDirection);
 	/* Light direction */
 	UniformTess.LightDir = vec3(UniformTess.View * vec4(normalize(m_vLightDirection), 0.0)); //To eye space
 	/* Time*/

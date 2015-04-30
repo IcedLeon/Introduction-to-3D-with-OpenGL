@@ -142,6 +142,15 @@
     <ClCompile Include="src\FbxSubLoader.cpp">
       <Filter>Source\Engine\Accessory</Filter>
     </ClCompile>
+    <ClCompile Include="src\ConnectFour.cpp">
+      <Filter>Source\Tree search</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameTree.cpp">
+      <Filter>Source\Tree search</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AIBase.cpp">
+      <Filter>Source\Tree search</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ProjectOpenGL1.h">
@@ -311,6 +320,15 @@
     </ClInclude>
     <ClInclude Include="src\FbxSubLoader.h">
       <Filter>Header\Engine\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AIBase.h">
+      <Filter>Header\Tree search</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConnectFour.h">
+      <Filter>Header\Tree search</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameTree.h">
+      <Filter>Header\Tree search</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -702,6 +720,12 @@
     </Filter>
     <Filter Include="Shaders\Engine Shaders\Procidural Gen\Model">
       <UniqueIdentifier>{b336ae49-ed8a-428f-a11c-22237dad577f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Tree search">
+      <UniqueIdentifier>{6e772172-34b1-4f9e-9a6e-85bec8230326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Tree search">
+      <UniqueIdentifier>{7a607fbb-0603-4d33-a298-32e39573bfbb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -81,6 +81,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\AdvanceTexture.cpp" />
+    <ClCompile Include="src\AIBase.cpp" />
     <ClCompile Include="src\AnimationProject.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\BaseApplication.cpp" />
@@ -90,11 +91,13 @@
     <ClCompile Include="src\ClothSimulation.cpp" />
     <ClCompile Include="src\CollisionProject.cpp" />
     <ClCompile Include="src\ComputeParticle.cpp" />
+    <ClCompile Include="src\ConnectFour.cpp" />
     <ClCompile Include="src\DeferredRendering.cpp" />
     <ClCompile Include="src\Dof.cpp" />
     <ClCompile Include="src\EmitterSh.cpp" />
     <ClCompile Include="src\FBXAnimationProject.cpp" />
     <ClCompile Include="src\FbxSubLoader.cpp" />
+    <ClCompile Include="src\GameTree.cpp" />
     <ClCompile Include="src\GeometryProject.cpp" />
     <ClCompile Include="src\Gizmos.cpp" />
     <ClCompile Include="src\Gizzle.cpp" />
@@ -130,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AdvanceTexture.h" />
+    <ClInclude Include="src\AIBase.h" />
     <ClInclude Include="src\AnimationProject.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\BaseApplication.h" />
@@ -140,12 +144,14 @@
     <ClInclude Include="src\ClothSimulation.h" />
     <ClInclude Include="src\CollisionProject.h" />
     <ClInclude Include="src\ComputeParticle.h" />
+    <ClInclude Include="src\ConnectFour.h" />
     <ClInclude Include="src\Constant.h" />
     <ClInclude Include="src\DeferredRendering.h" />
     <ClInclude Include="src\Dof.h" />
     <ClInclude Include="src\EmitterSh.h" />
     <ClInclude Include="src\FBXAnimationProject.h" />
     <ClInclude Include="src\FbxSubLoader.h" />
+    <ClInclude Include="src\GameTree.h" />
     <ClInclude Include="src\GeometryProject.h" />
     <ClInclude Include="src\Gizmos.h" />
     <ClInclude Include="src\Gizzle.h" />

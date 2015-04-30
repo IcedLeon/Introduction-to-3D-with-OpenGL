@@ -143,6 +143,37 @@ void Camera::UpdateCameraVectors()
 	this->m_vUp		= normalize(cross(this->m_vRight, this->m_vFront));
 }
 
+vec3 Camera::PickAgainstPlain(float a_fX, float a_fY, glm::ivec2 a_vWinSize, vec4 a_vPlane)
+{
+	float _nxPos = a_fX / a_vWinSize.x;
+	float _nyPos = a_fY / a_vWinSize.y;
+
+	printf("X: %f Y: %f", _nxPos, _nyPos);
+
+	float _sxPos = _nxPos - 0.5f;
+	float _syPos = _nyPos - 0.5f;
+
+	float _fxPos = _sxPos * 2;
+	float _fyPos = _syPos * -2;
+
+	mat4 _invProj = glm::inverse(GetProjectionTransform(a_vWinSize));
+
+	vec4 _mousePos(_fxPos, _fyPos, 1.0f, 1.0f);
+	vec4 _worldPos = _invProj * _mousePos;
+
+	_worldPos /= _worldPos.w;
+
+	vec3 _camPos = _invProj[3].xyz();
+
+	vec3 _dir = _worldPos.xyz() - _camPos;
+
+	float _t = -(glm::dot(_camPos, a_vPlane.xyz()) + a_vPlane.w) / (glm::dot(_dir, a_vPlane.xyz()));
+
+	vec3 _result = _camPos + _dir * _t;
+
+	return _result;
+}
+
 GLfloat Camera::GetZoom() const
 {
 	return m_fFOV;

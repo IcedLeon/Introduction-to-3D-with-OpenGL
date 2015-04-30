@@ -8,6 +8,7 @@
 #include <vector>
 
 using glm::vec3;
+using glm::vec4;
 using glm::mat4;
 using glm::lookAt;
 using glm::radians;
@@ -81,6 +82,8 @@ public:
 					GLfloat a_fOffsetY,
 					GLboolean a_bConstrainPitch = true);
 	void MouseScrollZoom(GLfloat a_fOffsetY);
+
+	vec3 PickAgainstPlain(float a_fX, float a_fY, glm::ivec2 a_vWinSize, vec4 a_vPlane);
 
 	GLfloat GetZoom() const;
 	GLfloat GetYaw() const;
