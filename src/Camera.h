@@ -83,7 +83,11 @@ public:
 					GLboolean a_bConstrainPitch = true);
 	void MouseScrollZoom(GLfloat a_fOffsetY);
 
+	vec3 GetRayFromMouse(float a_fX, float a_fY, glm::ivec2 a_viViewport);
+
 	vec3 PickAgainstPlain(float a_fX, float a_fY, glm::ivec2 a_vWinSize, vec4 a_vPlane);
+
+	//vec3 ScreenPositionToDir(float a_fX, float a_fY) const;
 
 	GLfloat GetZoom() const;
 	GLfloat GetYaw() const;

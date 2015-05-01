@@ -24,13 +24,6 @@ void GameTree::Draw()
 
 	m_oGame->draw();
 
-	//for (int i = 0; i <= 20; ++i)
-	//{
-	//	Gizmos::addLine(vec3(-10 + i, 0, -10), vec3(-10 + i, 0, 10),
-	//		i == 10 ? vec4(1, 0, 0, 1) : vec4(0, 0, 0, 1));
-	//	Gizmos::addLine(vec3(-10, 0, -10 + i), vec3(10, 0, -10 + i),
-	//		i == 10 ? vec4(0, 1, 0, 1) : vec4(0, 0, 0, 1));
-	//}
 	mat4 _projView = m_oProjection * m_oView;
 	Gizmos::draw(_projView);
 }
@@ -43,6 +36,15 @@ void GameTree::Update(GLdouble a_fDeltaT)
 	m_oView = m_oCamera.GetViewTransform();
 	UpdateAiMoves();
 	UpdateInput((float)a_fDeltaT);
+
+	if (m_bKeys[GLFW_KEY_R])
+	{
+		delete m_oAI;
+		delete m_oGame;
+
+		m_oGame = new ConnectFour();
+		m_oAI = new MCTSAi(1400);
+	}
 }
 
 void GameTree::CleanUpWin()
@@ -115,7 +117,7 @@ void GameTree::InitWindow(vec3 a_vCamPos, vec3 a_vScreenSize, const char* a_pccW
 	m_oProjection = m_oCamera.GetProjectionTransform(m_vScreenSize.xy());
 
 	m_oGame = new ConnectFour();
-	m_oAI = new MCTSAi(400);
+	m_oAI = new MCTSAi(1400);
 
 	Gizmos::create();
 }

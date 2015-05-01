@@ -143,27 +143,64 @@ void Camera::UpdateCameraVectors()
 	this->m_vUp		= normalize(cross(this->m_vRight, this->m_vFront));
 }
 
+vec3 Camera::GetRayFromMouse(float a_fX, float a_fY, glm::ivec2 a_viViewport)
+{
+	//Screen space coord (from viewport).
+	float _X = (2.0f * a_fX) / a_viViewport.x - 1.0f;
+	float _Y = 1.0f - (2.0f * a_fY) / a_viViewport.y;
+	float _Z = 1.0f;
+	//From NDS
+	vec3 _rayNDS = vec3(_X, _Y, _Z);
+	//From clip
+	vec4 _rayClp = vec4(_rayNDS.x, _rayNDS.y, -1.0f, 1.0f);
+	//From view
+	mat4 _invProj = GetProjectionTransform(a_viViewport);
+	_invProj = glm::inverse(_invProj);
+	vec4 _rayViw = _invProj * _rayClp;
+	_rayViw /= _rayViw.w;
+	_rayViw = vec4(_rayViw.x, _rayViw.y, -1.0f, 0.0f);
+	//To world space
+	mat4 _invView = GetViewTransform();
+	_invView = glm::inverse(_invView);
+	vec3 _rayWld = vec3(_invView * _rayViw);
+	//Normalization
+	_rayWld = normalize(_rayWld);
+
+	return _rayWld;
+}
+
+//vec3 Camera::ScreenPositionToDir(float a_fX, float a_fY, glm::ivec2 a_viViewport) const
+//{
+//	mat4 _proj = GetProjectionTransform(a_viViewport);
+//	vec3 _screenPos(a_fX / a_viViewport.x * 2 - 1, (a_fY * 2 - 1) * -1, -1);
+//
+//	_screenPos.x /= _proj[0][0];
+//	_screenPos.y /= _proj[1][1];
+//
+//	return normalize()
+//}
+
 vec3 Camera::PickAgainstPlain(float a_fX, float a_fY, glm::ivec2 a_vWinSize, vec4 a_vPlane)
 {
 	float _nxPos = a_fX / a_vWinSize.x;
 	float _nyPos = a_fY / a_vWinSize.y;
-
-	printf("X: %f Y: %f", _nxPos, _nyPos);
-
+	
 	float _sxPos = _nxPos - 0.5f;
 	float _syPos = _nyPos - 0.5f;
 
 	float _fxPos = _sxPos * 2;
 	float _fyPos = _syPos * -2;
 
-	mat4 _invProj = glm::inverse(GetProjectionTransform(a_vWinSize));
+	mat4 _invView = glm::inverse(GetProjViewTransform(a_vWinSize));
 
 	vec4 _mousePos(_fxPos, _fyPos, 1.0f, 1.0f);
-	vec4 _worldPos = _invProj * _mousePos;
+
+
+	vec4 _worldPos = _invView * _mousePos;
 
 	_worldPos /= _worldPos.w;
 
-	vec3 _camPos = _invProj[3].xyz();
+	vec3 _camPos = GetWorldTransform()[3].xyz();
 
 	vec3 _dir = _worldPos.xyz() - _camPos;
 

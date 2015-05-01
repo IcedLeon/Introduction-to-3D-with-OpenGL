@@ -2,10 +2,9 @@
 
 int MCTSAi::makeDecision(const Game& a_oGame)
 {
-	//Game::State player1;
-	//Game::State player2;
 	//Create the list of action,
 	std::vector<int> _action;
+	std::vector<int> _bestScore;
 	a_oGame.getValidActions(_action);
 	std::vector<int>::iterator itr = _action.begin();
 
@@ -23,13 +22,18 @@ int MCTSAi::makeDecision(const Game& a_oGame)
 			//perform the action
 			_newGame->performAction(*itr);
 
+			if (_newGame->getCurrentGameState() == Game::PLAYER_TWO)
+			{
+				return *itr;
+			}
 			//now need to simulate a game.
 			while (_newGame->getCurrentGameState() == Game::UNKNOWN)
 			{
-				std::vector<int> _copyAction = _action;
+				std::vector<int> _copyAction;
+				_newGame->getValidActions(_copyAction);
 
 				int _randAct = rand() % _copyAction.size();
-				_newGame->performAction(_randAct);
+				_newGame->performAction(_copyAction[_randAct]);
 				
 				if (_newGame->getCurrentGameState() == Game::PLAYER_ONE)
 					_result += 1;
@@ -38,6 +42,15 @@ int MCTSAi::makeDecision(const Game& a_oGame)
 			}
 			delete _newGame;
 		}
-		return _action[_result / m_iPlayouts];
+		_bestScore.push_back(_result);
 	}
+	int _bestIdx = 0;
+	for (int i = 0; i != _bestScore.size(); ++i)
+	{
+		if (_bestScore[i] < _bestScore[_bestIdx])
+		{
+			_bestIdx = i;
+		}
+	}
+	return _action[_bestIdx];
 }
