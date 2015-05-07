@@ -284,9 +284,9 @@ void GraphicsAssignment::InitOneTimeUniform()
 	/* Grid origin */
 	UniformTess.GridOrigin		= vec3(-28.0f, 0.0f, -28.0f);
 	/* Grid width */
-	UniformTess.GridW			= 84;
+	UniformTess.GridW			= 92;
 	/* Grid Height */
-	UniformTess.GridH			= 84;
+	UniformTess.GridH			= 92;
 	/* Tile size */
 	UniformTess.TileSize		= vec3(1.0f, 0.0f, 1.0f);
 	/* Half a tile */
@@ -878,10 +878,17 @@ void GraphicsAssignment::Render()
 	DrawSky();
 	glGetQueryObjectuiv(m_uiGPUQuery, GL_QUERY_RESULT, &m_uiNumOfPrim);
 
-	m_oFbxLoader->Draw(Program.m_oMeshProg, glm::translate(vec3(10.0, 220.0, 70.0)));
+	static bool _drawModel = false;
 
-	m_oFbxLoader2->Draw(Program.m_oMeshProg2, glm::translate(vec3(210.0, 220.0, 170.0)));
+	if (m_bKeys[GLFW_KEY_L] == GLFW_PRESS)
+		_drawModel = !_drawModel;
 
+	if (_drawModel)
+	{
+		m_oFbxLoader->Draw(Program.m_oMeshProg, glm::translate(vec3(10.0, 220.0, 70.0)));
+
+		m_oFbxLoader2->Draw(Program.m_oMeshProg2, glm::translate(vec3(210.0, 220.0, 170.0)));
+	}
 	TwDraw();
 
 	//Print number of primitives
