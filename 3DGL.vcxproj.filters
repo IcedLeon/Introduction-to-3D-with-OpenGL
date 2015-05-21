@@ -151,6 +151,9 @@
     <ClCompile Include="src\AIBase.cpp">
       <Filter>Source\Tree search</Filter>
     </ClCompile>
+    <ClCompile Include="src\FurSimApp.cpp">
+      <Filter>Source\Fur simulation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ProjectOpenGL1.h">
@@ -330,6 +333,9 @@
     <ClInclude Include="src\GameTree.h">
       <Filter>Header\Tree search</Filter>
     </ClInclude>
+    <ClInclude Include="src\FurSimApp.h">
+      <Filter>Header\Fur simulation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\GPUParticleFragment.glsl">
@@ -502,6 +508,12 @@
     </None>
     <None Include="data\shaders\ModelFragment.frag">
       <Filter>Shaders\Engine Shaders\Procidural Gen\Model</Filter>
+    </None>
+    <None Include="src\AmbientDiffuseTexture.vert">
+      <Filter>Shaders\Fur</Filter>
+    </None>
+    <None Include="src\AmbientDiffuseTexture.frag">
+      <Filter>Shaders\Fur</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -726,6 +738,15 @@
     </Filter>
     <Filter Include="Source\Tree search">
       <UniqueIdentifier>{7a607fbb-0603-4d33-a298-32e39573bfbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Fur simulation">
+      <UniqueIdentifier>{01e4dc49-552b-496a-9bd4-689535aab199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Fur simulation">
+      <UniqueIdentifier>{f56c7afc-9322-4b78-9e61-d48a1002b63b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Fur">
+      <UniqueIdentifier>{b7b79036-fe9d-49d8-9a55-6406d9615cc4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
