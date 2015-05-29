@@ -206,6 +206,9 @@
     <None Include="data\shaders\DofDisplayVertex.glsl" />
     <None Include="data\shaders\DofFragment.glsl" />
     <None Include="data\shaders\DofVertex.glsl" />
+    <None Include="data\shaders\Fur.frag" />
+    <None Include="data\shaders\Fur.geom" />
+    <None Include="data\shaders\Fur.vert" />
     <None Include="data\shaders\GBufferFragment.glsl" />
     <None Include="data\shaders\GBufferVertex.glsl" />
     <None Include="data\shaders\GenSatCompute.glsl" />

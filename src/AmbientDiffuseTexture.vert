@@ -11,7 +11,6 @@ out vec3 v_eye;
 uniform mat4 u_projectionMatrix;
 uniform mat4 u_modelViewMatrix;
 uniform mat3 u_normalMatrix;
-0.
 
 void main()
 {

@@ -39,7 +39,11 @@ struct MeshData
 	{ }
 };
 
-#define VERTEX_SRC "./shaders/DofVertex.glsl"
+#define AMBIENT_VERT "./shaders/AmbientDiffuseTexture.vert"
+#define AMBIENT_FRAG "./shaders/AmbientDiffuseTexture.frag"
+#define FUR_VERTEX "./shaders/Fur.vert"
+#define FUR_GEOM "./shaders/Fur.geom"
+#define FUR_FRAG "./shaders/Fur.frag"
 
 class FurSim : public App::BaseApplication
 {
@@ -52,6 +56,7 @@ private:
 	GLuint m_uiFurVAO;
 	GLuint m_uiTexFurCol;
 	GLuint m_uiTexFurStrength;
+	GLuint m_uiTigerTex;
 
 	virtual void Render() override;
 
@@ -75,6 +80,11 @@ public:
 
 	virtual void Init(BaseApplication* a_oCurrApp, vec3 a_vCamPos, ivec2 a_vScreenSize, const char* a_pccWinName, bool a_bFullScreen);
 
+	void LoadShaders();
+	void InitUniform();
+
+	MeshData* LoadMesh(FBXFile* a_oFile);
+	void DrawMesh(MeshData* a_oMesh);
 };
 
 #endif //!_FURSIMAPP_H_

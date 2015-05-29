@@ -515,6 +515,15 @@
     <None Include="src\AmbientDiffuseTexture.frag">
       <Filter>Shaders\Fur</Filter>
     </None>
+    <None Include="data\shaders\Fur.vert">
+      <Filter>Shaders\Fur</Filter>
+    </None>
+    <None Include="data\shaders\Fur.geom">
+      <Filter>Shaders\Fur</Filter>
+    </None>
+    <None Include="data\shaders\Fur.frag">
+      <Filter>Shaders\Fur</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
