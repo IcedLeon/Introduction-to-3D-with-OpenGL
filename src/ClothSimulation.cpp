@@ -368,5 +368,5 @@ void ClothSimulation::SetUniform()
 	glUniform1f(ComputeUni.m_iRestLenghtDiag, _restLDiag);
 
 	glActiveTexture(GL_TEXTURE0);
-	TEXLOADER::LoadTexture("./textures/me_textile.bmp");
+	TEXLOADER::LoadTexture("./textures/me_textile.tga");
 }

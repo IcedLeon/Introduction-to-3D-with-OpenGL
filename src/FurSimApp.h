@@ -21,6 +21,7 @@ struct MeshData
 	GLuint m_uiVBO;
 	GLuint m_uiIBO;
 	GLuint m_uiIndexCount;
+	GLuint m_uiVertexCount;
 
 	MeshData() : m_mModelTrans(mat4(0)),
 		m_vDiffuseAlbedo(vec4(0)),
@@ -56,7 +57,8 @@ private:
 	GLuint m_uiFurVAO;
 	GLuint m_uiTexFurCol;
 	GLuint m_uiTexFurStrength;
-	GLuint m_uiTigerTex;
+	GLuint m_uiTextureFurStrength;
+	GLuint m_uiTextureFurColour;
 
 	virtual void Render() override;
 

@@ -37,11 +37,13 @@ namespace TEXLOADER
 		int ReadInt(ifstream& a_Stream);
 	}
 	//Loads a file into an OpenGL texture.  This method only supports 24 or 32 bpp images. It yeld the texture ID.
-	GLuint LoadTexture(const char* a_pccFileName, int& a_iWidth, int& a_iHeight);
+	GLuint LoadTexture(const char* a_pccFileName, int& a_iWidth, int& a_iHeight, bool a_bInitTex);
+	//Loads a file into an OpenGL texture.  This method only supports 24 or 32 bpp images. It yeld the texture ID.
+	GLuint LoadTextureMipMap(const char* a_pccFileName, int& a_iWidth, int& a_iHeight);
 	//Loads a file into an OpenGL texture.  This method only supports 24 or 32 bpp images. It yeld the texture ID.
 	//Paramater:
 	//<a_pccFileName>: the file name of the file.
-	GLuint LoadTexture(const char* a_pccFileName);
+	GLuint LoadTexture(const char* a_pccFileName, bool a_bInitTex = true, bool a_bMipMap = false);
 
 	namespace TGA
 	{
@@ -51,6 +53,8 @@ namespace TEXLOADER
 		//<a_iWidth>: Reference (out), it'll set the integer to the native width of the file.
 		//<a_iWidth>: Reference (out), it'll set the integer to the native height of the file.
 		GLubyte* ReadTGA(const char* a_pccFileName, int& a_iWidth, int& a_iHeight) throw(IOExeption);
+		GLubyte* ReadPerlinTGA(const char* a_pccFileName, int& a_iWidth, int& a_iHeight, 
+			const int a_iSeed, const float a_fFreq, const float a_fAmpli, const float a_fPers, const int a_iOct) throw(IOExeption);
 		//Write to a .tga file
 		//Paramater:
 		//<a_ubPixelData>: The data extracted from the file as a unsigned byte.
