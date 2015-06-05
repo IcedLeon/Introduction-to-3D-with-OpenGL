@@ -120,6 +120,7 @@
     <ClCompile Include="src\ParticlesUpdaters.cpp" />
     <ClCompile Include="src\ParticleSystem.cpp" />
     <ClCompile Include="src\PGT.cpp" />
+    <ClCompile Include="src\PhysicsProject.cpp" />
     <ClCompile Include="src\PostProcess.cpp" />
     <ClCompile Include="src\ProjectOpenGL1.cpp" />
     <ClCompile Include="src\RenderTargetProject.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="src\ParticleUpdater.h" />
     <ClInclude Include="src\PGFT.h" />
     <ClInclude Include="src\PGT.h" />
+    <ClInclude Include="src\PhysicsProject.h" />
     <ClInclude Include="src\PostProcess.h" />
     <ClInclude Include="src\ProjectOpenGL1.h" />
     <ClInclude Include="src\RenderTargetProject.h" />

@@ -154,6 +154,9 @@
     <ClCompile Include="src\FurSimApp.cpp">
       <Filter>Source\Fur simulation</Filter>
     </ClCompile>
+    <ClCompile Include="src\PhysicsProject.cpp">
+      <Filter>Source\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ProjectOpenGL1.h">
@@ -335,6 +338,9 @@
     </ClInclude>
     <ClInclude Include="src\FurSimApp.h">
       <Filter>Header\Fur simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysicsProject.h">
+      <Filter>Header\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -756,6 +762,12 @@
     </Filter>
     <Filter Include="Shaders\Fur">
       <UniqueIdentifier>{b7b79036-fe9d-49d8-9a55-6406d9615cc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Physics">
+      <UniqueIdentifier>{80da1895-be7f-4086-a99c-7d80191c406a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Physics">
+      <UniqueIdentifier>{219fc3bd-a3e8-4da1-b7e8-71c7fac53782}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
