@@ -1,12 +1,12 @@
-#include "PhysicsProject.h"
+#include "GraphicsAssignment.h"
 
 int main()
 {	
-	PhysicsProject* _app = new PhysicsProject(vec3(0, 10, 15), ivec2(1920, 1080), "GraphicsAssignment", false);
+	GraphicsAssignment* _app = new GraphicsAssignment();
 
 	//PhysicsProject* _app = new PhysicsProject();
 
-	//_app->Init(_app, vec3(0, 10, 15), ivec2(1920, 1080), "GraphicsAssignment", false);
+	_app->Init(_app, vec3(0, 10, 15), ivec2(1920, 1080), "GraphicsAssignment", false);
 	
 	_app->RunApp();
 	
