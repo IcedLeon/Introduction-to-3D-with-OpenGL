@@ -30,7 +30,7 @@ class ShaderProgram
 {
 private:
 	GLuint m_uiPrgHandle; //The current program handle.
-	bool m_bLinked;	//Keep if the program has been linked before being used.
+	bool m_bLinked;	//Track if the program has been linked before being used.
 	//It will store all the current uniform location for the associated program.
 	map<string, GLint> m_oUniformLocations; 
 	//The copy ctr and the assign operator overload are marked as private to make the object non-copyable
@@ -64,7 +64,7 @@ public:
 	void Disable();
 	void Release();
 	//Get the shader program, once the shader class has been compiled all the shader are going to be linked with
-	//the current program so there will be no need to having extra variable for the both compiled shaders.
+	//the current program so there will be no need for having extra variable for the both compiled shaders.
 	GLuint GetHandle() const;
 	bool IsLinked() const;
 
